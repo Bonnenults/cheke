@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.autozi.cheke.party.mapper.PartyMapper">
+<cache eviction="LRU" type="org.mybatis.caches.memcached.MemcachedCache"/>
+<resultMap id="PartyMap" type="Party">
+	<result column="ID" jdbcType="DECIMAL" property="id"/>
+	<result column="VERSION" jdbcType="DECIMAL" property="version"/>
+	<result column="CODE" jdbcType="VARCHAR" property="code"/>
+	<result column="NAME" jdbcType="VARCHAR" property="name"/>
+	<result column="COMPANY_NAME" jdbcType="VARCHAR" property="companyName"/>
+	<result column="DESCRIPTION" jdbcType="VARCHAR" property="description"/>
+	<result column="NAME_FIRST_LETTER" jdbcType="VARCHAR" property="nameFirstLetter"/>
+	<result column="EMAIL" jdbcType="VARCHAR" property="email"/>
+	<result column="PHONE" jdbcType="VARCHAR" property="phone"/>
+	<result column="ADDRESS" jdbcType="VARCHAR" property="address"/>
+	<result column="AREA_ID" jdbcType="DECIMAL" property="areaId"/>
+	<result column="SOCIAL_CREDIT_CODE" jdbcType="VARCHAR" property="socialCreditCode"/>
+	<result column="INVOICE_TITLE" jdbcType="VARCHAR" property="invoiceTitle"/>
+	<result column="INVOICE_NUMBER" jdbcType="VARCHAR" property="invoiceNumber"/>
+	<result column="INVOICE_ADDRESS" jdbcType="VARCHAR" property="invoiceAddress"/>
+	<result column="INVOICE_BANK" jdbcType="VARCHAR" property="invoiceBank"/>
+	<result column="MOBILE" jdbcType="VARCHAR" property="mobile"/>
+	<result column="CONNECTOR_NAME" jdbcType="VARCHAR" property="connectorName"/>
+	<result column="ID_NUMBER" jdbcType="VARCHAR" property="idNumber"/>
+	<result column="STATUS" jdbcType="DECIMAL" property="status"/>
+	<result column="PARTY_TYPE" jdbcType="DECIMAL" property="partyType"/>
+	<result column="PARTY_CLASS" jdbcType="DECIMAL" property="partyClass"/>
+	<result column="COMPANY_TYPE" jdbcType="DECIMAL" property="companyType"/>
+	<result column="MEDIA_TYPE" jdbcType="DECIMAL" property="mediaType"/>
+	<result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+	<result column="CREATE_PARTY_ID" jdbcType="DECIMAL" property="createPartyId"/>
+	<result column="CREATE_USER_ID" jdbcType="DECIMAL" property="createUserId"/>
+	<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+	<result column="CERTIFICATE_IMG" jdbcType="VARCHAR" property="certificateImg"/>
+	<result column="CERTIFICATE_OTHER" jdbcType="VARCHAR" property="certificateOther"/>
+	<result column="AUTHOR_IMG" jdbcType="VARCHAR" property="authorImg"/>
+	<result column="IDENTIFY_IMG_A" jdbcType="VARCHAR" property="identifyImgA"/>
+	<result column="IDENTIFY_IMG_B" jdbcType="VARCHAR" property="identifyImgB"/>
+	<result column="IMAGE_URL" jdbcType="VARCHAR" property="imageUrl"/>
+</resultMap>
+<sql id="Base_Column_List">
+	ID,VERSION,CODE,NAME,COMPANY_NAME,DESCRIPTION,NAME_FIRST_LETTER,EMAIL,PHONE,ADDRESS,AREA_ID,SOCIAL_CREDIT_CODE,INVOICE_TITLE,INVOICE_NUMBER,INVOICE_ADDRESS,INVOICE_BANK,MOBILE,CONNECTOR_NAME,ID_NUMBER,STATUS,PARTY_TYPE,PARTY_CLASS,COMPANY_TYPE,MEDIA_TYPE,UPDATE_TIME,CREATE_PARTY_ID,CREATE_USER_ID,CREATE_TIME,CERTIFICATE_IMG,CERTIFICATE_OTHER,AUTHOR_IMG,IDENTIFY_IMG_A,IDENTIFY_IMG_B,IMAGE_URL
+</sql>
+<sql id="bp_Base_Column_List">
+	bp.ID,bp.VERSION,bp.CODE,bp.NAME,bp.COMPANY_NAME,bp.DESCRIPTION,bp.NAME_FIRST_LETTER,bp.EMAIL,bp.PHONE,bp.ADDRESS,bp.AREA_ID,bp.SOCIAL_CREDIT_CODE,bp.INVOICE_TITLE,bp.INVOICE_NUMBER,bp.INVOICE_ADDRESS,bp.INVOICE_BANK,bp.MOBILE,bp.CONNECTOR_NAME,bp.ID_NUMBER,bp.STATUS,bp.PARTY_TYPE,bp.PARTY_CLASS,bp.COMPANY_TYPE,bp.MEDIA_TYPE,bp.UPDATE_TIME,bp.CREATE_PARTY_ID,bp.CREATE_USER_ID,bp.CREATE_TIME,bp.CERTIFICATE_IMG,bp.CERTIFICATE_OTHER,bp.AUTHOR_IMG,bp.IDENTIFY_IMG_A,bp.IDENTIFY_IMG_B,bp.IMAGE_URL
+</sql>
+<select id="get" parameterType="long" resultMap="PartyMap">
+	select
+		<include refid="Base_Column_List"/>
+	from bas_party bp
+	where ID = #{id,jdbcType=DECIMAL}
+</select>
+<delete id="delete" parameterType="long">
+	delete
+	from bas_party
+	where ID = #{id,jdbcType=DECIMAL}
+</delete>
+<insert id="insert" parameterType="Party">
+	insert into bas_party(
+		<include refid="Base_Column_List"/>
+	) values (
+	#{id,jdbcType=DECIMAL},
+	#{version,jdbcType=DECIMAL},
+	#{code,jdbcType=VARCHAR},
+	#{name,jdbcType=VARCHAR},
+	#{companyName,jdbcType=VARCHAR},
+	#{description,jdbcType=VARCHAR},
+	#{nameFirstLetter,jdbcType=VARCHAR},
+	#{email,jdbcType=VARCHAR},
+	#{phone,jdbcType=VARCHAR},
+	#{address,jdbcType=VARCHAR},
+	#{areaId,jdbcType=DECIMAL},
+	#{socialCreditCode,jdbcType=VARCHAR},
+	#{invoiceTitle,jdbcType=VARCHAR},
+	#{invoiceNumber,jdbcType=VARCHAR},
+	#{invoiceAddress,jdbcType=VARCHAR},
+	#{invoiceBank,jdbcType=VARCHAR},
+	#{mobile,jdbcType=VARCHAR},
+	#{connectorName,jdbcType=VARCHAR},
+	#{idNumber,jdbcType=VARCHAR},
+	#{status,jdbcType=DECIMAL},
+	#{partyType,jdbcType=DECIMAL},
+	#{partyClass,jdbcType=DECIMAL},
+	#{companyType,jdbcType=DECIMAL},
+	#{mediaType,jdbcType=DECIMAL},
+	#{updateTime,jdbcType=TIMESTAMP},
+	#{createPartyId,jdbcType=DECIMAL},
+	#{createUserId,jdbcType=DECIMAL},
+	#{createTime,jdbcType=TIMESTAMP},
+	#{certificateImg,jdbcType=VARCHAR},
+	#{certificateOther,jdbcType=VARCHAR},
+	#{authorImg,jdbcType=VARCHAR},
+	#{identifyImgA,jdbcType=VARCHAR},
+	#{identifyImgB,jdbcType=VARCHAR},
+	#{imageUrl,jdbcType=VARCHAR}
+	)
+
+</insert>
+<update id="update" parameterType="Party">
+	update bas_party bp
+	<set>
+		VERSION = VERSION + 1
+		<if test="code != null">
+		,CODE = #{code,jdbcType=VARCHAR}
+		</if>
+		<if test="name != null">
+		,NAME = #{name,jdbcType=VARCHAR}
+		</if>
+		<if test="companyName != null">
+		,COMPANY_NAME = #{companyName,jdbcType=VARCHAR}
+		</if>
+		<if test="description != null">
+		,DESCRIPTION = #{description,jdbcType=VARCHAR}
+		</if>
+		<if test="nameFirstLetter != null">
+		,NAME_FIRST_LETTER = #{nameFirstLetter,jdbcType=VARCHAR}
+		</if>
+		<if test="email != null">
+		,EMAIL = #{email,jdbcType=VARCHAR}
+		</if>
+		<if test="phone != null">
+		,PHONE = #{phone,jdbcType=VARCHAR}
+		</if>
+		<if test="address != null">
+		,ADDRESS = #{address,jdbcType=VARCHAR}
+		</if>
+		<if test="areaId != null">
+		,AREA_ID = #{areaId,jdbcType=DECIMAL}
+		</if>
+		<if test="socialCreditCode != null">
+		,SOCIAL_CREDIT_CODE = #{socialCreditCode,jdbcType=VARCHAR}
+		</if>
+		<if test="invoiceTitle != null">
+		,INVOICE_TITLE = #{invoiceTitle,jdbcType=VARCHAR}
+		</if>
+		<if test="invoiceNumber != null">
+		,INVOICE_NUMBER = #{invoiceNumber,jdbcType=VARCHAR}
+		</if>
+		<if test="invoiceAddress != null">
+		,INVOICE_ADDRESS = #{invoiceAddress,jdbcType=VARCHAR}
+		</if>
+		<if test="invoiceBank != null">
+		,INVOICE_BANK = #{invoiceBank,jdbcType=VARCHAR}
+		</if>
+		<if test="mobile != null">
+		,MOBILE = #{mobile,jdbcType=VARCHAR}
+		</if>
+		<if test="connectorName != null">
+		,CONNECTOR_NAME = #{connectorName,jdbcType=VARCHAR}
+		</if>
+		<if test="idNumber != null">
+		,ID_NUMBER = #{idNumber,jdbcType=VARCHAR}
+		</if>
+		<if test="status != null">
+		,STATUS = #{status,jdbcType=DECIMAL}
+		</if>
+		<if test="partyType != null">
+		,PARTY_TYPE = #{partyType,jdbcType=DECIMAL}
+		</if>
+		<if test="partyClass != null">
+		,PARTY_CLASS = #{partyClass,jdbcType=DECIMAL}
+		</if>
+		<if test="companyType != null">
+		,COMPANY_TYPE = #{companyType,jdbcType=DECIMAL}
+		</if>
+		<if test="mediaType != null">
+		,MEDIA_TYPE = #{mediaType,jdbcType=DECIMAL}
+		</if>
+		<if test="updateTime != null">
+		,UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="createPartyId != null">
+		,CREATE_PARTY_ID = #{createPartyId,jdbcType=DECIMAL}
+		</if>
+		<if test="createUserId != null">
+		,CREATE_USER_ID = #{createUserId,jdbcType=DECIMAL}
+		</if>
+		<if test="createTime != null">
+		,CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="certificateImg != null">
+			,CERTIFICATE_IMG = #{certificateImg,jdbcType=VARCHAR}
+		</if>
+		<if test="certificateOther != null">
+			,CERTIFICATE_OTHER = #{certificateOther,jdbcType=VARCHAR}
+		</if>
+		<if test="authorImg != null">
+			,AUTHOR_IMG = #{authorImg,jdbcType=VARCHAR}
+		</if>
+		<if test="identifyImgA != null">
+			,IDENTIFY_IMG_A = #{identifyImgA,jdbcType=VARCHAR}
+		</if>
+		<if test="identifyImgB != null">
+			,IDENTIFY_IMG_B = #{identifyImgB,jdbcType=VARCHAR}
+		</if>
+		<if test="imageUrl != null">
+			,IMAGE_URL = #{imageUrl,jdbcType=VARCHAR}
+		</if>
+	</set>
+	where ID = #{id,jdbcType=DECIMAL}
+</update>
+<select id="findListForExample" parameterType="Party" resultMap="PartyMap">
+	select
+	<include refid="bp_Base_Column_List"/>
+	from bas_party bp
+	<include refid="common_query_condition"/>
+</select>
+<select id="findListForMap" parameterType="map" resultMap="PartyMap">
+	select
+	<include refid="bp_Base_Column_List"/>
+	from bas_party bp
+	<include refid="common_query_condition"/>
+	order by bp.update_time desc,bp.create_time desc
+</select>
+<sql id="common_query_condition">
+	<where>
+		<if test="id != null">
+			bp.id = #{id,jdbcType=DECIMAL}
+		</if>
+	</where>
+</sql>
+	<select id="findList" parameterType="map" resultMap="PartyMap">
+		select
+		<include refid="bp_Base_Column_List"/>
+		from bas_party bp
+		<include refid="find_list_condition"/>
+	</select>
+	<sql id="find_list_condition">
+		<where>
+			<if test="id != null">
+				bp.id = #{id,jdbcType=DECIMAL}
+			</if>
+			<if test="name != null">
+				and bp.name = #{name,jdbcType=DECIMAL}
+			</if>
+		</where>
+	</sql>
+	<select id="listParty" parameterType="map" resultType="java.util.Map" useCache="false">
+		select p.id,p.name,p.status,p.create_time as createTime,p.party_class as partyClass,u.login_name as loginName,u.user_status as userStatus from bas_party p LEFT JOIN bas_user u on p.id=u.party_id
+		<where>
+			<if test="id != null">
+				p.id = #{id,jdbcType=DECIMAL}
+			</if>
+			<if test="admin != null">
+				and u.admin =#{admin,jdbcType=DECIMAL}
+			</if>
+			<if test="status != null and status != 0">
+				and p.status =#{status,jdbcType=DECIMAL}
+			</if>
+			<if test="userType != null">
+				and u.user_type =#{userType,jdbcType=DECIMAL}
+			</if>
+			<if test="name != null">
+				and p.name like concat('%',#{name,jdbcType=VARCHAR},'%')
+			</if>
+			<if test="loginName != null">
+				and u.login_name like concat('%',#{loginName,jdbcType=VARCHAR},'%')
+			</if>
+			<if test="partyClass != null">
+				and p.party_class =#{partyClass,jdbcType=DECIMAL}
+			</if>
+			<if test="createTimeStart != null">
+				<![CDATA[ AND p.create_time >= DATE_FORMAT(#{createTimeStart},'%Y-%m-%d %H:%i:%s')]]>
+			</if>
+			<if test="createTimeEnd != null">
+				<![CDATA[ AND p.create_time <= DATE_FORMAT(#{createTimeEnd},'%Y-%m-%d %H:%i:%s')]]>
+			</if>
+		</where>
+		order by p.update_time desc,p.create_time desc
+	</select>
+</mapper>

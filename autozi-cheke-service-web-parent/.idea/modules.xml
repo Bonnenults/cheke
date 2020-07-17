@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../../../../o2o/o2oV3.0_svn_idea_15.0.4/autozi-common-parent/cache/autozi-common-cache.iml" filepath="$PROJECT_DIR$/../../../../o2o/o2oV3.0_svn_idea_15.0.4/autozi-common-parent/cache/autozi-common-cache.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../../../o2o/o2oV3.0_svn_idea_15.0.4/autozi-common-parent/core/autozi-common-core.iml" filepath="$PROJECT_DIR$/../../../../o2o/o2oV3.0_svn_idea_15.0.4/autozi-common-parent/core/autozi-common-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../../../o2o/o2oV3.0_svn_idea_15.0.4/autozi-common-parent/dal/autozi-common-dal.iml" filepath="$PROJECT_DIR$/../../../../o2o/o2oV3.0_svn_idea_15.0.4/autozi-common-parent/dal/autozi-common-dal.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../../../o2o/o2oV3.0_svn_idea_15.0.4/autozi-common-parent/memcached/autozi-common-memcached.iml" filepath="$PROJECT_DIR$/../../../../o2o/o2oV3.0_svn_idea_15.0.4/autozi-common-parent/memcached/autozi-common-memcached.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../../../o2o/o2oV3.0_svn_idea_15.0.4/autozi-common-parent/autozi-common-parent.iml" filepath="$PROJECT_DIR$/../../../../o2o/o2oV3.0_svn_idea_15.0.4/autozi-common-parent/autozi-common-parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../../../o2o/o2oV3.0_svn_idea_15.0.4/autozi-common-parent/search/autozi-common-search.iml" filepath="$PROJECT_DIR$/../../../../o2o/o2oV3.0_svn_idea_15.0.4/autozi-common-parent/search/autozi-common-search.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../../../o2o/o2oV3.0_svn_idea_15.0.4/autozi-common-parent/service/autozi-common-service.iml" filepath="$PROJECT_DIR$/../../../../o2o/o2oV3.0_svn_idea_15.0.4/autozi-common-parent/service/autozi-common-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../../../o2o/o2oV3.0_svn_idea_15.0.4/autozi-common-parent/utils/autozi-common-utils.iml" filepath="$PROJECT_DIR$/../../../../o2o/o2oV3.0_svn_idea_15.0.4/autozi-common-parent/utils/autozi-common-utils.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../../../o2o/o2oV3.0_svn_idea_15.0.4/autozi-common-parent/web/autozi-common-web.iml" filepath="$PROJECT_DIR$/../../../../o2o/o2oV3.0_svn_idea_15.0.4/autozi-common-parent/web/autozi-common-web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../autozi-dal-o2c/autozi-dal-o2c.iml" filepath="$PROJECT_DIR$/../autozi-dal-o2c/autozi-dal-o2c.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../autozi-entity-o2c/autozi-entity-o2c.iml" filepath="$PROJECT_DIR$/../autozi-entity-o2c/autozi-entity-o2c.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../autozi-service-impl-o2c/autozi-service-impl-o2c.iml" filepath="$PROJECT_DIR$/../autozi-service-impl-o2c/autozi-service-impl-o2c.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../autozi-service-interface-o2c/autozi-service-interface-o2c.iml" filepath="$PROJECT_DIR$/../autozi-service-interface-o2c/autozi-service-interface-o2c.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../autozi-service-web-o2c/autozi-service-web.iml" filepath="$PROJECT_DIR$/../autozi-service-web-o2c/autozi-service-web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/autozi-web-parent-o2c.iml" filepath="$PROJECT_DIR$/autozi-web-parent-o2c.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../autozi-web-o2c/com.autozi.web.o2c.iml" filepath="$PROJECT_DIR$/../autozi-web-o2c/com.autozi.web.o2c.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../../../o2o/o2oV3.0_svn_idea_15.0.4/autozi-common-parent/spring-security-core/spring-security-core.iml" filepath="$PROJECT_DIR$/../../../../o2o/o2oV3.0_svn_idea_15.0.4/autozi-common-parent/spring-security-core/spring-security-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../../../o2o/o2oV3.0_svn_idea_15.0.4/autozi-common-parent/spring-security-web/spring-security-web.iml" filepath="$PROJECT_DIR$/../../../../o2o/o2oV3.0_svn_idea_15.0.4/autozi-common-parent/spring-security-web/spring-security-web.iml" />
+    </modules>
+  </component>
+</project>

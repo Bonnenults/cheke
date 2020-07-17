@@ -1,0 +1,117 @@
+<div class="qy_center_table" id="data_table_list">
+    <table>
+        <tbody>
+        <tr>
+            <th width="6%">
+                <label class="lf_label_checkBox" for="06">
+                    <input class="clarity" id="06" type="checkbox"/>
+                    <div></div>
+                </label>
+            </th>
+            <th width="4%">#</th>
+            <th width="14%">标题</th>
+            <th width="10%">推广类别</th>
+            <#if status == '0'>
+                <th width="12%">创建时间</th>
+            </#if>
+            <#if status == '1'>
+                <th width="14%">发布时间</th>
+            </#if>
+
+            <#if status == '2'>
+                <th width="14%">上线时间</th>
+            </#if>
+
+            <#if status == '4'>
+                <th width="14%">上线时间</th>
+                <th width="14%">下线时间</th>
+            </#if>
+            <th width="6%">付费推广</th>
+            <#if status == '0'>
+                <th width="8%">拒绝原因</th>
+            </#if>
+            <#if status == '2' || status == '4'>
+                <th width="10%">浏览</th>
+                <th width="10%">分享</th>
+                <th width="4%">序号</th>
+            </#if>
+
+            <th width="10%" class="no_border">操作</th>
+            <#if status == '0'||status == '2'>
+                <th width="5%" class="sort">排序</th>
+            </#if>
+        </tr>
+        <#if (page??)&&(page.result??)&&(page.result?size>0)>
+            <#list page.result as view>
+                <tr>
+                    <td>
+                        <label class="lf_label_checkBox">
+                            <input class="clarity individual" type="checkbox" name="article_ids" value="${view.id}">
+                            <div></div>
+                        </label>
+                    </td>
+                    <td>${page.firstElementIndex + view_index }</td>
+                    <td><#if view.title??>${view.title?html}</#if></td>
+                    <td><#if view.typeName??>${view.typeName?html}</#if></td>
+                    <#if status == '0'>
+                        <td><#if view.createTime??>${view.createTime?string("yyyy-MM-dd HH:mm")}</#if></td>
+                    </#if>
+                    <#if status == '1'>
+                        <td><#if view.commitTime??>${view.commitTime?string("yyyy-MM-dd HH:mm")}</#if></td>
+                    </#if>
+                    <#if status == '2'>
+                        <td><#if view.publishTime??>${view.publishTime?string("yyyy-MM-dd HH:mm")}</#if></td>
+                    </#if>
+
+                    <#if view.status == 4>
+                        <td><#if view.offlineTime??>${view.offlineTime?string("yyyy-MM-dd HH:mm")}</#if></td>
+                    </#if>
+
+                    <td><#if view.aIsTask??><#if view.aIsTask == 1>是<#else>否</#if></#if></td>
+
+                    <#if status == '0'>
+                        <td><#if view.refuseReason??>${view.refuseReason?html}</#if></td>
+                    </#if>
+
+                    <#if status == '2' || status == '4'>
+                        <td><#if view.pageView??>${view.pageView?html}</#if></td>
+                        <td><#if view.shareAmount??>${view.shareAmount?html}</#if></td>
+                        <td><#if view.aIsTop??>${view.aIsTop?html}</#if></td>
+                    </#if>
+
+                    <td class="no_border">
+                        <#if status == '0'>
+                            <a class="qy_alink" href="javascript:;" onclick="ArticleAdmin.publish(${view.id})">发布</a>
+                            <a class="qy_alink" href="${contextpath}/article/ad/create/createArticle.action?id=${view.id}">修改</a>
+                        </#if>
+                        <#if status == '1'>
+                            <a class="qy_alink" href="javascript:;" onclick="ArticleAdmin.cancel(${view.id})">取消发布</a>
+                        </#if>
+                        <#if status == '2'>
+                            <a class="qy_alink" href="javascript:;" onclick="ArticleAdmin.offline(${view.id})">下线</a>
+                        </#if>
+                        <a class="qy_alink" href="${contextpath}/article/ad/list/getAdDetail.action?id=${view.id}">预览</a>
+                        <#if status == '4'>
+                            <a class="qy_alink" href="javascript:;" onclick="ArticleAdmin.copyArticle(${view.id})">导入待发布</a>
+                        </#if>
+
+                    </td>
+
+                    <#if status == '0'||status == '2'>
+                        <td class="sort no_border">
+                            <a class="qy_alink" href="javascript:;" onclick="ArticleAdmin.sortAticle(${view.id})">排序</a>
+                        </td>
+                    </#if>
+
+                </tr>
+            </#list>
+            <#else>
+                <tr>
+                    <td colspan='10'>没有符合条件的记录</td>
+                </tr>
+        </#if>
+        </tbody>
+    </table>
+</div>
+$JXC
+<#include "../../../common/paging_common.html">

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.autozi.cheke.mobile.mapper.MobilePhoneMessageEntryMapper">
+	<cache eviction="LRU" type="org.mybatis.caches.memcached.MemcachedCache"/>
+	<resultMap id="MobilePhoneMessageEntryMap" type="MobilePhoneMessageEntry">
+		<result column="ID" jdbcType="DECIMAL" property="id"/>
+		<result column="VERSION" jdbcType="DECIMAL" property="version"/>
+		<result column="MOBILE_PHONE" jdbcType="VARCHAR" property="mobilePhone"/>
+		<result column="CONTENT" jdbcType="VARCHAR" property="content"/>
+		<result column="SEND_RESULT" jdbcType="DECIMAL" property="sendResult"/>
+		<result column="CHECK_RESULT" jdbcType="DECIMAL" property="checkResult"/>
+		<result column="TYPE" jdbcType="DECIMAL" property="type"/>
+		<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+		<result column="CODE" jdbcType="VARCHAR" property="code"/>
+	</resultMap>
+	<sql id="Base_Column_List">
+		ID,VERSION,MOBILE_PHONE,CONTENT,SEND_RESULT,CHECK_RESULT,TYPE,CREATE_TIME,CODE
+	</sql>
+	<sql id="MMPM_Base_Column_List">
+		MMPM.ID,MMPM.VERSION,MMPM.MOBILE_PHONE,MMPM.CONTENT,MMPM.SEND_RESULT,MMPM.CHECK_RESULT,MMPM.TYPE,MMPM.CREATE_TIME,MMPM.CODE
+	</sql>
+	<select id="get" parameterType="long" resultMap="MobilePhoneMessageEntryMap">
+		select
+			<include refid="Base_Column_List"/>
+		from MB_MOBILE_PHONE_MESSAGE MMPM
+		where ID = #{id,jdbcType=DECIMAL}
+	</select>
+	<delete id="delete" parameterType="long">
+		delete
+		from MB_MOBILE_PHONE_MESSAGE
+		where ID = #{id,jdbcType=DECIMAL}
+	</delete>
+	<insert id="insert" parameterType="MobilePhoneMessageEntry">
+		insert into MB_MOBILE_PHONE_MESSAGE(
+			<include refid="Base_Column_List"/>
+		) values (
+		#{id,jdbcType=DECIMAL},
+		#{version,jdbcType=DECIMAL},
+		#{mobilePhone,jdbcType=VARCHAR},
+		#{content,jdbcType=VARCHAR},
+		#{sendResult,jdbcType=DECIMAL},
+		#{checkResult,jdbcType=DECIMAL},
+		#{type,jdbcType=DECIMAL},
+		#{createTime,jdbcType=TIMESTAMP},
+		#{code,jdbcType=VARCHAR}
+		)
+	</insert>
+	<update id="update" parameterType="MobilePhoneMessageEntry">
+		update MB_MOBILE_PHONE_MESSAGE MMPM
+		<set>
+			VERSION = VERSION + 1
+			<if test="mobilePhone != null">
+			,MOBILE_PHONE = #{mobilePhone,jdbcType=VARCHAR}
+			</if>
+			<if test="content != null">
+			,CONTENT = #{content,jdbcType=VARCHAR}
+			</if>
+			<if test="sendResult != null">
+			,SEND_RESULT = #{sendResult,jdbcType=DECIMAL}
+			</if>
+			<if test="checkResult != null">
+			,CHECK_RESULT = #{checkResult,jdbcType=DECIMAL}
+			</if>
+			<if test="type != null">
+			,TYPE = #{type,jdbcType=DECIMAL}
+			</if>
+			<if test="createTime != null">
+			,CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="code != null">
+			,CODE = #{code,jdbcType=VARCHAR}
+			</if>
+		</set>
+		where ID = #{id,jdbcType=DECIMAL}
+	</update>
+	<select id="findListForExample" parameterType="MobilePhoneMessageEntry" resultMap="MobilePhoneMessageEntryMap">
+		select
+		<include refid="MMPM_Base_Column_List"/>
+		from MB_MOBILE_PHONE_MESSAGE MMPM
+		<include refid="common_query_condition"/>
+	</select>
+	<select id="findListForMap" parameterType="map" resultMap="MobilePhoneMessageEntryMap">
+		select
+		<include refid="MMPM_Base_Column_List"/>
+		from MB_MOBILE_PHONE_MESSAGE MMPM
+		<include refid="common_query_condition"/>
+	</select>
+	<sql id="common_query_condition">
+		<where>
+			<if test="id != null">
+				MMPM.id = #{id,jdbcType=DECIMAL}
+			</if>
+			<if test="mobilePhone != null">
+				and MMPM.MOBILE_PHONE = #{mobilePhone,jdbcType=VARCHAR}
+			</if>
+			<if test="code != null">
+				and MMPM.CODE = #{code,jdbcType=VARCHAR}
+			</if>
+		</where>
+		<if test=" orderBy != null ">
+            ORDER BY ${orderBy}
+        </if>
+	</sql>
+</mapper>

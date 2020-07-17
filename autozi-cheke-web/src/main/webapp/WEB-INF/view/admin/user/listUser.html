@@ -1,0 +1,135 @@
+<script  type="text/javascript" src="${contextpath}/js/user/user.js"></script>
+<style>
+    #editPwd{position:fixed; left: 50%;top: 50%; z-index: 9999; margin-left: -220px; margin-top: -200px; background: #FFFFFF;width:440px; height:300px; border-radius: 2px; display: none;}
+    #editUser{position:fixed; left: 50%;top: 50%; z-index: 9999; margin-left: -220px; margin-top: -150px; background: #FFFFFF;width:440px; height:400px; border-radius: 2px; display: none;}
+</style>
+<div class="lf_carRight">
+    <div class="lf_carRight_center">
+
+        <div class="qy_center_main">
+            <form id="filter_form" action="/user/admin/list/listUser.action" method="post">
+                <div class="qy_center_seach clear">
+                    <div class="qy_seach_wrap clear">
+                        <span>
+                              <label class="qy_left">用户名：</label>
+                              <input class="qy_left text_adjustment"  name="loginName" type="text" >
+                        </span>
+                        <span>
+                              <label class="qy_left">姓名：</label>
+                              <input class="qy_left text_adjustment"  name="name"  type="text" >
+                        </span>
+                        <span>
+                              <label class="qy_left">手机号：</label>
+                              <input class="qy_left text_adjustment"  name="phone"  type="text" >
+                        </span>
+                        <span>
+                              <label class="qy_left">角色名：</label>
+                              <input class="qy_left text_adjustment"  name="roleName" type="text" >
+                        </span>
+                        <span>
+                                <label class="qy_left qy_left">状态：</label>
+                                <div class="project_category qy_left text_adjustment" style="width:178px;display: inline-block;float:none;margin:0;">
+                                    <!--文本框-->
+                                    <input type="hidden" id="userStatus" name="userStatus">
+                                    <input style="width:240px;padding:0;" class="inves_all_money" type="text" placeholder="全部" />
+                                    <div style="width: 240px;" class="border_lists" id="status_class">
+                                        <a href="javascript:;" title="">全部</a>
+                                        <a href="javascript:;" title="1">正常</a>
+                                        <a href="javascript:;" title="2">锁定</a>
+                                    </div>
+                                </div>
+                        </span>
+                    </div>
+                    <div class="qy_seach_right">
+                        <a class="qy_seach_cx" href="javascript:void(0)" onclick="App.commonFormSubmit('filter_form');">查询</a>
+                        <a class="qy_seach_cz" href="javascript:;">重置</a>
+                    </div>
+                </div>
+            </form>
+
+            <div class="qy_center_table" id="data_table_list">
+                <table>
+                    <tbody>
+                    <tr>
+                        <th style="width: 5%;">#</th>
+                        <th style="width: 15%;">用户名</th>
+                        <th style="width: 15%;">姓名</th>
+                        <th style="width: 15%;">角色名</th>
+                        <th style="width: 10%;">手机号</th>
+                        <th style="width: 15%;">邮箱</th>
+                        <th style="width: 10%;">状态</th>
+                        <th style="width: 10%;">操作</th>
+                    </tr>
+                    <#list page.result as user>
+                    <tr>
+                        <td>${user_index + page.firstElementIndex}</td>
+                        <td><#if user.loginName??>${user.loginName!''}</#if></td>
+                        <td><#if user.name??>${user.name!''}</#if></td>
+                        <td><#if user.roleName??>${user.roleName!''}</#if></td>
+                        <td><#if user.phone??>${user.phone!''}</#if></td>
+                        <td><#if user.email??>${user.email!''}</#if></td>
+                        <td><#if user.userStatusCN??>${user.userStatusCN!''}</#if></td>
+                        <td class="no_border">
+                            <#if user.admin?? && user.admin !=1>
+                                <a class="qy_alink" href="javascript:void (0)" onclick="AdminUser.openAddOrEditUser(${user.id})">修改</a>
+                                <#if user.userStatus == 1>
+                                     <a class="qy_alink" href="javascript:void (0)" onclick="AdminUser.lockOrUnLockUser(${user.id},2)">锁定</a>
+                                <#else>
+                                     <a class="qy_alink" href="javascript:void (0)" onclick="AdminUser.lockOrUnLockUser(${user.id},1)">解锁</a>
+                                </#if>
+                            </#if>
+                           <a class="qy_alink" href="javascript:void(0);" onclick="AdminUser.openEditPwd(${user.id},'<#if user.name??>${user.name!''}</#if>','<#if user.loginName??>${user.loginName!''}</#if>')">密码</a>
+                        </td>
+                    </tr>
+                    </#list>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="clear qy_page_wrap">
+                <div class="qy_left clear">
+                    <a class="qy_but" href="javascript:void (0)" onclick="AdminUser.openAddOrEditUser()"><img src="${contextpath}/styles/images/xzzx.png" alt="">新增用户</a>
+                </div>
+                <div id="page_common_nav">
+                    <#include "../../common/paging_common.html">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--遮罩层-->
+<div class="mask_float" style="display: none"></div>
+<!--修改密码弹框-->
+<div class="bomb_box" style="display: none;" id="editPwd">
+    <h2 class="bomb_title">修改密码<a class="bomb_close" href="javascript:;"></a></h2>
+    <div class="bomb_pwd_in">
+        <input type="hidden" id="editPwdUserId">
+        <p class="box_sty_bomb">
+            <span>用户名：</span><span id="editPwdLoginName" ></span>
+            <strong></strong>
+        </p>
+        <p class="box_sty_bomb">
+            <span>新密码：</span><input type="password" id="pwd1" placeholder="请输入......" value=""/>
+            <strong></strong>
+        </p>
+        <p class="box_sty_bomb">
+            <span>确认密码：</span><input type="password" id="pwd2" placeholder="请输入......" value=""/>
+            <strong></strong>
+        </p>
+    </div>
+    <div class="pwd_bottom_btn">
+        <a id="cancel_edit" href="javascript:void (0);" onclick="AdminUser.closeEditPwd();">取消</a>
+        <a id="confirm_edit" class="confirmation_pwd" href="javascript:void (0);" onclick="AdminUser.submitPasswordForm();">确认</a>
+    </div>
+</div>
+
+
+<!--新增或者修改用户-->
+<div class="bomb_box" style="display: none;" id="editUser">
+</div>
+<script>
+    $("#status_class a").click(function(){
+        $("#userStatus").val($(this).attr("title"));
+    });
+</script>

@@ -1,0 +1,99 @@
+.wechat_pay{
+	width: 1192px;
+	margin: 0 auto;
+	border-top: 2px solid #5a8bff;
+	background: #ffffff;
+	margin-top: 37px;
+}
+.wechat_pay_in{
+	width: 1100px;
+	margin-left: 46px;
+	padding-top: 15px;
+	padding-bottom: 40px;
+}
+.wechat_pay_order{
+	width: 100%;
+	overflow: hidden;
+	border-bottom: 1px solid #eaedf5;
+	padding-bottom: 15px;
+}
+.wechat_pay_order .wechat_commit{
+	float: left;
+	line-height: 40px;
+	font-size: 15px;
+	color: #333333;
+}
+.wechat_pay_order .wechat_commit span{
+	font-size: 15px;
+}
+.wechat_pay_order .wechat_money{
+	float: right;
+	font-size: 12px;
+	line-height: 40px;
+}
+.wechat_pay_order .wechat_money strong{
+	display: inline-block;
+	font-size: 16px;
+	color: #5a8bff;
+	margin-left: 5px;
+	margin-right: 5px;
+	line-height: 40px;
+	vertical-align: top;
+}
+.wechat_code{
+	width: 660px;
+	margin: 25px auto;
+	overflow: hidden;
+}
+.wechat_code .wechat_code_img,.wechat_code .wechat_imgbg{
+	float: left;
+}
+.wechat_code .wechat_code_img{
+	margin-right: 20px;
+}
+.wechat_code .wechat_code_time_show{
+	width: 100%;
+	text-align: left;
+	line-height: 50px;
+	text-indent: 2em;
+	color: #666666;
+	padding-bottom: 0 !important;
+}
+.wechat_code_img .wechat_textbg{
+	display: block;
+	width: 300px;
+	height: 60px;
+	margin-left: 21px;
+}
+.wechat_code_img .code_img_style{
+	width: 299px;
+	height: 299px;
+	border: 1px solid #eaedf5;
+	margin-left: 21px;
+	margin-bottom: 18px;
+}
+.wechat_code_img .code_img_style img{
+	display: block;
+	width: 264px;
+	height: 264px;
+	margin: 17px auto;
+}
+.wechat_imgbg{
+	padding-top: 45px;
+}
+.wechat_imgbg img{
+	display: block;
+	width: 290px;
+	height: 385px;
+}
+.other_payment{
+	width: 100%;
+	padding-top: 40px;
+	text-align: left;
+}
+.other_payment a{
+	padding-left: 20px;
+	background: url(../images/pay_icon.png) no-repeat left center;
+	color: #6994ff;
+	font-size: 14px;
+}

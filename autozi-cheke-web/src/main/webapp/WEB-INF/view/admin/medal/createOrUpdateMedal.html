@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>新增勋章</title>
+        <script type="text/javascript" src="${contextpath}/js/framework/upload/ajaxfileupload.js" ></script>
+        <script type="text/javascript" src="${contextpath}/js/medal/medal.js"></script>
+        <style>
+            .modify_box_up object{left:0}
+        </style>
+	</head>
+	<body>
+    <script type="text/javascript">
+        $(function(){
+            Medal.initMedal();
+        })
+    </script>
+		<h2 style="width:50%;padding-left: 42px;padding-top: 20px;font-weight: normal;">新增勋章</h2>
+		<div class="modify_item">
+			<form class="modify_form" id="form_data" method="post" action="/medal/admin/create/createOrUpdateMedal.action">
+
+				<input type="hidden" name="id" value="${vo.id!''}"> <#-- 课程id -->
+				<input type="hidden" name="image" id="image" value="${vo.image!''}"><#-- 图片 -->
+				<input type="hidden" name="imageActive" id="imageActive" value="${vo.imageActive!''}"><#-- 图片 -->
+
+				<p>
+					<label><span>*</span>勋章名称：</label>
+					<input type="text" name="medalName" id="medalName" value="${vo.medalName!''}"/>
+				</p>
+
+                <p>
+                    <label><span>*</span>勋章简介：</label>
+                    <input type="text" name="intro" id="intro" value="${vo.intro!''}"/>
+                </p>
+
+				<!--图片上传-->
+				<div class="permanently clear">
+					<label class="permanentlyOne newLabel"><span>*</span>勋章未激活图：</label>
+					<div class="modify_perman">
+						<div class="modify_box_up"> 
+							<input type="file"  id="file1" name="file1" onchange="Medal.uploadImage(1,1024)"/> 选择文件
+						</div> 
+					</div>
+					<span class="gary_tishi">限制上传一张,1M以内</span>
+				</div>
+				<div class="modity_img">
+					 <span id="projectImg_span">
+						 <#if vo.image?? && vo.image != ''>
+                             <img src="${vo.image}" /> <a href="javascript:;" onclick="Medal.deleteImg()" class="image_juzhong" style="color: red">删除</a>
+						 </#if>
+					 </span>
+				</div>
+
+                <!--图片上传-->
+                <div class="permanently clear">
+                    <label class="permanentlyOne newLabel"><span>*</span>勋章激活图：</label>
+                    <div class="modify_perman">
+                        <div class="modify_box_up">
+                            <input type="file"  id="file2" name="file2" onchange="Medal.uploadActiveImage(2,1024)"/> 选择文件
+                        </div>
+                    </div>
+                    <span class="gary_tishi">限制上传一张,1M以内</span>
+                </div>
+                <div class="modity_img">
+					 <span id="projectImgActive_span">
+						 <#if vo.imageActive?? && vo.imageActive != ''>
+                             <img src="${vo.image}" /> <a href="javascript:;" onclick="Medal.deleteImg()" class="image_juzhong" style="color: red">删除</a>
+						 </#if>
+					 </span>
+                </div>
+
+			</form>
+			<div class="modify_submit">
+				<input type="button" value="提交" onclick="Medal.saveOrUpdate()"/>
+			</div>
+		</div>
+	</body>
+
+
+</html>

@@ -1,0 +1,375 @@
+<#macro toolkit name>
+    <#switch name>
+        <#case "goodsCategory">
+        <@goodsCategory />
+            <#break>
+        <#case "goodsCategoryForOrder">
+        <@goodsCategoryForOrder />
+            <#break>
+        <#case "area">
+        <@area currentArea="null"/>
+            <#break>
+        <#case "areaForLevelTwo">
+        <@areaForLevelTwo currentArea="null"/>
+            <#break>
+        <#--<#case "carType">-->
+        <#--<@carType />-->
+            <#--<#break>-->
+        <#--<#case "carSeries">-->
+        <#--<@carSeries />-->
+            <#--<#break>-->
+        <#case "period">
+        <@period />
+            <#break>
+        <#case "analysisPeriod">
+        <@analysisPeriod />
+            <#break>
+        <#case "analysisGoodsPeriod">
+        <@analysisGoodsPeriod />
+            <#break>
+        <#case "bizArea">
+        <@bizArea />
+            <#break>
+        <#case "adminArea">
+        <@adminArea />
+            <#break>
+        <#case "chainSelect">
+        <@chainSelect />
+            <#break>
+    </#switch>
+</#macro>
+<#macro chainSelect>
+<select id="chainSelect" name="filter_chain" style="width:150px">
+</select>
+</#macro>
+<#macro area currentArea>
+<div class="area_list">
+    <#if currentArea == "null"||!currentArea??>
+        <input type='hidden' name='areaId' id='areaId'/>
+        <input type='hidden' name='filter_areaId' id='filter_areaId'/>
+        <#else>
+            <input type='hidden' name='areaId' id='areaId' value='${currentArea.id}'/>
+            <input type='hidden' name='filter_areaId' id='filter_areaId' value='${currentArea.id}'/>
+    </#if>
+    <#if currentArea == "null"||!currentArea??>
+        <select id="level1Area" style="width:100px" onChange="App.UI.changeArea(this)">
+        </select>
+        <select id="level2Area" style="width:100px;display:none;" onChange="App.UI.changeArea(this)">
+        </select>
+        <select id="level3Area" style="width:100px;display:none;" onChange="App.UI.changeArea(this)">
+        </select>
+        <#elseif currentArea.areaLevel == 1>
+            <select id="level1Area" style="width:100px" onChange="App.UI.changeArea(this)">
+                <option value="-1">请选择</option>
+                <option value='${currentArea.id}' selected>${currentArea.name}</option>
+            </select>
+            <select id="level2Area" style="width:100px" onChange="App.UI.changeArea(this)">
+                <option value="-1">请选择</option>
+            </select>
+            <select id="level3Area" style="width:100px;display:none;" onChange="App.UI.changeArea(this)">
+                <option value="-1">请选择</option>
+            </select>
+        <#elseif currentArea.areaLevel == 2>
+            <select id="level1Area" style="width:100px" onChange="App.UI.changeArea(this)">
+                <option value="-1">请选择</option>
+            </select>
+            <select id="level2Area" style="width:100px" onChange="App.UI.changeArea(this)">
+                <option value="-1">请选择</option>
+                <option value='${currentArea.id}' selected>${currentArea.name}</option>
+            </select>
+            <select id="level3Area" style="width:100px;" onChange="App.UI.changeArea(this)">
+                <option value="-1">请选择</option>
+            </select>
+        <#elseif currentArea.areaLevel == 3>
+
+            <select id="level1Area" style="width:100px" onChange="App.UI.changeArea(this)">
+                <option value="-1">请选择</option>
+            </select>
+            <select id="level2Area" style="width:100px" onChange="App.UI.changeArea(this)">
+                <option value="-1">请选择</option>
+            </select>
+            <select id="level3Area" style="width:100px" onChange="App.UI.changeArea(this)">
+                <option value="-1">请选择</option>
+                <option value='${currentArea.id}' selected>${currentArea.name}</option>
+            </select>
+
+    </#if>
+</div>
+</#macro>
+
+<#macro areaForLevelTwo currentArea>
+<div class="area_list">
+    <#if currentArea == "null"||!currentArea??>
+        <input type='hidden' name='areaId' id='areaId'/>
+        <input type='hidden' name='filter_areaId' id='filter_areaId'/>
+        <#else>
+            <input type='hidden' name='areaId' id='areaId' value='${currentArea.id}'/>
+            <input type='hidden' name='filter_areaId' id='filter_areaId' value='${currentArea.id}'/>
+    </#if>
+    <#if currentArea == "null"||!currentArea??>
+        <select id="level1Area" style="width:100px" onChange="App.UI.changeArea(this)">
+        </select>
+        <select id="level2Area" style="width:100px;display:none;" onChange="App.UI.changeArea(this)">
+        </select>
+
+        <#elseif currentArea.areaLevel == 1>
+            <select id="level1Area" style="width:100px" onChange="App.UI.changeArea(this)">
+                <option value="-1">请选择</option>
+                <option value='${currentArea.id}' selected>${currentArea.name}</option>
+            </select>
+            <select id="level2Area" style="width:100px" onChange="App.UI.changeArea(this)">
+                <option value="-1">请选择</option>
+            </select>
+
+        <#elseif currentArea.areaLevel == 2>
+            <select id="level1Area" style="width:100px" onChange="App.UI.changeArea(this)">
+                <option value="-1">请选择</option>
+                <option value='${currentArea.parent.id}' selected>${currentArea.parent.name}</option>
+            </select>
+            <select id="level2Area" style="width:100px" onChange="App.UI.changeArea(this)">
+                <option value="-1">请选择</option>
+                <option value='${currentArea.id}' selected>${currentArea.name}</option>
+            </select>
+    </#if>
+</div>
+</#macro>
+
+
+<#macro goodsCategory>
+<input id="filter_goodsCategory" type="hidden" name="goodsCategoryId" value="${queryMap['goodsCategoryId']?default('')}"/>
+<input id="input_goodsCategory" type="text" readonly="" name="goodsCategory" class="combobox-input" value="${queryMap['goodsCategory']?default('')}"/><button class="ui-combobox-button" type="button" onclick="App.UI.openGoodsCategoryDlg(this);">&nbsp;</button>
+<div id="categoryDialog" class="area-dialog">
+    <ul id="goodsCategoryTree" class="popup_tree_box goodsCategoryTree" style="width: 270px;"></ul>
+    <div class="area-dialog-footer">
+        <span class="button btn_ok"><span class="button-text fixed-width">确定</span></span>
+        <span class="button btn_clear"><span class="button-text fixed-width">清空</span></span>
+    </div>
+</div>
+</#macro>
+
+<#macro supplierGoodsCategory>
+<input id="filter_supplierGoodsCategory" type="hidden" name="supplierGoodsCategoryId" value="${queryMap['supplierGoodsCategoryId']?default('')}"/>
+<input id="input_supplierGoodsCategory" type="text" readonly="" name="supplierGoodsCategory" class="combobox-input" value="${queryMap['supplierGoodsCategory']?default('')}"/><button class="ui-combobox-button" type="button" onclick="App.UI.openGoodsCategoryDlg(this);">&nbsp;</button>
+<div id="categoryDialog" class="area-dialog">
+    <ul id="goodsCategoryTree" class="popup_tree_box goodsCategoryTree" style="width: 270px;"></ul>
+    <div class="area-dialog-footer">
+        <span class="button btn_ok"><span class="button-text fixed-width">确定</span></span>
+        <span class="button btn_clear"><span class="button-text fixed-width">清空</span></span>
+    </div>
+</div>
+</#macro>
+
+<#macro goodsCategoryForOrder>
+<input id="filter_goodsCategory" type="hidden" name="categoryId" value="${searchView.categoryId?default('')}"/>
+<input id="input_goodsCategory" type="text" readonly="" name="categoryName" class="combobox-input" value="${searchView.categoryName?default('')}"/><button class="ui-combobox-button" type="button" onclick="App.UI.openGoodsCategoryDlg(this);">&nbsp;</button>
+<div id="categoryDialog" class="area-dialog">
+    <ul id="goodsCategoryTree" class="popup_tree_box goodsCategoryTree" style="width: 270px;"></ul>
+    <div class="area-dialog-footer">
+        <span class="button btn_ok"><span class="button-text fixed-width">确定</span></span>
+        <span class="button btn_clear"><span class="button-text fixed-width">清空</span></span>
+    </div>
+</div>
+</#macro>
+
+<#macro adminArea>
+<input id="filter_adminArea" type="hidden" name="adminAreaId" value="${searchView.adminAreaId?default("")}"/>
+<input id="input_adminArea" type="text" readonly="" name="adminArea" class="combobox-input" value="${searchView.adminArea?default("")}"/><button class="ui-combobox-button" id="selectButton" type="button" onclick="App.UI.openAdminAreaDlg(this);">&nbsp;</button>
+<div id="adminAreaDialog" class="area-dialog">
+    <ul id="adminAreaTree" class="popup_tree_box adminAreaTree" style="width: 270px;"></ul>
+    <div class="area-dialog-footer">
+        <span class="button btn_ok"><span class="button-text fixed-width">确定</span></span>
+        <span class="button btn_clear"><span class="button-text fixed-width">清空</span></span>
+    </div>
+</div>
+</#macro>
+<#macro adminAreaSearch>
+<input id="filter_adminArea" type="hidden" name="adminAreaId" value="${queryMap['adminAreaId']?default("")}"/>
+<input id="input_adminArea" type="text" readonly="" name="adminArea" class="combobox-input" value="${queryMap['adminArea']?default("")}"/><button class="ui-combobox-button" id="selectButton" type="button" onclick="App.UI.openAdminAreaDlg(this);">&nbsp;</button>
+<div id="adminAreaDialog" class="area-dialog">
+    <ul id="adminAreaTree" class="popup_tree_box adminAreaTree" style="width: 270px;"></ul>
+    <div class="area-dialog-footer">
+        <span class="button btn_ok"><span class="button-text fixed-width">确定</span></span>
+        <span class="button btn_clear"><span class="button-text fixed-width">清空</span></span>
+    </div>
+</div>
+</#macro>
+
+<#macro carSeries>
+<@carBrand/>
+<@carYear/>
+</#macro>
+
+<#macro carBrand>
+<input type='hidden' id='filter_carBrandId' name='filter_carBrandId'/>
+<div style='width:96px;float:left;text-align:right;padding:2px 4px;'>品牌：</div>
+<div style='float:left'>
+    <input type='text' id='carBrandName' style='width:90px;' readonly onClick='App.UI.showCarBrand(this);'/>
+    <#include 'carBrand.ftl'>
+</div>
+<label style='margin-left:12px;'>车系：</label>
+<select name='filter_carSeriesId' disabled style='width:100px;' onChange='App.UI.changeCarSeries(this);'>
+</select>
+</#macro>
+
+<#macro carType>
+<@carBrand/>
+<label style='margin-left:12px;'>车型：</label>
+<select name='filter_carModelId' disabled style='width:200px' onChange=''>
+</select>
+<@carYear/>
+</#macro>
+
+<#macro carYear>
+<label style='margin-left:12px;'>年份：</label>
+<select name='filter_carYear' style='width:80px;'>
+    <option value=''>全部</option>
+    <option value='2012'>2012</option>
+    <option value='2011'>2011</option>
+    <option value='2010'>2010</option>
+    <option value='2009'>2009</option>
+    <option value='2008'>2008</option>
+    <option value='2007'>2007</option>
+    <option value='2006'>2006</option>
+    <option value='2005'>2005</option>
+    <option value='2004'>2004</option>
+    <option value='2003'>2003</option>
+    <option value='2002'>2002</option>
+    <option value='2001'>2001</option>
+    <option value='2000'>2000</option>
+    <option value='1999'>1999</option>
+    <option value='1998'>1998</option>
+    <option value='1997'>1997</option>
+    <option value='1996'>1996</option>
+    <option value='1995'>1995</option>
+    <option value='1994'>1994</option>
+    <option value='1993'>1993</option>
+    <option value='1992'>1992</option>
+    <option value='1991'>1991</option>
+    <option value='1990'>1990</option>
+</select>
+</#macro>
+
+<#macro period>
+<label style='margin-left:12px;'>分析期间：</label>
+<select id="period" name='filter_period' style='width:50px;' onChange="period.changePeriod()">
+    <option value='year'>年</option>
+    <option value='month'>月</option>
+    <option value='week'>周</option>
+</select>
+<select id="number" name='filter_number' style='width:80px;'>
+</select>
+</#macro>
+
+<#macro analysisPeriod>
+<div class="period">
+    <label style='margin-left:12px;'>分析期间：</label>
+    <select id="periodType" name='filter_periodType' style='width:50px;' onChange="period.changeAnalysisPeriod()">
+        <option value='day'>日</option>
+        <option value='month'>月</option>
+    </select>
+    <input id="day" name='filter_day' style='width:120px' class="datebox"/>
+    <select id="month" name='filter_month' style='width:80px;'>
+    </select>
+</div>
+</#macro>
+
+<#macro analysisGoodsPeriod>
+<div class="analysisPeriod">
+    <label style='margin-left:12px;'>分析期间：</label>
+    <select id="gooPeriodType" name='filter_periodType' style='width:50px;' onChange="period.changeAnalysisGoodsPeriod()">
+        <option value='gooDay'>日</option>
+        <option value='gooMonth'>月</option>
+    </select>
+    <input id="gooDay" name='filter_day' style='width:120px' class="datebox"/>
+    <select id="gooMonth" name='filter_month' style='width:80px;'>
+    </select>
+</div>
+</#macro>
+
+<#macro goodsProduct type>
+    <#include "/common/jqueryui_aurocomplete.html">
+<link rel="stylesheet" type="text/css" href="${b2bStylePath}/jquery/jqueryui/css/jquery.ui.theme.min.css"/>
+<link type="text/css" rel="stylesheet" href="${b2bStylePath}/jquery/jqueryui/css/jquery.ui.autocomplete.css"/>
+    <#if type=="filter">
+        <input type="hidden" id="productId" name="productId" value="${queryMap['productId']?default("")}">
+        <input type="hidden" id="productCode" name="productCode" value="${queryMap['productCode']?default("")}">
+        <input type="text" id="productName" name="productName" value="${queryMap['productName']?default("")}">
+    <#elseif type == "edit">
+    	<input type="hidden" id="productId" name="productId" value="${queryMap['productId']?default("")}">
+        <input type="hidden" id="productCode" name="productCode" value="${queryMap['productCode']?default("")}">
+        <input type="text" id="productName" name="productName" value="${queryMap['productName']?default("")}" class="textfield"><em>*</em>
+    <#elseif type=='checkOrder'>
+        <input type="hidden" id="productId" name="productId" value="${(searchView.productId!'')?html}">
+        <input type="hidden" id="productCode" name="productCode" value="${(searchView.productCode!'')?html}">
+        <input type="text" id="productName" name="productName" value="${(searchView.productName!'')?html}">
+    <#else>
+          <input type="hidden" id="productId" name="productId" value="">
+          <input type="hidden" id="productCode" name="productCode" value="">
+          <input type="text" id="productName" name="productName" value="" class="textfield"><em>*</em>
+    </#if>
+    <script>
+    var GoodsProductAutoComplete = {};
+    $(function(){
+        GoodsProductAutoComplete.query={};
+        if ($("#productName").autocomplete().data("autocomplete") != undefined) {
+        	GoodsProductAutoComplete.productName = $("#productName");
+        	GoodsProductAutoComplete.productName.autocomplete({
+        		source: function (request, response) {
+        			var value = $.trim(GoodsProductAutoComplete.productName.val()).toLowerCase();
+        			var key = "productNameFirstLetter";
+        			if (/[\u4e00-\u9fa5]/.test(value)){
+        				key = "productName";
+        			}
+        			$.extend(GoodsProductAutoComplete.query, {
+        				"key" : key,
+        				"value" : value
+        			});
+        			$.post(context + "/autoComplete/asynQueryMinProductName.action", GoodsProductAutoComplete.query ,
+        					function (data) {
+        				response(eval("(" + data + ")"));
+        			});
+        		},
+        		select: function (event, ui) {
+        			var reg = /&qout;/g;
+        			ui.item.k1 = ui.item.k1.replace(reg, "\"");
+        			$("#productName").val(ui.item.k1);
+        			//BUG修复@Chx@选择新的品类也要修改ID和CODE
+        			$("#productId").val(ui.item.k2);
+        			$("#productCode").val(ui.item.k3);
+        			//BUG修复@Chx@选择新的品类也要修改ID和CODE
+        			return false;
+        		}
+        	}).data("autocomplete")._renderItem = function (ul, item) {
+        		var reg =/&qout;/g;
+        		item.k1=item.k1.replace(reg,"\"");
+        		return $("<li></li>")
+        		.data("item.autocomplete", item)
+        		.append("<a>" + item.k1 + "</a>")
+        		.appendTo(ul);
+        	};
+        	GoodsProductAutoComplete.productName.bind('input', function() {
+        		var val = this.value;
+        		if (val) {
+        			$(this).autocomplete("search", val);
+        		}
+        	});
+        }
+    }) ;    
+    
+    </script>
+</#macro>
+
+<#macro category type>
+    <#include "/common/jqueryui_aurocomplete.html">
+<link rel="stylesheet" type="text/css" href="${b2bStylePath}/jquery/jqueryui/css/jquery.ui.theme.min.css"/>
+<link type="text/css" rel="stylesheet" href="${b2bStylePath}/jquery/jqueryui/css/jquery.ui.autocomplete.css"/>
+    <#if type=="edit">
+        <input type="hidden" id="supplierCategoryId" name="supplierCategoryId" value="${goodsView.supplierCategoryId!''}">
+        <input type="hidden" id="supplierCategoryCode" name="supplierCategoryCode" value="${goodsView.supplierCategoryCode!''}">
+        <input type="text" id="supplierCategoryName" name="supplierCategoryName" value="${goodsView.supplierCategoryName!''}" class="textfield">
+    <#else>
+            <input type="hidden" id="supplierCategoryId" name="supplierCategoryId" value="">
+            <input type="hidden" id="supplierCategoryCode" name="supplierCategoryCode" value="">
+            <input type="text" id="supplierCategoryName" name="supplierCategoryName" value="" class="textfield">
+    </#if>
+</#macro>

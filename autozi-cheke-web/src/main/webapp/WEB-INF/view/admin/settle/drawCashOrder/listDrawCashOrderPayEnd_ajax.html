@@ -1,0 +1,34 @@
+<table>
+    <tbody>
+    <tr>
+        <th style="width: 5%">#</th>
+        <th style="width: 23%">推客号</th>
+        <th style="width: 10%">手机号</th>
+        <th style="width: 14%">提现金额</th>
+        <th style="width: 12%">手续费</th>
+        <th style="width: 12%">实扣金额</th>
+        <th style="width: 12%">申请提现时间</th>
+        <th style="width: 12%">到账时间</th>
+    </tr>
+    <#if (orderPage??)&&(orderPage.result??)&&(orderPage.result?size>0)>
+        <#list orderPage.result as drawCash>
+        <tr>
+            <td>${drawCash_index + orderPage.firstElementIndex}</td>
+            <td><#if drawCash.tkName??>${drawCash.tkName?html}</#if></td>
+            <td><#if drawCash.tkPhone??>${drawCash.tkPhone?html}</#if></td>
+            <td><#if drawCash.money??>${drawCash.money?string("0.00")}</#if></td>
+            <td><#if drawCash.slottingFee??>${drawCash.slottingFee?string("0.00")}</#if></td>
+            <td><#if drawCash.accountMoney??>${drawCash.accountMoney?string("0.00")}</#if></td>
+            <td><#if drawCash.createTime??>${drawCash.createTime?string("yyyy-MM-dd HH:mm:ss")}</#if></td>
+            <td><#if drawCash.payTime??>${drawCash.payTime?string("yyyy-MM-dd HH:mm:ss")}</#if></td>
+        </tr>
+        </#list>
+    <#else>
+    <tr>
+        <td colspan='8'>没有符合条件的记录</td>
+    </tr>
+    </#if>
+    </tbody>
+</table>
+$JXC
+<#include "../../../common/paging_common.html">

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.autozi.cheke.user.mapper.SearchFeedBackMapper">
+  <cache eviction="LRU" type="org.mybatis.caches.memcached.MemcachedCache"/>
+
+  <resultMap id="SearchFeedBackMap" type="SearchFeedBack" >
+
+    <id column="ID" property="id" jdbcType="DECIMAL" />
+    <result column="VERSION" property="version" jdbcType="DECIMAL" />
+    <result column="CONTENT" property="content" jdbcType="VARCHAR" />
+    <result column="USER_ID" property="userId" jdbcType="DECIMAL"/>
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, VERSION, CONTENT, USER_ID, CREATE_TIME
+  </sql>
+  <select id="get" resultMap="SearchFeedBackMap" parameterType="long" >
+    select
+    <include refid="Base_Column_List" />
+    from search_feedback
+    where ID = #{id,jdbcType=DECIMAL}
+  </select>
+  <delete id="delete" parameterType="long" >
+    delete from search_feedback
+    where ID = #{id,jdbcType=DECIMAL}
+  </delete>
+  <insert id="insert" parameterType="SearchFeedBack">
+    insert into search_feedback (
+      <include refid="Base_Column_List"/>
+      )
+    values (
+      #{id,jdbcType=DECIMAL},
+      #{version,jdbcType=DECIMAL},
+      #{content,jdbcType=VARCHAR},
+      #{userId,jdbcType=DECIMAL},
+      #{createTime,jdbcType=TIMESTAMP})
+    
+  </insert>
+
+  <select id="findListForMap" parameterType="map" resultMap="SearchFeedBackMap" >
+  	select * from search_feedback
+      <where>
+          <if test="createTimeStart != null">
+              AND create_time &gt;= #{createTimeStart,jdbcType=TIMESTAMP}
+          </if>
+          <if test="createTimeEnd != null">
+              and create_time &lt;= #{createTimeEnd,jdbcType=TIMESTAMP}
+          </if>
+          <if test="userId != null">
+              AND user_id = #{userId,jdbcType=DECIMAL}
+          </if>
+      </where>
+  </select>
+
+</mapper>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.autozi.cheke.basic.mapper.NoticeMapper">
+<cache eviction="LRU" type="org.mybatis.caches.memcached.MemcachedCache"/>
+<resultMap id="NoticeMap" type="Notice">
+	<result column="ID" jdbcType="DECIMAL" property="id"/>
+	<result column="VERSION" jdbcType="DECIMAL" property="version"/>
+	<result column="TITLE" jdbcType="VARCHAR" property="title"/>
+	<result column="CONTENT" jdbcType="VARCHAR" property="content"/>
+	<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+	<result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+	<result column="STATUS" jdbcType="DECIMAL" property="status"/>
+	<result column="NOTICE_TYPE" jdbcType="DECIMAL" property="noticeType"/>
+	<result column="USER_ID" jdbcType="DECIMAL" property="userId"/>
+</resultMap>
+<sql id="Base_Column_List">
+	ID,VERSION,TITLE,CONTENT,CREATE_TIME,UPDATE_TIME,STATUS,NOTICE_TYPE,USER_ID
+</sql>
+<sql id="bn_Base_Column_List">
+	bn.ID,bn.VERSION,bn.TITLE,bn.CONTENT,bn.CREATE_TIME,bn.UPDATE_TIME,bn.STATUS,bn.NOTICE_TYPE,bn.USER_ID
+</sql>
+<select id="get" parameterType="long" resultMap="NoticeMap">
+	select
+		<include refid="Base_Column_List"/>
+	from bas_notice bn
+	where ID = #{id,jdbcType=DECIMAL}
+</select>
+<delete id="delete" parameterType="long">
+	delete
+	from bas_notice
+	where ID = #{id,jdbcType=DECIMAL}
+</delete>
+<insert id="insert" parameterType="Notice">
+	insert into bas_notice(
+		<include refid="Base_Column_List"/>
+	) values (
+	#{id,jdbcType=DECIMAL},
+	#{version,jdbcType=DECIMAL},
+	#{title,jdbcType=VARCHAR},
+	#{content,jdbcType=VARCHAR},
+	#{createTime,jdbcType=TIMESTAMP},
+	#{updateTime,jdbcType=TIMESTAMP},
+	#{status,jdbcType=DECIMAL},
+	#{noticeType,jdbcType=DECIMAL},
+	#{userId,jdbcType=DECIMAL}
+	)
+</insert>
+<update id="update" parameterType="Notice">
+	update bas_notice bn
+	<set>
+		VERSION = VERSION + 1
+		<if test="title != null">
+		,TITLE = #{title,jdbcType=VARCHAR}
+		</if>
+		<if test="content != null">
+		,CONTENT = #{content,jdbcType=VARCHAR}
+		</if>
+		<if test="createTime != null">
+		,CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="updateTime != null">
+		,UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="status != null">
+		,STATUS = #{status,jdbcType=DECIMAL}
+		</if>
+		<if test="noticeType != null">
+		,NOTICE_TYPE = #{noticeType,jdbcType=DECIMAL}
+		</if>
+		<if test="userId != null">
+		,USER_ID = #{userId,jdbcType=DECIMAL}
+		</if>
+	</set>
+	where ID = #{id,jdbcType=DECIMAL}
+</update>
+<select id="findListForExample" parameterType="Notice" resultMap="NoticeMap">
+	select
+	<include refid="bn_Base_Column_List"/>
+	from bas_notice bn
+	<include refid="common_query_condition"/>
+</select>
+<select id="findListForMap" parameterType="map" resultMap="NoticeMap">
+	select
+	<include refid="bn_Base_Column_List"/>
+	from bas_notice bn
+	<include refid="common_query_condition"/>
+</select>
+<sql id="common_query_condition">
+	<where>
+		<if test="id != null">
+			bn.id = #{id,jdbcType=DECIMAL}
+		</if>
+		<if test="userId != null">
+			bn.user_id = #{userId,jdbcType=DECIMAL}
+		</if>
+		<if test="noticeType != null">
+			bn.notice_type = #{noticeType,jdbcType=DECIMAL}
+		</if>
+	</where>
+</sql>
+</mapper>

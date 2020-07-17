@@ -1,0 +1,23 @@
+<table>
+    <tbody>
+    <tr>
+        <th style="width: 40px;">#</th>
+        <th style="width: 110px;">角色名称</th>
+        <th>角色说明</th>
+        <th style="width: 170px;">操作</th>
+    </tr>
+    <#list page.result as role>
+    <tr>
+        <td>${role_index + page.firstElementIndex}</td>
+        <td>${role.name!''}</td>
+        <td>${role.description!''}</td>
+        <td>
+            <a class="qy_alink" href="javascript:App.jump('/role/admin/list/editRole.action?roleId=${role.id}')">修改</a>
+            <a class="qy_alink" href="javascript:void (0);" onclick="Role.deleteRole(${role.id})">删除</a>
+        </td>
+    </tr>
+    </#list>
+    </tbody>
+</table>
+$JXC
+<#include "../../common/paging_common.html">

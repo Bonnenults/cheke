@@ -1,0 +1,43 @@
+<div class="qy_center_table" id="data_table_list">
+    <table>
+        <tbody>
+        <tr>
+            <th>#</th>
+            <th>车客名称</th>
+            <th style="width:130px;">属性</th>
+            <th class="no_border" style="width:230px;">私信数</th>
+        </tr>
+        <#if (page??)&&(page.result??)&&(page.result?size>0)>
+            <#list page.result as view>
+            <tr>
+                <td>${page.firstElementIndex + view_index }</td>
+                <td><#if view.name??>${view.name?html}</#if></td>
+                <td>
+                    <#if view.partyClass??&&view.partyClass==1>
+                        企业单位
+                    <#elseif view.partyClass??&&view.partyClass==2>
+                        机构单位
+                    <#elseif view.partyClass??&&view.partyClass==3>
+                        媒介单位
+                    <#elseif view.partyClass??&&view.partyClass==4>
+                        个人
+                    </#if>
+                </td>
+                <td class="no_border">
+                    <#if view.letterCount??>
+                        <a class="qy_alink"
+                           href="javascript:Letter.viewPartyDetail('${view.id}')">${view.letterCount?html}</a>
+                    </#if>
+                </td>
+            </tr>
+            </#list>
+        <#else>
+        <tr>
+            <td colspan='10'>没有符合条件的记录</td>
+        </tr>
+        </#if>
+        </tbody>
+    </table>
+</div>
+$JXC
+<#include "../../../common/paging_common.html">

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.autozi.cheke.settle.mapper.AccountLogMapper">
+<cache eviction="LRU" type="org.mybatis.caches.memcached.MemcachedCache"/>
+<resultMap id="AccountLogMap" type="AccountLog">
+	<result column="ID" jdbcType="DECIMAL" property="id"/>
+	<result column="VERSION" jdbcType="DECIMAL" property="version"/>
+	<result column="ACCOUNT_ID" jdbcType="DECIMAL" property="accountId"/>
+	<result column="START_ACCOUNT" jdbcType="DECIMAL" property="startAccount"/>
+	<result column="CHANGE_ACCOUNT" jdbcType="DECIMAL" property="changeAccount"/>
+	<result column="END_ACCOUNT" jdbcType="DECIMAL" property="endAccount"/>
+	<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+	<result column="SOURCE_TYPE" jdbcType="DECIMAL" property="sourceType"/>
+	<result column="SOURCE_ID" jdbcType="DECIMAL" property="sourceId"/>
+	<result column="NOTE" jdbcType="VARCHAR" property="note"/>
+</resultMap>
+<sql id="Base_Column_List">
+	ID,VERSION,ACCOUNT_ID,START_ACCOUNT,CHANGE_ACCOUNT,END_ACCOUNT,CREATE_TIME,SOURCE_TYPE,SOURCE_ID,NOTE
+</sql>
+<sql id="pal_Base_Column_List">
+	pal.ID,pal.VERSION,pal.ACCOUNT_ID,pal.START_ACCOUNT,pal.CHANGE_ACCOUNT,pal.END_ACCOUNT,pal.CREATE_TIME,pal.SOURCE_TYPE,pal.SOURCE_ID,pal.NOTE
+</sql>
+<select id="get" parameterType="long" resultMap="AccountLogMap">
+	select
+		<include refid="Base_Column_List"/>
+	from pay_account_log pal
+	where ID = #{id,jdbcType=DECIMAL}
+</select>
+<delete id="delete" parameterType="long">
+	delete
+	from pay_account_log
+	where ID = #{id,jdbcType=DECIMAL}
+</delete>
+<insert id="insert" parameterType="AccountLog">
+	insert into pay_account_log(
+		<include refid="Base_Column_List"/>
+	) values (
+	#{id,jdbcType=DECIMAL},
+	#{version,jdbcType=DECIMAL},
+	#{accountId,jdbcType=DECIMAL},
+	#{startAccount,jdbcType=DECIMAL},
+	#{changeAccount,jdbcType=DECIMAL},
+	#{endAccount,jdbcType=DECIMAL},
+	#{createTime,jdbcType=TIMESTAMP},
+	#{sourceType,jdbcType=DECIMAL},
+	#{sourceId,jdbcType=DECIMAL},
+	#{note,jdbcType=VARCHAR}
+	)
+</insert>
+<update id="update" parameterType="AccountLog">
+	update pay_account_log pal
+	<set>
+		VERSION = VERSION + 1
+		<if test="accountId != null">
+		,ACCOUNT_ID = #{accountId,jdbcType=DECIMAL}
+		</if>
+		<if test="startAccount != null">
+		,START_ACCOUNT = #{startAccount,jdbcType=DECIMAL}
+		</if>
+		<if test="changeAccount != null">
+		,CHANGE_ACCOUNT = #{changeAccount,jdbcType=DECIMAL}
+		</if>
+		<if test="endAccount != null">
+		,END_ACCOUNT = #{endAccount,jdbcType=DECIMAL}
+		</if>
+		<if test="createTime != null">
+		,CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="sourceType != null">
+		,SOURCE_TYPE = #{sourceType,jdbcType=DECIMAL}
+		</if>
+		<if test="sourceId != null">
+		,SOURCE_ID = #{sourceId,jdbcType=DECIMAL}
+		</if>
+		<if test="note != null">
+		,NOTE = #{note,jdbcType=VARCHAR}
+		</if>
+	</set>
+	where ID = #{id,jdbcType=DECIMAL} and version = #{version,jdbcType=DECIMAL}
+</update>
+<select id="findListForExample" parameterType="AccountLog" resultMap="AccountLogMap">
+	select
+	<include refid="pal_Base_Column_List"/>
+	from pay_account_log pal
+	<if test="accountType !=null">
+		INNER JOIN pay_account pa on pa.ID = pal.ACCOUNT_ID
+	</if>
+	<include refid="common_query_condition"/>
+</select>
+<select id="findListForMap" parameterType="map" resultMap="AccountLogMap">
+	select
+	<include refid="pal_Base_Column_List"/>
+	from pay_account_log pal
+	<include refid="common_query_condition"/>
+	order by create_time desc
+</select>
+<sql id="common_query_condition">
+	<where>
+		<if test="id != null">
+			pal.id = #{id,jdbcType=DECIMAL}
+		</if>
+		<if test="accountId != null">
+			and pal.account_id = #{accountId,jdbcType=DECIMAL}
+		</if>
+		<if test="sourceType != null">
+			and  pal.SOURCE_TYPE = #{sourceType,jdbcType=DECIMAL}
+		</if>
+		<if test="createTimeStart != null">
+			AND pal.create_time &gt;= #{createTimeStart,jdbcType=TIMESTAMP}
+		</if>
+		<if test="createTimeEnd != null">
+			AND pal.create_time &lt;= #{createTimeEnd,jdbcType=TIMESTAMP}
+		</if>
+		<if test="accountType !=null">
+			and pa.TYPE = #{accountType}
+		</if>
+	</where>
+</sql>
+	<select id="getTotalTaskMoney" parameterType="map" resultType="java.lang.Double">
+		select IFNULL(sum(CHANGE_ACCOUNT),0) as changeAccount from pay_account pa LEFT JOIN pay_account_log pal on pa.id=pal.account_id
+		<where>
+			<if test="ownerId != null">
+				pa.owner_id=#{ownerId,jdbcType=DECIMAL}
+			</if>
+			<if test="sourceType != null">
+				and pal.source_type=#{sourceType,jdbcType=DECIMAL}
+			</if>
+			<if test="createTimeStart != null">
+				AND pal.create_time &gt;= #{createTimeStart,jdbcType=TIMESTAMP}
+			</if>
+			<if test="createTimeEnd != null">
+				AND pal.create_time &lt;= #{createTimeEnd,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+	</select>
+</mapper>

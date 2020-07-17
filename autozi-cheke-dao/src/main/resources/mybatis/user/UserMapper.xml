@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.autozi.cheke.user.mapper.UserMapper">
+<cache eviction="LRU" type="org.mybatis.caches.memcached.MemcachedCache"/>
+<resultMap id="UserMap" type="User">
+	<result column="ID" jdbcType="DECIMAL" property="id"/>
+	<result column="VERSION" jdbcType="DECIMAL" property="version"/>
+	<result column="NAME" jdbcType="VARCHAR" property="name"/>
+	<result column="REAL_NAME" jdbcType="VARCHAR" property="realName"/>
+	<result column="LOGIN_NAME" jdbcType="VARCHAR" property="loginName"/>
+	<result column="PASSWORD" jdbcType="VARCHAR" property="password"/>
+	<result column="USER_TYPE" jdbcType="DECIMAL" property="userType"/>
+	<result column="PHONE" jdbcType="VARCHAR" property="phone"/>
+	<result column="PHONE_PASSWORD" jdbcType="VARCHAR" property="phonePassword"/>
+	<result column="EMAIL" jdbcType="VARCHAR" property="email"/>
+	<result column="PARTY_ID" jdbcType="DECIMAL" property="partyId"/>
+	<result column="USER_STATUS" jdbcType="DECIMAL" property="userStatus"/>
+	<result column="GENDER" jdbcType="VARCHAR" property="gender"/>
+	<result column="LOGIN_TIME" jdbcType="TIMESTAMP" property="loginTime"/>
+	<result column="LAST_LOGIN_TIME" jdbcType="TIMESTAMP" property="lastLoginTime"/>
+	<result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+	<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+	<result column="CREATE_USER_ID" jdbcType="DECIMAL" property="createUserId"/>
+	<result column="ADMIN" jdbcType="DECIMAL" property="admin"/>
+	<result column="LOGIN_FAILED_COUNT" jdbcType="DECIMAL" property="loginFailedCount"/>
+	<result column="VERIFY_FLAG" jdbcType="DECIMAL" property="verifyFlag"/>
+</resultMap>
+<sql id="Base_Column_List">
+	ID,VERSION,NAME,REAL_NAME,LOGIN_NAME,PASSWORD,USER_TYPE,PHONE,PHONE_PASSWORD,EMAIL,PARTY_ID,USER_STATUS,GENDER,LOGIN_TIME,LAST_LOGIN_TIME,UPDATE_TIME,CREATE_TIME,CREATE_USER_ID,ADMIN,LOGIN_FAILED_COUNT,VERIFY_FLAG
+</sql>
+<sql id="bu_Base_Column_List">
+	bu.ID,bu.VERSION,bu.NAME,bu.REAL_NAME,bu.LOGIN_NAME,bu.PASSWORD,bu.USER_TYPE,bu.PHONE,bu.PHONE_PASSWORD,bu.EMAIL,bu.PARTY_ID,bu.USER_STATUS,bu.GENDER,bu.LOGIN_TIME,bu.LAST_LOGIN_TIME,bu.UPDATE_TIME,bu.CREATE_TIME,bu.CREATE_USER_ID,bu.ADMIN,bu.LOGIN_FAILED_COUNT,bu.VERIFY_FLAG
+</sql>
+<select id="get" parameterType="long" resultMap="UserMap">
+	select
+		<include refid="Base_Column_List"/>
+	from bas_user bu
+	where ID = #{id,jdbcType=DECIMAL}
+</select>
+	<select id="getUserByLoginName" parameterType="java.lang.String" resultMap="UserMap" useCache="false">
+		select
+		<include refid="Base_Column_List"/>
+		from bas_user bu
+		where login_name = #{loginName,jdbcType=DECIMAL}
+	</select>
+	<select id="getUserByPartyId" parameterType="java.lang.Long" resultMap="UserMap" useCache="false">
+		select
+		<include refid="Base_Column_List"/>
+		from bas_user bu
+		where party_id = #{partyId,jdbcType=DECIMAL} and admin=1
+	</select>
+	<select id="getTuikeUserByPartyId" parameterType="java.lang.Long" resultMap="UserMap" useCache="false">
+		select
+		<include refid="Base_Column_List"/>
+		from bas_user bu
+		where party_id = #{partyId,jdbcType=DECIMAL}
+	</select>
+	<select id="findByPhone" parameterType="java.lang.String" resultMap="UserMap" useCache="false">
+		select
+		<include refid="Base_Column_List"/>
+		from bas_user bu
+		where phone = #{phone,jdbcType=DECIMAL} limit 1
+	</select>
+<delete id="delete" parameterType="long">
+	delete
+	from bas_user
+	where ID = #{id,jdbcType=DECIMAL}
+</delete>
+<insert id="insert" parameterType="User">
+	insert into bas_user(
+		<include refid="Base_Column_List"/>
+	) values (
+	#{id,jdbcType=DECIMAL},
+	#{version,jdbcType=DECIMAL},
+	#{name,jdbcType=VARCHAR},
+	#{realName,jdbcType=VARCHAR},
+	#{loginName,jdbcType=VARCHAR},
+	#{password,jdbcType=VARCHAR},
+	#{userType,jdbcType=DECIMAL},
+	#{phone,jdbcType=VARCHAR},
+	#{phonePassword,jdbcType=VARCHAR},
+	#{email,jdbcType=VARCHAR},
+	#{partyId,jdbcType=DECIMAL},
+	#{userStatus,jdbcType=DECIMAL},
+	#{gender,jdbcType=VARCHAR},
+	#{loginTime,jdbcType=TIMESTAMP},
+	#{lastLoginTime,jdbcType=TIMESTAMP},
+	#{updateTime,jdbcType=TIMESTAMP},
+	#{createTime,jdbcType=TIMESTAMP},
+	#{createUserId,jdbcType=DECIMAL},
+	#{admin,jdbcType=DECIMAL},
+	#{loginFailedCount,jdbcType=DECIMAL},
+	#{verifyFlag,jdbcType=DECIMAL}
+	)
+</insert>
+<update id="update" parameterType="User">
+	update bas_user bu
+	<set>
+		VERSION = VERSION + 1
+		<if test="name != null">
+		,NAME = #{name,jdbcType=VARCHAR}
+		</if>
+		<if test="realName != null">
+			,REAL_NAME = #{realName,jdbcType=VARCHAR}
+		</if>
+		<if test="loginName != null">
+		,LOGIN_NAME = #{loginName,jdbcType=VARCHAR}
+		</if>
+		<if test="password != null">
+		,PASSWORD = #{password,jdbcType=VARCHAR}
+		</if>
+		<if test="userType != null">
+		,USER_TYPE = #{userType,jdbcType=DECIMAL}
+		</if>
+		<if test="phone != null">
+		,PHONE = #{phone,jdbcType=VARCHAR}
+		</if>
+		<if test="phonePassword != null">
+		,PHONE_PASSWORD = #{phonePassword,jdbcType=VARCHAR}
+		</if>
+		<if test="email != null">
+		,EMAIL = #{email,jdbcType=VARCHAR}
+		</if>
+		<if test="partyId != null">
+		,PARTY_ID = #{partyId,jdbcType=DECIMAL}
+		</if>
+		<if test="userStatus != null">
+		,USER_STATUS = #{userStatus,jdbcType=DECIMAL}
+		</if>
+		<if test="gender != null">
+		,GENDER = #{gender,jdbcType=VARCHAR}
+		</if>
+		<if test="loginTime != null">
+		,LOGIN_TIME = #{loginTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="lastLoginTime != null">
+		,LAST_LOGIN_TIME = #{lastLoginTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="updateTime != null">
+		,UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="createTime != null">
+		,CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="createUserId != null">
+		,CREATE_USER_ID = #{createUserId,jdbcType=DECIMAL}
+		</if>
+		<if test="admin != null">
+			,ADMIN = #{admin,jdbcType=DECIMAL}
+		</if>
+		<if test="loginFailedCount != null">
+			,LOGIN_FAILED_COUNT = #{loginFailedCount,jdbcType=DECIMAL}
+		</if>
+		<if test="verifyFlag != null">
+			,VERIFY_FLAG = #{verifyFlag,jdbcType=DECIMAL}
+		</if>
+	</set>
+	where ID = #{id,jdbcType=DECIMAL}
+</update>
+<select id="findListForExample" parameterType="User" resultMap="UserMap">
+	select
+	<include refid="bu_Base_Column_List"/>
+	from bas_user bu
+	<include refid="common_query_condition"/>
+</select>
+<select id="findListForMap" parameterType="map" resultMap="UserMap">
+	select
+	<include refid="bu_Base_Column_List"/>
+	from bas_user bu
+	<if test="idCardStatus !=null">
+		LEFT JOIN bas_personal_party bpp on bpp.id = bu.party_id
+	</if>
+	<if test="roleName !=null">
+		LEFT JOIN bas_user_role bur on bu.id=bur.user_id LEFT JOIN bas_role br on bur.role_id=br.id
+	</if>
+	<include refid="common_query_condition"/>
+	order by bu.update_time desc,bu.create_time desc
+</select>
+<sql id="common_query_condition">
+	<where>
+		<if test="id != null">
+			bu.id = #{id,jdbcType=DECIMAL}
+		</if>
+		<if test="userType != null">
+			and bu.user_type = #{userType,jdbcType=DECIMAL}
+		</if>
+		<if test="partyId != null">
+			and bu.PARTY_ID = #{partyId,jdbcType=DECIMAL}
+		</if>
+		<if test="userStatus != null">
+			and bu.user_status = #{userStatus,jdbcType=DECIMAL}
+		</if>
+		<if test="idCardStatus != null">
+			and bpp.id_card_status = #{idCardStatus,jdbcType=DECIMAL}
+		</if>
+		<if test="name != null">
+			and bu.name like concat('%',#{name,jdbcType=VARCHAR},'%')
+		</if>
+		<if test="loginName != null">
+			and bu.login_name like concat('%',#{loginName,jdbcType=VARCHAR},'%')
+		</if>
+		<if test="phone != null">
+			and bu.phone like concat('%',#{phone,jdbcType=VARCHAR},'%')
+		</if>
+		<if test="roleName != null">
+			and br.name like concat('%',#{roleName,jdbcType=VARCHAR},'%')
+		</if>
+		<if test="createTimeStart != null">
+			<![CDATA[ AND bu.create_time >= DATE_FORMAT(#{createTimeStart},'%Y-%m-%d %H:%i:%s')]]>
+		</if>
+		<if test="createTimeEnd != null">
+			<![CDATA[ AND bu.create_time <= DATE_FORMAT(#{createTimeEnd},'%Y-%m-%d %H:%i:%s')]]>
+		</if>
+	</where>
+</sql>
+	<select id="findList" parameterType="map" resultMap="UserMap">
+		select
+		<include refid="bu_Base_Column_List"/>
+		from bas_user bu
+		<include refid="find_list_condition"/>
+	</select>
+	<sql id="find_list_condition">
+		<where>
+			<if test="id != null">
+				bu.id = #{id,jdbcType=DECIMAL}
+			</if>
+			<if test="userType != null">
+				and bu.user_type = #{userType,jdbcType=DECIMAL}
+			</if>
+			<if test="name != null">
+				and bu.name = #{name,jdbcType=VARCHAR}
+			</if>
+			<if test="loginName != null">
+				and bu.login_name = #{loginName,jdbcType=VARCHAR}
+			</if>
+			<if test="phone != null">
+				and bu.phone = #{phone,jdbcType=VARCHAR}
+			</if>
+			<if test="partyId != null">
+				and bu.party_id = #{partyId,jdbcType=DECIMAL}
+			</if>
+			<if test="admin != null">
+				and bu.admin = #{admin,jdbcType=DECIMAL}
+			</if>
+		</where>
+	</sql>
+
+	<!--删除用户的角色-->
+	<delete id="deleteUserRole" parameterType="long">
+ 		delete from BAS_USER_ROLE where user_id=#{id}
+ 	</delete>
+</mapper>

@@ -1,0 +1,59 @@
+<h2 class="bomb_title"><#if user??>修改用户<#else>新增用户</#if><a class="bomb_close" href="javascript:;"></a></h2>
+<div class="bomb_pwd_in">
+    <input type="hidden" id="successUrl" value="/user/admin/list/listUser.action">
+    <input type="hidden" id="aUserId" value="${(user.id)!''}">
+    <p class="box_sty_bomb">
+        <span><b style="color: #fb3838;">*</b>姓名：</span><input type="text" id="aName" placeholder="请输入姓名" value="${(user.name)!''}"/>
+        <strong></strong>
+    </p>
+    <p class="box_sty_bomb">
+        <span><b style="color: #fb3838;">*</b>用户名：</span><input type="text" id="aLoginName" <#if user??>readonly="readonly" value="${user.loginName}" </#if> placeholder="请输入用户登录名" />
+        <strong></strong>
+    </p>
+    <#if !user??>
+
+        <p class="box_sty_bomb">
+            <span><b style="color: #fb3838;">*</b>密码：</span><input type="password" id="apwd1" placeholder="请输入密码" value=""/>
+            <strong></strong>
+        </p>
+        <p class="box_sty_bomb">
+            <span><b style="color: #fb3838;">*</b>确认密码：</span><input type="password" id="apwd2" placeholder="请再次输入密码" value=""/>
+            <strong></strong>
+        </p>
+    </#if>
+    <p class="box_sty_bomb">
+           <span><b style="color: #fb3838;">*</b>所属角色：</span>
+            <select id="aRoleId">
+                <option value="">请选择</option>
+                <#list roleList as role>
+                    <option value="${role.id}" <#if roleId?? && role.id == roleId> selected="selected"</#if>>${role.name}</option>
+                </#list>
+            </select>
+           <strong></strong>
+       </p>
+    <p class="box_sty_bomb">
+            <span><b style="color: #fb3838;">*</b>手机号：</span><input type="text" id="aPhone" placeholder="请输入手机号" value="${(user.phone)!''}"/>
+            <strong></strong>
+        </p>
+    <p class="box_sty_bomb">
+            <span style="text-indent:1em;">邮箱：</span><input type="text" id="aEmail" placeholder="请输入电子邮件" value="${(user.email)!''}"/>
+            <strong></strong>
+        </p>
+</div>
+<div class="pwd_bottom_btn">
+    <a id="cancel_edit" href="javascript:void (0);" onclick="AdminUser.closeEditUser ();">取消</a>
+    <a id="confirm_edit" class="confirmation_pwd" href="javascript:void (0);" onclick="AdminUser.saveNewOrUpdateUser();">保存</a>
+</div>
+<script>
+    $(function(){
+
+        $(".bomb_close").click(function(){
+       		$(this).parent().parent().hide();
+       		$(".mask_float").hide();
+       	});
+       	$(".mask_float").click(function(){
+       		$(".mask_float").hide();
+       		$(".bomb_box").hide();
+       	})
+    })
+</script>

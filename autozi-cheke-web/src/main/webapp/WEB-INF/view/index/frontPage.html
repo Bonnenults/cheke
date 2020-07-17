@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="pragma" content="no-cache"/>
+    <title>中驰汽配进销存平台</title>
+<#include "../common/common_include.html">
+    <style>
+        .lf_card_l img{
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body >
+<div class="lf_carCenter clear">
+    <div class="lf_carRight">
+        <div class="lf_carRight_center">
+            <div class="lf_card clear">
+                <div class="lf_card_l clear" style="height:105px;">
+                    <#if party??&&party.imageUrl??>
+                        <img src="${party.imageUrl}" width="100px" height="100px;"/>
+                    <#else>
+                        <img src="${contextpath}/styles/images/index_top.png" />
+                    </#if>
+                    <div>
+                        <h5>欢迎您  <span></span></h5>
+                        <#if (userView??)&&(userView.userType??)&&(userView.userType==2)>
+                            <p><#if (party??)&&party.name??>${party.name}</#if></p>
+                        <#else>
+                            <p><#if (userView??)&&userView.loginName??>${userView.loginName}</#if></p>
+                        </#if>
+                        <p><#if (userView??)&&userView.phone??>${userView.phone}</#if></p>
+                    </div>
+                    <#if (userView??)&&(userView.userType??)&&(userView.userType==1)>
+                        <a class="lf_btn" href="javascript:IndexPage.openModifyDialog('<#if (userView??)&&userView.loginName??>${userView.loginName}</#if>');">修改密码</a>
+                    </#if>
+                </div>
+                <#if (userView??)&&(userView.userType??)&&(userView.userType==2)>
+                <div class="lf_card_r clear">
+                    <ul>
+                        <li>
+                            <div class="money_bt">账户余额(元)<span></span><div class="lf_topF">未消费金额之和</div></div>
+                            <h5><#if accountVo??&&accountVo.account??>${accountVo.account?string(",##0.00")}</#if></h5>
+                            <p class="money_time">截止至<#if date??>${date?string("yyyy-MM-dd")}</#if></p>
+                        </li>
+                        <li>
+                            <div class="money_bt">本周消费(元)<span></span><div class="lf_topF">本周消费金额之和</div></div>
+                            <h5><#if weekCost??>${weekCost?string(",##0.00")}</#if></h5>
+                            <p class="money_time">截止至<#if date??>${date?string("yyyy-MM-dd")}</#if></p>
+                        </li>
+                        <li>
+                            <div class="money_bt">总计消费(元)<span></span><div class="lf_topF">已消费金额之和</div></div>
+                            <h5><#if totalCost??>${totalCost?string(",##0.00")}</#if></h5>
+                            <p class="money_time">截止至<#if date??>${date?string("yyyy-MM-dd")}</#if></p>
+                        </li>
+                    </ul>
+                    <a class="lf_btn" href="${contextpath}/account/ck/list/showAccount.action">查看详情</a>
+                </div>
+                </#if>
+            </div>
+<#if (userView??)&&(userView.userType??)&&(userView.userType==2)>
+            <div class="lf_mission_center">
+                <h3 class="clear">任务信息：<a class="qy_alink" id="look_all_style" style="font-size: 12px;float: right;" href="${contextpath}/article/yxpt/query/queryArticle.action">查看所有任务 ></a></h3>
+
+                <table>
+                    <tr class="tab_top">
+                        <td width="20%">上线时间</td>
+                        <td width="30%">任务标题</td>
+                        <td width="10%">领取个数</td>
+                        <td width="10%">总费用(￥)</td>
+                        <td width="10%">已消费(￥)</td>
+                        <td width="10%" class="no_border">余额(￥)</td>
+                    </tr>
+                    <#if (list??)&&(list?size>0)>
+                    <#list list as view>
+                    <tr>
+                        <td><#if view.publishTimeStr??>${view.publishTimeStr}</#if></td>
+                        <td><#if view.title??>${view.title}</#if></td>
+                        <td><#if view.shareAmount??>${view.shareAmount}</#if></td>
+                        <td><#if view.allCost??>${view.allCost?string("0.00")}</#if></td>
+                        <td><#if view.cost??>${view.cost?string("0.00")}</#if></td>
+                        <td class="no_border"><#if view.usedCost??>${view.usedCost?string("0.00")}</#if></td>
+                    </tr>
+                    </#list>
+                    <#else>
+                        <tr><td colspan="6">暂时没有数据</td></tr>
+                    </#if>
+                </table>
+            </div>
+</#if>
+        </div>
+    </div>
+    </div>
+</body>
+</html>
+<!--遮罩层-->
+<div class="mask_float"></div>
+<div class="bomb_box" id="bomb_password" style="display: none">
+    <h2 class="bomb_title">修改密码</h2>
+    <div class="bomb_pwd_in">
+        <form id="modify_password_form" action="" method="get">
+            <p class="box_sty_bomb">
+                <span>用户名：</span><input type="text" disabled name="loginName" id="loginName"/>
+            </p>
+            <p class="box_sty_bomb">
+                <span>密码：</span><input type="password" name="password1" id="password1" placeholder="" value=""/>
+            </p>
+            <p class="box_sty_bomb">
+                <span>确认密码：</span><input name="password2" id="password2" type="password" placeholder="" value=""/>
+            </p>
+        </form>
+    </div>
+    <div class="pwd_bottom_btn">
+        <a href="javascript:IndexPage.closeSubmitBox();">取消</a>
+        <a class="" style="background: #5a8bff;" href="javascript:IndexPage.modifyPassword();">确认</a>
+    </div>
+</div>
+<script>
+    var IndexPage={};
+    IndexPage.openModifyDialog=function(loginName){
+        $("#loginName").val(loginName);
+        $("#password1").val("");
+        $("#password2").val("");
+        $(".mask_float").show();
+        $("#bomb_password").show();
+    }
+
+    IndexPage.closeSubmitBox=function(){
+        $(".mask_float").hide();
+        $("#bomb_password").hide();
+    }
+    IndexPage.modifyPassword=function(){
+        var password1 = $("#password1").val();
+        var password2 = $("#password2").val();
+        var passwordValidator = new Clover.validator.Validator("#modify_password_form");
+        passwordValidator.addValidation("#password1", "required");
+        passwordValidator.addValidation("#password1", "length>=6","密码长度必须为6-15位");
+        passwordValidator.addValidation("#password1", "length<=15","密码长度必须为6-15位");
+        passwordValidator.addValidation("#password1", "alpha");       //为password添加字符验证,只能包含字母,数字及下划线
+        passwordValidator.addValidation("#password2", "required");
+        passwordValidator.addValidation("#password2", "length>=6","密码长度必须为6-15位");
+        passwordValidator.addValidation("#password2", "length<=15","密码长度必须为6-15位");
+        passwordValidator.addValidation("#password2", "alpha");       //为password添加字符验证,只能包含字母,数字及下划线
+        if(password1!=password2){
+            mizhu.alert("两次输入的密码不一致！");
+            return;
+        }
+        if(passwordValidator.validate()){
+            $.ajax({
+                url:contextpath+'/cheke/party/edit/modifyAdminPassword.action?password1='+password1+'&password2='+password2,
+                dataType:"json",
+                success:function(data){
+                    if(data.msg=="ok"){
+                        mizhu.alert("密码修改成功");
+                        IndexPage.closeSubmitBox();
+                    }else{
+                        mizhu.alert(data.msg);
+                    }
+                }
+            });
+        }
+    }
+</script>

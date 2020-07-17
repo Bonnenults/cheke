@@ -1,0 +1,36 @@
+<table>
+    <tbody>
+    <tr>
+        <th style="width: 5%">#</th>
+        <th style="width: 27%">推客号</th>
+        <th style="width: 12%">手机号</th>
+        <th style="width: 12%">提现金额</th>
+        <th style="width: 8%">手续费</th>
+        <th style="width: 8%">实扣金额</th>
+        <th style="width: 14%">申请提现时间</th>
+        <th style="width: 14%">操作</th>
+    </tr>
+    <#if (orderPage??)&&(orderPage.result??)&&(orderPage.result?size>0)>
+        <#list orderPage.result as drawCash>
+        <tr>
+            <td>${drawCash_index + orderPage.firstElementIndex}</td>
+            <td><#if drawCash.tkName??>${drawCash.tkName?html}</#if></td>
+            <td><#if drawCash.tkPhone??>${drawCash.tkPhone?html}</#if></td>
+            <td><#if drawCash.money??>${drawCash.money?string("0.00")}</#if></td>
+            <td><#if drawCash.slottingFee??>${drawCash.slottingFee?string("0.00")}</#if></td>
+            <td><#if drawCash.accountMoney??>${drawCash.accountMoney?string("0.00")}</#if></td>
+            <td><#if drawCash.createTime??>${drawCash.createTime?string("yyyy-MM-dd HH:mm:ss")}</#if></td>
+            <td class="no_border">
+                <a class="qy_alink" href="javascript:DrawCashOrder.confirmDrawCash(${drawCash.id})">确认提现</a>
+            </td>
+        </tr>
+        </#list>
+    <#else>
+    <tr>
+        <td colspan='8'>没有符合条件的记录</td>
+    </tr>
+    </#if>
+    </tbody>
+</table>
+$JXC
+<#include "../../../common/paging_common.html">

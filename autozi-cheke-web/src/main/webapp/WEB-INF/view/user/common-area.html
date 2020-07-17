@@ -1,0 +1,22 @@
+<div class="permanently clear">
+    <label style="width: 207px; margin-right: 5px;" class="permanentlyOne"><span>*</span>所在地：</label>
+    <div style="width: 147px;" class="project_category">
+        <input style="width: 147px;" readonly="readonly" type="text" placeholder="请选择" value="<#if (areaNameOne??)>${areaNameOne}</#if>" id="areaOne" name="areaOne" />
+        <div style="width: 147px;" class="border_lists" id="areaOneOption">
+
+        </div>
+    </div>
+    <div style="width: 147px;" class="project_category">
+        <input style="width: 147px;" readonly="readonly" type="text" placeholder="请选择" value="<#if (areaNameTwo??)>${areaNameTwo}</#if>" id="areaTwo" name="areaTwo" />
+        <div style="width: 147px;" class="border_lists" id="areaTwoOption">
+
+        </div>
+    </div>
+    <div  style="width: 147px;" class="project_category">
+        <input type="hidden" value="<#if (party??&&party.areaId??)>${party.areaId}</#if>" id="areaId" name="areaId" />
+        <input style="width: 147px;" readonly="readonly" type="text" placeholder="请选择" value="<#if (areaName??)>${areaName}</#if>" id="areaThree" name="areaThree" />
+        <div style="width: 147px;" class="border_lists" id="areaIdOption">
+
+        </div>
+    </div>
+</div>

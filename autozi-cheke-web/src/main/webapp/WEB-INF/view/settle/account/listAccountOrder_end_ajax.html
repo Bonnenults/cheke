@@ -1,0 +1,65 @@
+<div class="qy_center_mains act">
+    <div class="qy_center_seach clear">
+        <form id="filter_form" action="/account/ck/list/listAccountOrderAjax.action" method="post">
+            <input type="hidden" name="status" value="${(queryMap['status']!"")?html}">
+            <div class="qy_seach_wrap clear">
+            <span>
+               <label class="qy_left"> 订单号：</label>
+                <input class="qy_left" style="width:148px;" name="code" value="${(queryMap['code']!"")?html}" type="text" placeholder="">
+            </span>
+            <span>
+                <label class="qy_left"> 充值时间：</label>
+                    <input value="${(queryMap['createTimeStart']!"")}" name="createTimeStart" id="createTimeStart" onfocus="var my97EndDate=$dp.$('createTimeEnd');WdatePicker({onpicked:function(){my97EndDate.focus();},readOnly:true,maxDate:'#F{$dp.$D(\'createTimeEnd\');}',dateFmt:'yyyy-MM-dd 00:00:00'})" class="qy_calendar qy_left" type="text" placeholder="请选择......">
+                    <em class="qy_left">&nbsp;&nbsp;- &nbsp;</em>
+                    <input value="${(queryMap['createTimeEnd']!"")}" name="createTimeEnd" id="createTimeEnd" onfocus="WdatePicker({readOnly:true,dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'createTimeStart\');}',dateFmt:'yyyy-MM-dd 23:59:59'})" class="qy_calendar qy_left" type="text" placeholder="请选择......">
+              </span>
+                <span>
+                    <label class="qy_left">支付时间：</label>
+                        <input value="${(queryMap['payTimeStart']!"")}" name="payTimeStart" id="payTimeStart" onfocus="var my97EndDate=$dp.$('payTimeEnd');WdatePicker({onpicked:function(){my97EndDate.focus();},readOnly:true,maxDate:'#F{$dp.$D(\'payTimeEnd\');}',dateFmt:'yyyy-MM-dd 00:00:00'})" class="qy_calendar qy_left" type="text" placeholder="请选择......">
+                        <em class="qy_left">&nbsp;&nbsp;- &nbsp;</em>
+                        <input value="${(queryMap['payTimeEnd']!"")}" name="payTimeEnd" id="payTimeEnd" onfocus="WdatePicker({readOnly:true,dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'payTimeStart\');}',dateFmt:'yyyy-MM-dd 23:59:59'})" class="qy_calendar qy_left" type="text" placeholder="请选择......">
+                  </span>
+            </div>
+            <div class="qy_seach_right">
+                <a class="qy_seach_cx" href="javascript:void(0)" onclick="App.commonFormSubmit('filter_form');">查询</a>
+                <a class="qy_seach_cz" href="javascript:;" onclick="queryChongZhi()">重置</a>
+            </div>
+        </form>
+    </div>
+<div class="qy_center_table">
+    <table>
+        <tbody>
+        <tr>
+            <th>#</th>
+            <th>充值时间</th>
+            <th>订单号</th>
+            <th>充值金额</th>
+            <th>平台服务费</th>
+            <th>可用金额</th>
+            <th style="width: 130px;">支付时间</th>
+        </tr>
+        <#list orderPage.result as order>
+        <tr>
+            <td>${order_index + orderPage.firstElementIndex}</td>
+            <td><#if order.createTime??>${order.createTime?string("yyyy-MM-dd HH:mm")}</#if></td>
+            <td><#if order.code??>${order.code}</#if></td>
+            <td><#if order.realMoney??>${order.realMoney?string("0.00")}</#if></td>
+            <td><#if order.rateFee??>${order.rateFee?string("0.00")}</#if></td>
+            <td><#if order.accountMoney??>${order.accountMoney?string("0.00")}</#if></td>
+            <td><#if order.payTime??>${order.payTime?string("yyyy-MM-dd HH:mm")}</#if></td>
+        </tr>
+        </#list>
+        </tbody>
+    </table>
+</div>
+<div class="clear qy_page_wrap">
+    <div id="page_common_nav">
+    <#include "../../common/paging_common.html">
+    </div>
+</div>
+    <script type="text/javascript">
+        function queryChongZhi() {
+            $(".qy_seach_wrap input").val("");
+        }
+    </script>
+</div>

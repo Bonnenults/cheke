@@ -1,0 +1,91 @@
+<#macro title title='中驰车福供应链云平台'>
+<title>${title}</title>
+</#macro>
+<#macro body>
+<body class="main-content">
+<div class="shadow"></div>
+<!--内容部分-->
+<@main/>
+
+</body>
+</#macro>
+
+<#macro main>
+<div class="content-wrapper">
+<@headerRight />
+<@content />
+</div>
+</#macro>
+
+
+
+<#macro attention attention>
+<div class="main_msg"><img src="${b2bStylePath}/img/msg_1.gif" align="absmiddle"/>
+${attention}
+</div>
+</#macro>
+
+<#-- 分页页码生成用宏 -->
+<#macro pageBar page url  searchString="" queryMap={}>
+<div class="pagination">
+    <#assign queryString = "" />
+    <#if searchString?length gt 0>
+        <#assign queryString = searchString />
+    <#elseif queryMap?has_content>
+        <#list queryMap?keys as key>
+            <#if key != "pageNum" && key != "pageSize">
+                <#if queryMap[key]?is_collection>
+                    <#list queryMap[key] as item>
+                        <#assign queryString = (queryString + "&" + key + "=" + item)  />
+                    </#list>
+                    <#else >
+                        <#assign queryString = (queryString + "&" + key + "=" + queryMap[key])  />
+                </#if>
+            </#if>
+        </#list>
+    </#if>
+    <ul>
+        <#if !page.firstPage>
+            <li><a class="prev" href="${contextpath}${url}?pageNum=${page.prePage}&pageSize=${page.pageSize}${queryString}">
+                <img src="${b2bStylePath}/images/placeholder.png"/>
+            </a></li>
+            <#else>
+                <li><a class="prev-disabled" href="javascript: void(0);">
+                    <img src="${b2bStylePath}/images/placeholder.png"/>
+                </a></li>
+        </#if>
+        <#if page.totalPages != 0>
+            <#assign loops=1..page.totalPages />
+            <#list loops as pageNumber>
+                <#if pageNumber == page.pageNo>
+                    <li><a href="javascript: void(0)" class="current">${pageNumber}</a></li>
+                    <#else>
+                        <#if pageNumber == 1>
+                            <li><a href="${contextpath}${url}?pageNum=${pageNumber}&pageSize=${page.pageSize}${queryString}">${pageNumber}</a></li>
+                            <#if (page.pageNo > 5)>
+                                <li><a href="javascript: void(0)" class="more">...</a></li>
+                            </#if>
+                            <#else>
+                                <#if (pageNumber < page.pageNo - 3)>
+                                    <#else>
+                                        <li><a href="${contextpath}${url}?pageNum=${pageNumber}&pageSize=${page.pageSize}${queryString}">${pageNumber}</a></li>
+                                </#if>
+                        </#if>
+                </#if>
+            </#list>
+        <#else>
+            <li><a href="javascript: void(0)" class="current">1</a></li>
+        </#if>
+
+        <#if !page.lastPage>
+            <li><a class="next" href="${contextpath}${url}?pageNum=${page.nextPage}&pageSize=${page.pageSize}${queryString}">
+                <img src="${b2bStylePath}/images/placeholder.png"/>
+            </a></li>
+        <#else>
+            <li><a class="next-disabled" href="javascript: void(0);">
+                <img src="${b2bStylePath}/images/placeholder.png"/>
+            </a></li>
+        </#if>
+    </ul>
+</div>
+</#macro>

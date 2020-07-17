@@ -1,0 +1,16 @@
+<div class="nb_userInfo_main_form">
+    <label for="">发票抬头：</label>
+    <p><#if partyLog.invoiceTitle??>${partyLog.invoiceTitle}</#if></p>
+</div>
+<div class="nb_userInfo_main_form">
+    <label for="">纳税人识别号：</label>
+    <p><#if (partyLog.invoiceNumber??)>${partyLog.invoiceNumber}</#if></p>
+</div>
+<div class="nb_userInfo_main_form">
+    <label for="">地址、电话：</label>
+    <p><#if (partyLog.invoiceAddress??)>${partyLog.invoiceAddress}</#if></p>
+</div>
+<div class="nb_userInfo_main_form">
+    <label for="">开户行及账号：</label>
+    <p><#if (partyLog.invoiceBank??)>${partyLog.invoiceBank}</#if></p>
+</div>

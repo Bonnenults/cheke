@@ -1,0 +1,79 @@
+<script type="text/javascript" src="${contextpath}/js/settle/invoice.js"></script>
+<#include "../../../common/context.html">
+<style>
+    .invo_details{
+        overflow: hidden;
+        padding-bottom: 20px;
+    }
+    .invo_details strong{
+        width: 300px;
+        float: left;
+        display: inline-block;
+        font-weight: normal;
+        line-height: 30px;
+        font-size: 12px;
+        color: #666;
+        margin-right: 30px;
+    }
+    .invo_details .invo_setails_title{
+        display: inline-block;
+        width: 90px;
+        color: #333;
+    }
+</style>
+<div class="lf_carCenter clear">
+    <div class="lf_carRight">
+        <div class="lf_carRight_center">
+            <div class="qy_center_main">
+                <div class="invo_details clear">
+                    <strong><span class="invo_setails_title">车客名称：</span><#if party??&&party.name??>${party.name}</#if></strong>
+                    <strong><span class="invo_setails_title">发票抬头：</span><#if invoice??&&invoice.invoiceTitle??>${invoice.invoiceTitle}</#if></strong>
+                    <strong><span class="invo_setails_title">纳税人识别号：</span><#if invoice??&&invoice.invoiceNumber??>${invoice.invoiceNumber}</#if></strong>
+                    <strong><span class="invo_setails_title">地址、电话：</span><#if invoice??&&invoice.invoiceAddress??>${invoice.invoiceAddress}</#if></strong>
+                    <strong><span class="invo_setails_title">开户行及账号：</span><#if invoice??&&invoice.invoiceBank??>${invoice.invoiceBank}</#if></strong>
+                    <strong><span class="invo_setails_title">发票金额：</span><#if invoice??&&invoice.money??>${invoice.money}</#if></strong><br/>
+                    <strong><span class="invo_setails_title">发票内容：</span><#if invoice??&&invoice.invoiceContent??>${invoice.invoiceContent}</#if></strong>
+                </div>
+                <div class="qy_center_table" id="data_table_list">
+                    <table>
+                        <tbody>
+                        <tr>
+                            <th>#</th>
+                            <th>充值时间</th>
+                            <th>订单号</th>
+                            <th>支付时间</th>
+                            <th>充值金额</th>
+                            <th>代扣税费</th>
+                            <th>手续费</th>
+                            <th>可消费金额</th>
+                        </tr>
+                        <#if (orderList??)&&(orderList?size>0)>
+                            <#list orderList as view>
+                            <tr>
+                                <td>${view_index+1 }</td>
+                                <td><#if view.createTime??>${view.createTime?string("yyyy-MM-dd HH:mm")}</#if></td>
+                                <td><#if view.code??>${view.code?html}</#if></td>
+                                <td><#if view.payTime??>${view.payTime?string("yyyy-MM-dd HH:mm")}</#if></td>
+                                <td><#if view.realMoney??>${view.realMoney?string("0.00")}</#if></td>
+                                <td><#if view.rateFee??>${view.rateFee?string("0.00")}</#if></td>
+                                <td><#if view.rateFee??>${view.slottingFee?string("0.00")}</#if></td>
+                                <td><#if view.accountMoney??>${view.accountMoney?string("0.00")}</#if></td>
+                            </tr>
+                            </#list>
+                        <#else>
+                        <tr>
+                            <td colspan='10'>没有符合条件的记录</td>
+                        </tr>
+                        </#if>
+                        </tbody>
+                    </table>
+                </div>
+                <br>
+                <div class="qy_left clear">
+                    <a class="qy_but" href="${contextpath}/invoice/admin/list/listInvoice.action?status=${invoice.status}">返回</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

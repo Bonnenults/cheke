@@ -1,0 +1,75 @@
+<script type="text/javascript" src="${contextpath}/js/framework/upload/ajaxfileupload.js" ></script>
+<script type="text/javascript" src="${contextpath}/js/party/party.js"></script>
+<style>
+    .author_left object {
+        left: 0
+    }
+</style>
+<script>
+    $(function () {
+        Party.initValidator();
+        Party.initOneLevelArea();
+        Party.bindCertificateImgFile();
+        Party.bindIdentifyImgFile();
+        var typeName = "媒介";
+        var typeName1 = "媒介";
+        $(".typeName").html(typeName);
+        $(".typeName1").html(typeName1);
+        $("#invoiceTitle").attr("placeholder","与媒介名称自动填写保持一致");
+        $("#certificateName").html("组织机构代码证/营业执照扫描件");
+        $("#certificateMsg").html("请上传组织机构代码证/营业执照扫描件最新年检副本的清晰彩色扫描件或照片！");
+    });
+</script>
+<div class="lf_carRight_center">
+    <div class="nb_userInfo_header">
+        <p>选择身份：</p>
+        <button onclick="Party.selectPartyClass(this,1)">企业单位<span class="nb_triangle_down"></span></button>
+        <button onclick="Party.selectPartyClass(this,2)">政府机构<span class="nb_triangle_down"></span></button>
+        <button class="hover" onclick="Party.selectPartyClass(this,3)">展览媒介<span class="nb_triangle_down"></span></button>
+        <button onclick="Party.selectPartyClass(this,4)">个人<span class="nb_triangle_down"></span></button>
+        <p class="nb_userInfo_header_description">说明: 无营业执照请选“个人” </p>
+    </div>
+    <form id="editForm" action="" method="post">
+        <input type="hidden" id="partyClass" name="partyClass" value="3">
+        <input type="hidden" id="userId" name="userId" value="<#if (user.id??)>${user.id}</#if>">
+        <input type="hidden" id="partyId" name="id" value="<#if (party??&&party.id??)>${party.id}</#if>">
+        <div class="nb_userInfo_main">
+            <p class="ng_comments">注：＊为必填</p>
+            <h4 class="nb_userInfo_main_title"><span></span>媒介信息</h4>
+            <div class="nb_userInfo_main_form">
+                <label for=""><span>＊</span>媒介全称：</label>
+                <input type="text" name="companyName" id="companyName" onchange="Party.bindCompanyName()" value="" placeholder="请输入媒介全称，需与媒介资质上登记的名称一致">
+            </div>
+            <div class="nb_userInfo_main_form nb_mediaType clear">
+                <label style="float:left;" for=""><span style="color: red">＊</span>媒介属性：</label>
+                <div style="float:left;" class="radioStyle">
+                    <label for="item1">
+                            <input id="item1" type="radio" name="mediaType" value="1" checked="true">
+                            <div></div>
+                        <span>群媒体<span>以公司形式专注于生产的小团体</span></span>
+                    </label>
+                </div>
+                <div style="float:left; margin-top: 3px;" class="radioStyle nb_MG">
+                    <label for="item2">
+                            <input id="item2" type="radio" name="mediaType" value="2">
+                            <div></div>
+                        <span>新闻媒体<span>报纸、杂志、电台、电视台、门户网站等新闻单位。包括大媒体下属品牌或者子栏目</span></span>
+                    </label>
+                </div>
+            </div>
+            <div class="nb_userInfo_main_form">
+                <label style="width: 166px;margin-right:6px;" for="">媒介简介：</label>
+            <textarea name="description" id="description" value="" cols="30" rows="10"
+                      placeholder="请简单介绍本媒介，便于大家快速了解，字数不多于30字"></textarea>
+            </div>
+            <!--所在地-->
+            <#include "common-area.html">
+        </div>
+    </form>
+    <div class="nb_submit">
+        <a href="javascript:void(0)">
+            <button class="nb_submit_btn" onclick="Party.toUpStep()">上一步</button>
+            <button class="nb_submit_btn" onclick="Party.save(3)">提交审核</button>
+        </a>
+    </div>
+</div>

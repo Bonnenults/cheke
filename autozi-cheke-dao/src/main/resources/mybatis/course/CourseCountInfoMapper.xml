@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.autozi.cheke.course.mapper.CourseCountInfoMapper">
+<cache eviction="LRU" type="org.mybatis.caches.memcached.MemcachedCache"/>
+<resultMap id="CourseCountInfoMap" type="CourseCountInfo">
+	<result column="ID" jdbcType="DECIMAL" property="id"/>
+	<result column="VERSION" jdbcType="DECIMAL" property="version"/>
+	<result column="COURSE_ID" jdbcType="DECIMAL" property="courseId"/>
+	<result column="STU_NUM" jdbcType="DECIMAL" property="stuNum"/>
+	<result column="COMPLETED_NUM" jdbcType="DECIMAL" property="completedNum"/>
+	<result column="TWITTER" jdbcType="DECIMAL" property="twitter"/>
+	<result column="LEAVE_WORDS" jdbcType="DECIMAL" property="leaveWords"/>
+	<result column="LIKES" jdbcType="DECIMAL" property="likes"/>
+	<result column="DISLIKES" jdbcType="DECIMAL" property="dislikes"/>
+	<result column="PAGE_VIEW" jdbcType="DECIMAL" property="pageView"/>
+	<result column="SHARE_AMOUNT" jdbcType="DECIMAL" property="shareAmount"/>
+	<result column="WX_FRIENDS_CIRCLE" jdbcType="DECIMAL" property="wxFriendsCircle"/>
+	<result column="WX_FRIENDS" jdbcType="DECIMAL" property="wxFriends"/>
+	<result column="QQ_ZONE" jdbcType="DECIMAL" property="qqZone"/>
+	<result column="QQ_FRIENDS" jdbcType="DECIMAL" property="qqFriends"/>
+	<result column="SINA" jdbcType="DECIMAL" property="sina"/>
+
+</resultMap>
+<sql id="Base_Column_List">
+	ID,VERSION,COURSE_ID,STU_NUM,COMPLETED_NUM,TWITTER,LEAVE_WORDS,LIKES,DISLIKES,PAGE_VIEW,SHARE_AMOUNT,WX_FRIENDS_CIRCLE,WX_FRIENDS,QQ_ZONE,QQ_FRIENDS,SINA
+</sql>
+<sql id="cci_Base_Column_List">
+	cci.ID,cci.VERSION,cci.COURSE_ID,cci.STU_NUM,cci.COMPLETED_NUM,cci.TWITTER,cci.LEAVE_WORDS,cci.LIKES,cci.DISLIKES,cci.PAGE_VIEW,cci.SHARE_AMOUNT,cci.WX_FRIENDS_CIRCLE,cci.WX_FRIENDS,cci.QQ_ZONE,cci.QQ_FRIENDS,cci.SINA
+</sql>
+<select id="get" parameterType="long" resultMap="CourseCountInfoMap">
+	select
+		<include refid="Base_Column_List"/>
+	from course_count_info cci
+	where ID = #{id,jdbcType=DECIMAL}
+</select>
+<delete id="delete" parameterType="long">
+	delete
+	from course_count_info
+	where ID = #{id,jdbcType=DECIMAL}
+</delete>
+<insert id="insert" parameterType="CourseCountInfo">
+	insert into course_count_info(
+		<include refid="Base_Column_List"/>
+	) values (
+	#{id,jdbcType=DECIMAL},
+	#{version,jdbcType=DECIMAL},
+	#{courseId,jdbcType=DECIMAL},
+    #{stuNum,jdbcType=DECIMAL},
+    #{completedNum,jdbcType=DECIMAL},
+	#{twitter,jdbcType=DECIMAL},
+	#{leaveWords,jdbcType=DECIMAL},
+	#{likes,jdbcType=DECIMAL},
+	#{dislikes,jdbcType=DECIMAL},
+	#{pageView,jdbcType=DECIMAL},
+	#{shareAmount,jdbcType=DECIMAL},
+	#{wxFriendsCircle,jdbcType=DECIMAL},
+	#{wxFriends,jdbcType=DECIMAL},
+	#{qqZone,jdbcType=DECIMAL},
+	#{qqFriends,jdbcType=DECIMAL},
+	#{sina,jdbcType=DECIMAL}
+	)
+</insert>
+<update id="update" parameterType="CourseCountInfo">
+	update course_count_info cci
+	<set>
+		VERSION = VERSION + 1
+		<if test="courseId != null">
+		,COURSE_ID = #{courseId,jdbcType=DECIMAL}
+		</if>
+        <if test="stuNum != null">
+            ,STU_NUM = #{stuNum,jdbcType=DECIMAL}
+        </if>
+        <if test="completedNum != null">
+            ,COMPLETED_NUM = #{completedNum,jdbcType=DECIMAL}
+        </if>
+		<if test="twitter != null">
+		,TWITTER = #{twitter,jdbcType=DECIMAL}
+		</if>
+		<if test="leaveWords != null">
+		,LEAVE_WORDS = #{leaveWords,jdbcType=DECIMAL}
+		</if>
+		<if test="likes != null">
+		,LIKES = #{likes,jdbcType=DECIMAL}
+		</if>
+		<if test="dislikes != null">
+		,DISLIKES = #{dislikes,jdbcType=DECIMAL}
+		</if>
+		<if test="pageView != null">
+		,PAGE_VIEW = #{pageView,jdbcType=DECIMAL}
+		</if>
+		<if test="shareAmount != null">
+		,SHARE_AMOUNT = #{shareAmount,jdbcType=DECIMAL}
+		</if>
+		<if test="wxFriendsCircle != null">
+		,WX_FRIENDS_CIRCLE = #{wxFriendsCircle,jdbcType=DECIMAL}
+		</if>
+		<if test="wxFriends != null">
+		,WX_FRIENDS = #{wxFriends,jdbcType=DECIMAL}
+		</if>
+		<if test="qqZone != null">
+		,QQ_ZONE = #{qqZone,jdbcType=DECIMAL}
+		</if>
+		<if test="qqFriends != null">
+		,QQ_FRIENDS = #{qqFriends,jdbcType=DECIMAL}
+		</if>
+		<if test="sina != null">
+		,SINA = #{sina,jdbcType=DECIMAL}
+		</if>
+	</set>
+	where ID = #{id,jdbcType=DECIMAL}
+</update>
+<update id="updateNul" parameterType="CourseCountInfo">
+	update course_count_info cci
+	<set>
+		VERSION = VERSION + 1
+		<if test="courseId != null">
+			,COURSE_ID = #{courseId,jdbcType=DECIMAL}
+		</if>
+        <if test="stuNum != null">
+            ,STU_NUM = #{stuNum,jdbcType=DECIMAL}
+        </if>
+        <if test="completedNum != null">
+            ,COMPLETED_NUM = #{completedNum,jdbcType=DECIMAL}
+        </if>
+		<if test="twitter != null">
+			,TWITTER = #{twitter,jdbcType=DECIMAL}
+		</if>
+		<if test="leaveWords != null">
+			,LEAVE_WORDS = #{leaveWords,jdbcType=DECIMAL}
+		</if>
+		<if test="likes != null">
+			,LIKES = #{likes,jdbcType=DECIMAL}
+		</if>
+		<if test="dislikes != null">
+			,DISLIKES = #{dislikes,jdbcType=DECIMAL}
+		</if>
+		<if test="pageView != null">
+			,PAGE_VIEW = #{pageView,jdbcType=DECIMAL}
+		</if>
+		<if test="shareAmount != null">
+			,SHARE_AMOUNT = #{shareAmount,jdbcType=DECIMAL}
+		</if>
+		<if test="wxFriendsCircle != null">
+			,WX_FRIENDS_CIRCLE = #{wxFriendsCircle,jdbcType=DECIMAL}
+		</if>
+		<if test="wxFriends != null">
+			,WX_FRIENDS = #{wxFriends,jdbcType=DECIMAL}
+		</if>
+		<if test="qqZone != null">
+			,QQ_ZONE = #{qqZone,jdbcType=DECIMAL}
+		</if>
+		<if test="qqFriends != null">
+			,QQ_FRIENDS = #{qqFriends,jdbcType=DECIMAL}
+		</if>
+		<if test="sina != null">
+			,SINA = #{sina,jdbcType=DECIMAL}
+		</if>
+	</set>
+	where ID = #{id,jdbcType=DECIMAL}
+</update>
+<select id="findListForExample" parameterType="CourseCountInfo" resultMap="CourseCountInfoMap">
+	select
+	<include refid="cci_Base_Column_List"/>
+	from course_count_info cci
+	<include refid="common_query_condition"/>
+</select>
+<select id="findListForMap" parameterType="map" resultMap="CourseCountInfoMap">
+	select
+	<include refid="cci_Base_Column_List"/>
+	from course_count_info cci
+	<include refid="common_query_condition"/>
+</select>
+<sql id="common_query_condition">
+	<where>
+		<if test="id != null">
+			cci.id = #{id,jdbcType=DECIMAL}
+		</if>
+		<if test="courseId != null">
+			AND cci.course_id = #{courseId,jdbcType=DECIMAL}
+		</if>
+	</where>
+</sql>
+    
+</mapper>

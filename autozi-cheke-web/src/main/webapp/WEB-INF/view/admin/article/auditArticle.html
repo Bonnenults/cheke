@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>信息审核</title>
+        <script charset="utf-8" src="${contextpath}/js/framework/kindeditor/kindeditor-all-min.js"></script>
+        <script charset="utf-8" src="${contextpath}/js/framework/kindeditor/lang/zh-CN.js"></script>
+        <script type="text/javascript" src="${contextpath}/js/article/article/articleAdmin.js"></script>
+        <style>
+            #audit_Article_class p{
+                line-height: 28px;
+            }
+            #audit_Article_class .audit_Article_warning{
+                line-height: 28px;
+                color: #fb3838;
+                padding: 15px 0;
+            }
+            #audit_Article_class .audit_Article_warning span{
+                color: #666;
+                margin-right: 20px;
+            }
+        </style>
+	</head>
+	<body>
+		<h2 style="width:50%; margin-left:40px; margin-top:40px;">${channelName}审核</h2>
+		<div class="modify_item" id="audit_Article_class">
+            <p class="audit_Article_warning"><span>敏感词:</span>${illegalString!''}</p>
+			<form class="modify_form" id="form_data" method="post" action="/article/admin/create/createOrUpdateArticle.action">
+
+				<input type="hidden" id="articleId" name="id" value="${art.id!''}"> <#-- 资讯id -->
+
+				<p>
+					<label><span>*</span>${channelName}标题：</label>
+					${art.title!''}
+				</p>
+                <p>
+                    <label><span>*</span>${channelName}简介：</label>
+                   ${art.intro!''}
+                </p>
+
+				<div class="permanently clear">
+					<label class="permanentlyOne newLabel"><span>*</span>${channelName}类别：</label>
+					<div class="project_category">
+						${typeName!''}
+					</div>
+				</div>
+
+				<p>
+					<label><span>*</span>${channelName}分类：</label>
+					${art.tag!''}
+				</p>
+
+				<p>
+					<label><span>*</span>${channelName}来源：</label>
+					${art.source!''}
+				</p>
+
+				<label class="permanentlyOne newLabel">${channelName}缩略图：</label>
+				<div class="modity_img">
+					<#if art.image?? && art.image != ''>
+						<img src="${art.image}" width="188" height="112"/>
+					</#if>
+				</div>
+
+
+                <div class="permanently clear">
+                    <label class="permanentlyOne newLabel"><span>*</span>是否永久有效：</label>
+                    <div class="radioStyle">
+                        <label for="item1">
+                            <input id="item1" type="radio" name="is_forever" value="1" disabled <#if art.endTime??><#else>checked</#if> >
+                            <div></div>
+                            <span>是</span>
+                        </label>
+                    </div>
+                    <div class="radioStyle">
+                        <label for="item2">
+                            <input id="item2" type="radio" name="is_forever" value="0" disabled <#if art.endTime??>checked<#else></#if>>
+                            <div></div>
+                            <span>否</span>
+                        </label>
+                    </div>
+                </div>
+
+				<!--起止时间-->
+				<p id="beginEndTimeShow" <#if art.beginTime??>style="display: block"<#else>style="display: none"</#if>>
+					<label><span>*</span>起止时间：</label>
+					<input class="modify_time" type="text" disabled value="<#if art.beginTime??>${art.beginTime?string('yyyy-MM-dd HH:mm:ss')}<#else>''</#if>" id="beginTime" name="beginTime"
+						   																		onfocus="var my97EndDate=$dp.$('endTime');
+						 																		WdatePicker({onpicked:function(){my97EndDate.focus();},
+						 																		readOnly:true,maxDate:'#F{$dp.$D(\'endTime\');}'})"/>
+					<span class="modify_time_line"> - </span>
+					<input class="modify_time" type="text" disabled value="<#if art.endTime??>${art.endTime?string('yyyy-MM-dd HH:mm:ss')}<#else>''</#if>" id="endTime" name="endTime"
+                           																		onfocus="WdatePicker({readOnly:true,minDate:'#F{$dp.$D(\'beginTime\');}'})"/>
+				</p>
+
+				<p>
+					<label><span>*</span>${channelName}内容：</label>
+                    <textarea id="body" disabled class="project_content ue_ditor_style" name="body">${art.body} </textarea>
+				</p>
+
+				<div class="permanently clear">
+					<label class="permanentlyOne newLabel"><span>*</span>是否生成推广任务：</label>
+					<div class="radioStyle">
+				    		<label for="task1">
+					        <input id="task1" type="radio" disabled name="a_is_task" value="1" <#if art.aIsTask == 1>checked</#if> >
+					        <div></div>
+					        <span>是</span>
+				        </label>
+				    </div>
+				    <div class="radioStyle">
+				    	<label for="task2">
+					        <input id="task2" type="radio" disabled name="a_is_task" value="0" <#if art.aIsTask == 0>checked</#if>>
+					        <div></div>
+					        <span>否</span>
+				        </label>
+				    </div>
+				    <span class="tousu_tishi">提示：推广按点击进行付费,单次点击费用不少于0.1元</span>
+				</div>
+
+				<div id="money_info" class="permanently clear" <#if art.aIsTask == 1>style="display: block"<#else>style="display: none"</#if>>
+					<label class="permanentlyOne newLabel"><span>*</span>费用总投入：</label>
+					<!--文本框-->
+					<input class="inves_all_money" disabled type="text" name="allCost" value="${countInfo.allCost!''}"/>
+
+					<span class="total_sptext">元</span>
+					<span class="total_sptext" style="color: #fc6060; margin-left: 15px;">*</span>
+					<span class="total_sptext">单次点击：</span>
+-
+					<#--<div class="project_category" style="width:130px;display: inline-block;">
+						<!--文本框&ndash;&gt;
+						<input style="width:130px" class="inves_all_money" type="text" placeholder="请选择" value="" name="" />
+						<div style="width: 130px;" class="border_lists">
+							<a style="width: 110px;" href="javascript:;">0.5</a>
+							<a style="width: 110px;" href="javascript:;">1.5</a>
+						</div>
+					</div>-->
+
+                    <input class="inves_all_money" disabled type="text" name="onceCost" value="${countInfo.onceCost!''}"/>
+
+					<span class="total_sptext">元</span>
+					<span class="total_sptext" style="color: #fc6060; margin-left: 15px;">*</span>
+					<span class="total_sptext">一个用户单条任务最多可获得：</span>
+
+					<!--文本框-->
+					<input class="inves_all_money" disabled type="text" name="mostCost" value="${countInfo.mostCost!''}"/>
+					<span class="total_sptext">元</span>
+					<span class="tousu_tishi">提示：一经发布，不可撤销</span>
+				</div>
+
+			</form>
+
+            <div class="nb_submit">
+                <a href="javascript:;">
+                    <button class="nb_btn_by" onclick="ArticleAdmin.auditArticle(1)">审核通过,上线</button>
+                </a>
+                <a href="javascript:;">
+                    <button class="nb_btn_refuse">拒绝</button>
+                </a>
+                <a href="javascript:;">
+                    <button class="nb_btn_back" onclick="window.history.go(-1)">返回</button>
+                </a>
+            </div>
+		</div>
+
+
+        <!--遮罩层-->
+        <div class="mask_float"></div>
+        <!--拒绝原因弹框-->
+        <div class="bomb_box" id="reasons_for">
+            <div class="bomb_pwd_in">
+                <p>
+                    <span>拒绝原因：</span>
+                    <textarea placeholder="请输入拒绝原因" name="refuseReason" id="refuseReason" maxlength="100"></textarea>
+                </p>
+            </div>
+            <div class="pwd_bottom_btn">
+                <a id="reasons_ok" class="confirmation_pwd" href="javascript:;">确认</a>
+            </div>
+        </div>
+	</body>
+
+	<script type="text/javascript">
+			//实例化编辑器
+            var editor;
+            KindEditor.ready(function(K) {
+                editor = K.create('textarea[name="body"]', {
+                    readonlyMode : true,
+                    allowFileManager : false,	//不允许选择已经上传的图片
+                    allowImageRemote : false,	//不允许上传网络图片
+                    resizeType:1,	//不可改变编辑器大小
+                    themeType : 'simple',
+                    cssPath : '${contextpath}/js/framework/kindeditor/plugins/code/prettify.css',
+                    uploadJson :location.origin+'/upload/extImageKindEditor.action',
+                    afterCreate : function() {
+                        var self = this;
+                        K.ctrl(document, 13, function() {
+                            self.sync();
+                        });
+                        K.ctrl(self.edit.doc, 13, function() {
+                            self.sync();
+                        });
+                    },
+                    afterBlur: function () { this.sync(); },
+                    items : [
+                        '|', 'undo', 'redo', '|', 'preview','cut', 'copy', 'paste',
+                        'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
+                        'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent',
+                        'clearhtml', 'quickformat', 'selectall', '|', '/',
+                        'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+                        'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image', 'multiimage',
+                        'table', 'hr', 'emoticons', 'pagebreak',
+                        '|', 'fullscreen'
+                    ]
+                });
+
+            });
+
+            //拒绝原因弹框
+            $(".nb_btn_refuse").click(function(){
+                $(".mask_float").show();
+                $("#reasons_for").show();
+            });
+
+            $("#reasons_ok").click(function(){
+                ArticleAdmin.auditArticle(0)
+                $(".mask_float").hide();
+                $("#reasons_for").hide();
+            })
+	</script>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>勋章规则</title>
+	<script type="text/javascript" src="${contextpath}/js/medal/medalRule.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+    $(function(){
+        MedalRule.initMedalRule();
+    })
+</script>
+
+
+<div class="lf_carCenter clear">
+	<#--    左侧菜单栏      -->
+
+		<div class="lf_carRight">
+			<div class="lf_carRight_center">
+
+				<div class="qy_center_tab clear">
+					<ul class="clear">
+						<li class="act" onclick="MedalRule.changeStatus(0)">待发布</li>
+						<li onclick="MedalRule.changeStatus(1)">已上线</li>
+						<li onclick="MedalRule.changeStatus(2)">已下线</li>
+						<li onclick="MedalRule.changeStatus(-100)">全部</li>
+					</ul>
+				</div>
+
+				<div class="qy_center_main">
+
+					<form id="filter_form" action="/medalRule/admin/list/listMedalRule.action" method="post">
+
+						<input type="hidden" name="status" id="status" value="0">
+						<input type="hidden" name="allFilter" id="allFilter" value="0">
+
+
+						<div class="qy_center_seach clear">
+							<div class="qy_seach_wrap clear">
+
+                                <span style="display: block" id="create_time_span">
+                                    <label class="qy_left">创建时间：</label>
+                                    <input id="createTimeStart" name="createTimeStart" class="qy_calendar qy_left" type="text" placeholder="请选择"
+                                           onfocus="var my97EndDate=$dp.$('createTimeEnd');
+                                                                                                    WdatePicker({onpicked:function(){my97EndDate.focus();},
+                                                                                                    readOnly:true,maxDate:'#F{$dp.$D(\'createTimeEnd\');}',dateFmt:'yyyy-MM-dd 00:00:00'})">
+                                    <em class="qy_left">&nbsp;- &nbsp;</em>
+                                    <input id="createTimeEnd" name="createTimeEnd" class="qy_calendar qy_left" type="text" placeholder="请选择"
+                                           onfocus="WdatePicker({readOnly:true,minDate:'#F{$dp.$D(\'createTimeStart\');}',dateFmt:'yyyy-MM-dd 23:59:59'})">
+                                </span>
+
+								<span style="display: none" id="publish_time_span">
+                                    <label class="qy_left">上线时间：</label>
+                                    <input id="publishTimeStart" name="publishTimeStart" class="qy_calendar qy_left" type="text" placeholder="请选择"
+										   onfocus="var my97EndDate=$dp.$('publishTimeEnd');
+                                                                                                    WdatePicker({onpicked:function(){my97EndDate.focus();},
+                                                                                                    readOnly:true,maxDate:'#F{$dp.$D(\'publishTimeEnd\');}',dateFmt:'yyyy-MM-dd 00:00:00'})">
+                                    <em class="qy_left">&nbsp;- &nbsp;</em>
+                                    <input id="publishTimeEnd" name="publishTimeEnd" class="qy_calendar qy_left" type="text" placeholder="请选择"
+										   onfocus="WdatePicker({readOnly:true,minDate:'#F{$dp.$D(\'publishTimeStart\');}',dateFmt:'yyyy-MM-dd 23:59:59'})">
+                                </span>
+
+
+								<span style="display: none" id="offline_time_span">
+                                    <label class="qy_left">下线时间：</label>
+                                    <input id="offlineTimeStart" name="offlineTimeStart" class="qy_calendar qy_left" type="text" placeholder="请选择"
+										   onfocus="var my97EndDate=$dp.$('offlineTimeEnd');
+                                                                                                    WdatePicker({onpicked:function(){my97EndDate.focus();},
+                                                                                                    readOnly:true,maxDate:'#F{$dp.$D(\'offlineTimeEnd\');}',dateFmt:'yyyy-MM-dd 00:00:00'})">
+                                    <em class="qy_left">&nbsp;- &nbsp;</em>
+                                    <input id="offlineTimeEnd" name="offlineTimeEnd" class="qy_calendar qy_left" type="text" placeholder="请选择"
+										   onfocus="WdatePicker({readOnly:true,minDate:'#F{$dp.$D(\'offlineTimeStart\');}',dateFmt:'yyyy-MM-dd 23:59:59'})">
+                                </span>
+
+
+								<span style="display: none" id="status_span">
+                                    <label class="qy_left qy_left">状态：</label>
+                                    <div class="project_category qy_left text_adjustment">
+                                        <!--文本框-->
+                                        <input class="inves_all_money" type="text" placeholder="全部" value="" name="" />
+                                        <div class="border_lists" id="course_status">
+                                            <a href="javascript:;" data-title="-100">全部</a>
+                                            <a href="javascript:;" data-title="0">待发布</a>
+                                            <a href="javascript:;" data-title="1">已上线</a>
+                                            <a href="javascript:;" data-title="2">已下线</a>
+                                           <#-- <#list medalStatusMap?keys as key>
+                                                <a href="javascript:;" data-title="${key}"> ${medalStatusMap[key]} </a>
+											</#list>-->
+                                        </div>
+                                    </div>
+                                </span>
+
+							</div>
+
+							<div class="qy_seach_right">
+								<a class="qy_seach_cx" href="javascript:void(0)" onclick="App.commonFormSubmit('filter_form');">查询</a>
+								<a class="qy_seach_cz" href="javascript:;" onclick="queryChongZhi()">重置</a>
+							</div>
+
+						</div>
+					</form>
+
+					<div class="qy_center_table" id="data_table_list">
+						<table>
+							<tbody>
+                            <tr class="tab_top">
+                                <td width="5%">#</td>
+                                <td width="15%">规则key</td>
+                                <td width="25%">规则value </td>
+                                <td width="8%">状态</td>
+                                <td width="10%">对应勋章</td>
+                                <td width="10%">规则简介</td>
+
+                                <td class="no_border" width="15%">操作</td>
+                            </tr>
+                            <#if (page??)&&(page.result??)&&(page.result?size>0)>
+                                <#list page.result as view>
+                                    <tr>
+                                        <td>${page.firstElementIndex + view_index }</td>
+                                        <td><#if view.ruleKey??>${view.ruleKey?html}</#if></td>
+                                        <td><#if view.ruleValue??>${view.ruleValue?html}</#if></td>
+                                        <td><#if view.statusCN??>${view.statusCN?html}</#if></td>
+                                        <td><#if view.medalName??>${view.medalName?html}</#if></td>
+                                        <td><#if view.intro??>${view.intro?html}</#if></td>
+                                        <td class="no_border">
+                                            <#if view.status == 0>
+                                                <a class="qy_alink" href="${contextpath}/medal/admin/create/createMedal.action?id=${view.id}">修改</a>
+                                                <a class="qy_alink" href="javascript:;" onclick="MedalRule.online(${view.id})">上线</a>
+                                            </#if>
+                                            <#if view.status == 1>
+                                                <a class="qy_alink" href="javascript:;" onclick="MedalRule.offline(${view.id})">下线</a>
+                                            </#if>
+                                            <#if view.status == 2>
+                                                <a class="qy_alink" href="${contextpath}/medal/admin/create/createMedal.action?id=${view.id}">修改</a>
+                                                <a class="qy_alink" href="javascript:;" onclick="MedalRule.online(${view.id})">重新上线</a>
+                                                <a href="javascript:;" onclick="MedalRule.deleteMedal(${view.id})">删除</a>
+                                            </#if>
+                                            <a class="qy_alink"  href="javascript:;" onclick="MedalRule.medalRule(${view.id})">修改</a>
+
+                                        </td>
+                                    </tr>
+                                </#list>
+                                <#else>
+                                    <tr>
+                                        <td colspan='5'>没有符合条件的记录</td>
+                                    </tr>
+                            </#if>
+							</tbody>
+						</table>
+					</div>
+
+					<div class="clear qy_page_wrap">
+						<div id="page_common_nav">
+							<#include "../../common/paging_common.html">
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+</div>
+
+<!--遮罩层-->
+<div class="mask_float"></div>
+<!--新增分类弹框-->
+
+<div class="bomb_box" id="new_rule">
+    <h2 class="bomb_title">修改规则<a class="bomb_close" href="javascript:;"></a></h2>
+    <input type="hidden" name="rule_id" id="rule_id">
+    <input type="hidden" name="medal_id" id="medal_id">
+    <div class="bomb_pwd_in">
+        <form id="form_data">
+            <p>
+                <span>规则KEY：</span>
+                <input type="text" id="rule_key" name="rule_key" value=""  />
+            </p>
+            <p>
+                <span>规则VALUE：</span>
+                <input type="text" placeholder="请输入......" id="rule_value" name="rule_value" value=""  />
+            </p>
+            <p>
+                <span>规则描述：</span>
+                <input type="text" placeholder="请输入100字以内" id="intro" name="intro" value=""  />
+            </p>
+            <p>
+                <span>
+                    <label class="qy_left qy_left" style="text-align: right;width: 62px;">状态：</label>
+                    <div class="rule_status qy_left text_adjustment" style="width: 202px !important;">
+                        <select name="status" id="statusSelect">
+                            <option value="0" selected="selected">待上线</option>
+                            <option value="1">上线</option>
+                            <option value="2">下线</option>
+                        </select>
+                    </div>
+                </span>
+            </p>
+        </form>
+    </div>
+    <div class="pwd_bottom_btn">
+        <a class="fication_cancel" href="javascript:;">取消</a>
+        <a class="confirmation_pwd" href="javascript:;" onclick="MedalRule.saveOrUpdateRule()">确认</a>
+    </div>
+</div>
+
+</body>
+</html>
+

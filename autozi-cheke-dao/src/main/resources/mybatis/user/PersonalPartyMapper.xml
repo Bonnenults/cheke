@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.autozi.cheke.user.mapper.PersonalPartyMapper">
+<cache eviction="LRU" type="org.mybatis.caches.memcached.MemcachedCache"/>
+<resultMap id="PersonalPartyMap" type="PersonalParty">
+	<result column="ID" jdbcType="DECIMAL" property="id"/>
+	<result column="VERSION" jdbcType="DECIMAL" property="version"/>
+	<result column="ID_CARD_STATUS" jdbcType="DECIMAL" property="idCardStatus"/>
+	<result column="INVITE_CODE" jdbcType="VARCHAR" property="inviteCode"/>
+	<result column="INVITE_CODE_MINE" jdbcType="VARCHAR" property="inviteCodeMine"/>
+	<result column="COMPANY_NAME" jdbcType="VARCHAR" property="companyName"/>
+	<result column="JOB_NAME" jdbcType="VARCHAR" property="jobName"/>
+	<result column="DESCRIPTION" jdbcType="VARCHAR" property="description"/>
+	<result column="ADDRESS" jdbcType="VARCHAR" property="address"/>
+	<result column="IDENTIFY_IMG_A" jdbcType="VARCHAR" property="identifyImgA"/>
+	<result column="IDENTIFY_IMG_B" jdbcType="VARCHAR" property="identifyImgB"/>
+	<result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+	<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+	<result column="SOURCE_TYPE" jdbcType="DECIMAL" property="sourceType"/>
+	<result column="IMAGE_URL" jdbcType="VARCHAR" property="imageUrl"/>
+	<result column="REFUSE_REASON" jdbcType="VARCHAR" property="refuseReason"/>
+	<result column="ID_CARD_NUMBER" jdbcType="VARCHAR" property="idCardNumber"/>
+</resultMap>
+<sql id="Base_Column_List">
+	ID,VERSION,ID_CARD_STATUS,INVITE_CODE,INVITE_CODE_MINE,COMPANY_NAME,JOB_NAME,DESCRIPTION,ADDRESS,IDENTIFY_IMG_A,IDENTIFY_IMG_B,UPDATE_TIME,CREATE_TIME,SOURCE_TYPE,IMAGE_URL,REFUSE_REASON,ID_CARD_NUMBER
+</sql>
+<sql id="bpp_Base_Column_List">
+	bpp.ID,bpp.VERSION,bpp.ID_CARD_STATUS,bpp.INVITE_CODE,bpp.INVITE_CODE_MINE,bpp.COMPANY_NAME,bpp.JOB_NAME,bpp.DESCRIPTION,bpp.ADDRESS,bpp.IDENTIFY_IMG_A,bpp.IDENTIFY_IMG_B,bpp.UPDATE_TIME,bpp.CREATE_TIME,bpp.SOURCE_TYPE,bpp.IMAGE_URL,bpp.REFUSE_REASON,bpp.ID_CARD_NUMBER
+</sql>
+<select id="get" parameterType="long" resultMap="PersonalPartyMap">
+	select
+		<include refid="Base_Column_List"/>
+	from bas_personal_party bpp
+	where ID = #{id,jdbcType=DECIMAL}
+</select>
+<delete id="delete" parameterType="long">
+	delete
+	from bas_personal_party
+	where ID = #{id,jdbcType=DECIMAL}
+</delete>
+<insert id="insert" parameterType="PersonalParty">
+	insert into bas_personal_party(
+		<include refid="Base_Column_List"/>
+	) values (
+	#{id,jdbcType=DECIMAL},
+	#{version,jdbcType=DECIMAL},
+	#{idCardStatus,jdbcType=DECIMAL},
+	#{inviteCode,jdbcType=VARCHAR},
+	#{inviteCodeMine,jdbcType=VARCHAR},
+	#{companyName,jdbcType=VARCHAR},
+	#{jobName,jdbcType=VARCHAR},
+	#{description,jdbcType=VARCHAR},
+	#{address,jdbcType=VARCHAR},
+	#{identifyImgA,jdbcType=VARCHAR},
+	#{identifyImgB,jdbcType=VARCHAR},
+	#{updateTime,jdbcType=TIMESTAMP},
+	#{createTime,jdbcType=TIMESTAMP},
+	#{sourceType,jdbcType=DECIMAL},
+	#{imageUrl,jdbcType=VARCHAR},
+	#{refuseReason,jdbcType=VARCHAR},
+	#{idCardNumber,jdbcType=VARCHAR}
+	)
+</insert>
+<update id="update" parameterType="PersonalParty">
+	update bas_personal_party bpp
+	<set>
+		VERSION = VERSION + 1
+		<if test="idCardStatus != null">
+		,ID_CARD_STATUS = #{idCardStatus,jdbcType=DECIMAL}
+		</if>
+		<if test="inviteCode != null">
+		,INVITE_CODE = #{inviteCode,jdbcType=VARCHAR}
+		</if>
+		<if test="inviteCodeMine != null">
+		,INVITE_CODE_MINE = #{inviteCodeMine,jdbcType=VARCHAR}
+		</if>
+		<if test="companyName != null">
+		,COMPANY_NAME = #{companyName,jdbcType=VARCHAR}
+		</if>
+		<if test="jobName != null">
+		,JOB_NAME = #{jobName,jdbcType=VARCHAR}
+		</if>
+		<if test="description != null">
+		,DESCRIPTION = #{description,jdbcType=VARCHAR}
+		</if>
+		<if test="address != null">
+		,ADDRESS = #{address,jdbcType=VARCHAR}
+		</if>
+		<if test="identifyImgA != null">
+		,IDENTIFY_IMG_A = #{identifyImgA,jdbcType=VARCHAR}
+		</if>
+		<if test="identifyImgB != null">
+		,IDENTIFY_IMG_B = #{identifyImgB,jdbcType=VARCHAR}
+		</if>
+		<if test="updateTime != null">
+		,UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="createTime != null">
+		,CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="sourceType != null">
+		,SOURCE_TYPE = #{sourceType,jdbcType=DECIMAL}
+		</if>
+		<if test="imageUrl != null">
+		,IMAGE_URL = #{imageUrl,jdbcType=VARCHAR}
+		</if>
+		<if test="refuseReason != null">
+			,REFUSE_REASON = #{refuseReason,jdbcType=VARCHAR}
+		</if>
+		<if test="idCardNumber != null">
+			,ID_CARD_NUMBER = #{idCardNumber,jdbcType=VARCHAR}
+		</if>
+	</set>
+	where ID = #{id,jdbcType=DECIMAL}
+</update>
+<select id="findListForExample" parameterType="PersonalParty" resultMap="PersonalPartyMap">
+	select
+	<include refid="bpp_Base_Column_List"/>
+	from bas_personal_party bpp
+	<include refid="common_query_condition"/>
+</select>
+<select id="findListForMap" parameterType="map" resultMap="PersonalPartyMap">
+	select
+	<include refid="bpp_Base_Column_List"/>
+	from bas_personal_party bpp
+	<include refid="common_query_condition"/>
+</select>
+<sql id="common_query_condition">
+	<where>
+		<if test="id != null">
+			bpp.id = #{id,jdbcType=DECIMAL}
+		</if>
+		<if test="inviteCodeMine != null">
+			bpp.invite_code_mine = #{inviteCodeMine,jdbcType=VARCHAR}
+		</if>
+		<if test="inviteCode != null">
+			bpp.invite_code = #{inviteCode,jdbcType=VARCHAR}
+		</if>
+	</where>
+</sql>
+
+	<select id="getInviteCount" parameterType="java.lang.String" resultType="java.lang.Integer">
+		select count(*) from bas_personal_party bpp where bpp.invite_code = #{inviteCode,jdbcType=DECIMAL}
+	</select>
+</mapper>

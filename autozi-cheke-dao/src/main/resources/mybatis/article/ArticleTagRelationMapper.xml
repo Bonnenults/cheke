@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.autozi.cheke.article.mapper.ArticleTagRelationMapper">
+<cache eviction="LRU" type="org.mybatis.caches.memcached.MemcachedCache"/>
+<resultMap id="ArticleTagRelationMap" type="ArticleTagRelation">
+	<result column="ID" jdbcType="DECIMAL" property="id"/>
+	<result column="VERSION" jdbcType="DECIMAL" property="version"/>
+	<result column="ARTICLE_ID" jdbcType="DECIMAL" property="articleId"/>
+	<result column="ARTICLE_TAG_ID" jdbcType="DECIMAL" property="articleTagId"/>
+</resultMap>
+<sql id="Base_Column_List">
+	ID,VERSION,ARTICLE_ID,ARTICLE_TAG_ID
+</sql>
+<sql id="atr_Base_Column_List">
+	atr.ID,atr.VERSION,atr.ARTICLE_ID,atr.ARTICLE_TAG_ID
+</sql>
+<select id="get" parameterType="long" resultMap="ArticleTagRelationMap">
+	select
+		<include refid="Base_Column_List"/>
+	from article_tag_relation atr
+	where ID = #{id,jdbcType=DECIMAL}
+</select>
+<delete id="delete" parameterType="long">
+	delete
+	from article_tag_relation
+	where ID = #{id,jdbcType=DECIMAL}
+</delete>
+<insert id="insert" parameterType="ArticleTagRelation">
+	insert into article_tag_relation(
+		<include refid="Base_Column_List"/>
+	) values (
+	#{id,jdbcType=DECIMAL},
+	#{version,jdbcType=DECIMAL},
+	#{articleId,jdbcType=DECIMAL},
+	#{articleTagId,jdbcType=DECIMAL}
+	)
+</insert>
+<update id="update" parameterType="ArticleTagRelation">
+	update article_tag_relation atr
+	<set>
+		VERSION = VERSION + 1
+		<if test="articleId != null">
+		,ARTICLE_ID = #{articleId,jdbcType=DECIMAL}
+		</if>
+		<if test="articleTagId != null">
+		,ARTICLE_TAG_ID = #{articleTagId,jdbcType=DECIMAL}
+		</if>
+	</set>
+	where ID = #{id,jdbcType=DECIMAL} and version = #{version,jdbcType=DECIMAL}
+</update>
+<select id="findListForExample" parameterType="ArticleTagRelation" resultMap="ArticleTagRelationMap">
+	select
+	<include refid="atr_Base_Column_List"/>
+	from article_tag_relation atr
+	<include refid="common_query_condition"/>
+</select>
+<select id="findListForMap" parameterType="map" resultMap="ArticleTagRelationMap">
+	select
+	<include refid="atr_Base_Column_List"/>
+	from article_tag_relation atr
+	<include refid="common_query_condition"/>
+</select>
+
+<delete id="deleteRelationByArticleId" parameterType="java.lang.Long">
+	DELETE FROM article_tag_relation where ARTICLE_ID = #{articleId,jdbcType=DECIMAL}
+</delete>
+<select id="checkedIsRef" parameterType="java.lang.Long" resultType="java.lang.Integer">
+	SELECT COUNT(*) FROM article ar INNER JOIN article_tag_relation atr ON (ar.id = atr.article_id) WHERE atr.article_tag_id = #{articleTagId,jdbcType=DECIMAL}
+</select>
+
+<sql id="common_query_condition">
+	<where>
+		<if test="id != null">
+			atr.id = #{id,jdbcType=DECIMAL}
+		</if>
+		<if test="articleId != null">
+			AND atr.article_id = #{articleId,jdbcType=DECIMAL}
+		</if>
+	</where>
+</sql>
+</mapper>

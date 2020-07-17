@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.autozi.cheke.user.mapper.MedalRuleMapper">
+<cache eviction="LRU" type="org.mybatis.caches.memcached.MemcachedCache"/>
+<resultMap id="MedalRuleMap" type="MedalRule">
+	<result column="ID" jdbcType="DECIMAL" property="id"/>
+	<result column="VERSION" jdbcType="DECIMAL" property="version"/>
+	<result column="RULE_KEY" jdbcType="VARCHAR" property="ruleKey"/>
+	<result column="RULE_VALUE" jdbcType="VARCHAR" property="ruleValue"/>
+	<result column="STATUS" jdbcType="DECIMAL" property="status"/>
+	<result column="MEDAL_ID" jdbcType="DECIMAL" property="medalId"/>
+	<result column="CREATE_USER_ID" jdbcType="DECIMAL" property="createUserId"/>
+	<result column="UPDATE_USER_ID" jdbcType="DECIMAL" property="updateUserId"/>
+	<result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+	<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+	<result column="PUBLISH_TIME" jdbcType="TIMESTAMP" property="publishTime"/>
+	<result column="OFFLINE_TIME" jdbcType="TIMESTAMP" property="offlineTime"/>
+	<result column="INTRO" jdbcType="VARCHAR" property="intro"/>
+</resultMap>
+<sql id="Base_Column_List">
+	ID,VERSION,RULE_KEY,RULE_VALUE,STATUS,MEDAL_ID,CREATE_USER_ID,UPDATE_USER_ID,UPDATE_TIME,CREATE_TIME,PUBLISH_TIME,OFFLINE_TIME,INTRO
+</sql>
+<sql id="mr_Base_Column_List">
+	m.ID,m.VERSION,m.RULE_KEY,m.RULE_VALUE,m.STATUS,m.MEDAL_ID,m.CREATE_USER_ID,m.UPDATE_USER_ID,m.UPDATE_TIME,m.CREATE_TIME,m.PUBLISH_TIME,m.OFFLINE_TIME,m.INTRO
+</sql>
+<select id="get" parameterType="long" resultMap="MedalRuleMap">
+	select
+		<include refid="Base_Column_List"/>
+	from medal_rule m
+	where ID = #{id,jdbcType=DECIMAL}
+</select>
+
+<delete id="delete" parameterType="long">
+	delete
+	from medal_rule
+	where ID = #{id,jdbcType=DECIMAL}
+</delete>
+<insert id="insert" parameterType="MedalRule">
+	insert into medal_rule(
+		<include refid="Base_Column_List"/>
+	) values (
+	#{id,jdbcType=DECIMAL},
+	#{version,jdbcType=DECIMAL},
+	#{ruleKey,jdbcType=VARCHAR},
+	#{ruleValue,jdbcType=VARCHAR},
+	#{status,jdbcType=DECIMAL},
+	#{medalId,jdbcType=DECIMAL},
+    #{createUserId,jdbcType=DECIMAL},
+    #{updateUserId,jdbcType=DECIMAL},
+	#{updateTime,jdbcType=TIMESTAMP},
+	#{createTime,jdbcType=TIMESTAMP},
+    #{publishTime,jdbcType=TIMESTAMP},
+    #{offlineTime,jdbcType=TIMESTAMP},
+	#{intro,jdbcType=VARCHAR}
+	)
+</insert>
+<update id="update" parameterType="MedalRule">
+	update medal_rule m
+	<set>
+		VERSION = VERSION + 1
+		<if test="ruleKey != null">
+		    ,RULE_KEY = #{ruleKey,jdbcType=VARCHAR}
+		</if>
+		<if test="ruleValue != null">
+			,RULE_VALUE = #{ruleValue,jdbcType=VARCHAR}
+		</if>
+		<if test="status != null">
+		    ,STATUS = #{status,jdbcType=DECIMAL}
+		</if>
+		<if test="medalId != null">
+			,MEDAL_ID = #{medalId,jdbcType=DECIMAL}
+		</if>
+        <if test="createUserId != null">
+            ,CREATE_USER_ID = #{createUserId,jdbcType=DECIMAL}
+        </if>
+        <if test="updateUserId != null">
+            ,UPDATE_USER_ID = #{updateUserId,jdbcType=DECIMAL}
+        </if>
+		<if test="updateTime != null">
+		    ,UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="createTime != null">
+		    ,CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+		</if>
+        <if test="publishTime != null">
+            ,PUBLISH_TIME = #{publishTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="offlineTime != null">
+            ,OFFLINE_TIME = #{offlineTime,jdbcType=TIMESTAMP}
+        </if>
+		<if test="intro != null">
+			,INTRO = #{intro,jdbcType=VARCHAR}
+		</if>
+	</set>
+	where ID = #{id,jdbcType=DECIMAL}
+</update>
+<select id="findListForExample" parameterType="MedalRule" resultMap="MedalRuleMap">
+	select
+	<include refid="mr_Base_Column_List"/>
+	from medal_rule m
+	<include refid="common_query_condition"/>
+</select>
+<select id="findListForMap" parameterType="map" resultMap="MedalRuleMap">
+	select
+	<include refid="mr_Base_Column_List"/>
+	from medal_rule m
+	<include refid="common_query_condition"/>
+	order by m.update_time desc,m.create_time desc
+</select>
+<sql id="common_query_condition">
+	<where>
+		<if test="id != null">
+			m.id = #{id,jdbcType=DECIMAL}
+		</if>
+		<if test="ruleKey != null">
+			and m.RULE_KEY = #{ruleKey,jdbcType=VARCHAR}
+		</if>
+		<if test="status != null">
+			and m.STATUS = #{status,jdbcType=DECIMAL}
+		</if>
+        <if test="medalId != null">
+            and m.medal_id = #{medalId,jdbcType=DECIMAL}
+        </if>
+		<if test="createTimeStart != null">
+			<![CDATA[ AND m.create_time >= DATE_FORMAT(#{createTimeStart},'%Y-%m-%d %H:%i:%s')]]>
+		</if>
+		<if test="createTimeEnd != null">
+			<![CDATA[ AND m.create_time <= DATE_FORMAT(#{createTimeEnd},'%Y-%m-%d %H:%i:%s')]]>
+		</if>
+        <if test="publishTimeStart != null">
+            <![CDATA[ AND m.publish_time >= DATE_FORMAT(#{publishTimeStart},'%Y-%m-%d %H:%i:%s')]]>
+        </if>
+        <if test="publishTimeEnd != null">
+            <![CDATA[ AND m.publish_time <= DATE_FORMAT(#{publishTimeEnd},'%Y-%m-%d %H:%i:%s')]]>
+        </if>
+        <if test="offlineTimeStart != null">
+            <![CDATA[ AND m.offline_time >= DATE_FORMAT(#{offlineTimeStart},'%Y-%m-%d %H:%i:%s')]]>
+        </if>
+        <if test="offlineTimeEnd != null">
+            <![CDATA[ AND m.offline_time <= DATE_FORMAT(#{offlineTimeEnd},'%Y-%m-%d %H:%i:%s')]]>
+        </if>
+	</where>
+</sql>
+</mapper>

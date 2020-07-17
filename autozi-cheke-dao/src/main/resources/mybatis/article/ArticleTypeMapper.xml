@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.autozi.cheke.article.mapper.ArticleTypeMapper">
+<cache eviction="LRU" type="org.mybatis.caches.memcached.MemcachedCache"/>
+<resultMap id="ArticleTypeMap" type="ArticleType">
+	<result column="ID" jdbcType="DECIMAL" property="id"/>
+	<result column="VERSION" jdbcType="DECIMAL" property="version"/>
+	<result column="TYPE" jdbcType="DECIMAL" property="type"/>
+	<result column="NAME" jdbcType="VARCHAR" property="name"/>
+	<result column="CREATE_USER_ID" jdbcType="DECIMAL" property="createUserId"/>
+	<result column="UPDATE_USER_ID" jdbcType="DECIMAL" property="updateUserId"/>
+	<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+	<result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+</resultMap>
+<sql id="Base_Column_List">
+	ID,VERSION,TYPE,NAME,CREATE_USER_ID,UPDATE_USER_ID,CREATE_TIME,UPDATE_TIME
+</sql>
+<sql id="at_Base_Column_List">
+	at.ID,at.VERSION,at.TYPE,at.NAME,at.CREATE_USER_ID,at.UPDATE_USER_ID,at.CREATE_TIME,at.UPDATE_TIME
+</sql>
+<select id="get" parameterType="long" resultMap="ArticleTypeMap">
+	select
+		<include refid="Base_Column_List"/>
+	from article_type at
+	where ID = #{id,jdbcType=DECIMAL}
+</select>
+<delete id="delete" parameterType="long">
+	delete
+	from article_type
+	where ID = #{id,jdbcType=DECIMAL}
+</delete>
+<insert id="insert" parameterType="ArticleType">
+	insert into article_type(
+		<include refid="Base_Column_List"/>
+	) values (
+	#{id,jdbcType=DECIMAL},
+	#{version,jdbcType=DECIMAL},
+	#{type,jdbcType=DECIMAL},
+	#{name,jdbcType=VARCHAR},
+	#{createUserId,jdbcType=DECIMAL},
+	#{updateUserId,jdbcType=DECIMAL},
+	#{createTime,jdbcType=TIMESTAMP},
+	#{updateTime,jdbcType=TIMESTAMP}
+	)
+</insert>
+<update id="update" parameterType="ArticleType">
+	update article_type at
+	<set>
+		VERSION = VERSION + 1
+		<if test="type != null">
+		,TYPE = #{type,jdbcType=DECIMAL}
+		</if>
+		<if test="name != null">
+		,NAME = #{name,jdbcType=VARCHAR}
+		</if>
+		<if test="createUserId != null">
+		,CREATE_USER_ID = #{createUserId,jdbcType=DECIMAL}
+		</if>
+		<if test="updateUserId != null">
+		,UPDATE_USER_ID = #{updateUserId,jdbcType=DECIMAL}
+		</if>
+		<if test="createTime != null">
+		,CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="updateTime != null">
+		,UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+		</if>
+	</set>
+	where ID = #{id,jdbcType=DECIMAL} and version = #{version,jdbcType=DECIMAL}
+</update>
+<select id="findListForExample" parameterType="ArticleType" resultMap="ArticleTypeMap">
+	select
+	<include refid="at_Base_Column_List"/>
+	from article_type at
+	<include refid="common_query_condition"/>
+</select>
+<select id="findListForMap" parameterType="map" resultMap="ArticleTypeMap">
+	select
+	<include refid="at_Base_Column_List"/>
+	from article_type at
+	<include refid="common_query_condition"/>
+</select>
+<sql id="common_query_condition">
+	<where>
+		<if test="id != null">
+			at.id = #{id,jdbcType=DECIMAL}
+		</if>
+	</where>
+</sql>
+</mapper>

@@ -1,0 +1,36 @@
+<div class="permanently clear">
+    <label class="permanentlyOne">资质证明：</label>
+    <div class="modify_perman">
+        <div class="modfity_img_style">
+            <div class="modify_box_up_img">
+            <#if (party??&&party.certificateImg??)>
+                <img src="${party.certificateImg}"/>
+            </#if>
+            </div>
+            <span class="certificateName">企业营业执照扫描件</span>
+        </div>
+        <div class="modfity_img_style">
+            <div class="modify_box_up_img xuke_img">
+            <#if (party??&&party.certificateOther??)>
+                <img src="${party.certificateOther}"/>
+            </#if>
+            </div>
+            <span>其它</span>
+        </div>
+    </div>
+</div>
+<div class="nb_userInfo_main_form clear">
+    <label for="">营业执照号或社会信用代码：</label>
+    <p><#if (party??&&party.socialCreditCode??)>${party.socialCreditCode}</#if></p>
+</div>
+<div class="permanently clear">
+    <label  class="permanentlyOne">企业账号开通授权书：</label>
+    <div class="modfity_img_style">
+        <div class="modify_box_up_img">
+        <#if (party??&&party.authorImg??)>
+            <img src="${party.authorImg}"/>
+        </#if>
+        </div>
+        <span>授权书</span>
+    </div>
+</div>

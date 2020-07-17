@@ -1,0 +1,29 @@
+<script type="text/javascript" src="${contextpath}/js/party/partyAdmin.js"></script>
+<div class="lf_carRight_center">
+    <div class="nb_userInfo_main">
+    <#include "common-refuse.html">
+        <h4 class="nb_userInfo_main_title"><span></span>个人信息</h4>
+        <!--所在地-->
+        <#include "common-area.html">
+
+        <div class="nb_userInfo_main_form">
+            <label for="">公司全称：</label>
+            <p><#if (partyLog??&&partyLog.companyName??)>${partyLog.companyName}</#if></p>
+        </div>
+        <div class="nb_userInfo_main_form">
+            <label for="">公司类别：</label>
+            <p><#if (companyTypeName??)>${companyTypeName}</#if></p>
+        </div>
+        <div class="nb_userInfo_main_form">
+            <label for="">职位类别：</label>
+            <p><#if (mediaTypeName??)>${mediaTypeName}</#if></p>
+        </div>
+
+        <#include "common-person.html">
+        <h4 class="nb_userInfo_main_title"><span></span>发票信息</h4>
+        <#include "common-invoice.html">
+
+    </div>
+<#include "common-button.html">
+</div>
+<#include "common-dialog.html">

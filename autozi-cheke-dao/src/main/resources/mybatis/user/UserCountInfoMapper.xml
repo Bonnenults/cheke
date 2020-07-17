@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.autozi.cheke.user.mapper.UserCountInfoMapper">
+<cache eviction="LRU" type="org.mybatis.caches.memcached.MemcachedCache"/>
+<resultMap id="UserCountInfoMap" type="UserCountInfo">
+	<result column="ID" jdbcType="DECIMAL" property="id"/>
+	<result column="VERSION" jdbcType="DECIMAL" property="version"/>
+	<result column="LOGIN_COUNT" jdbcType="DECIMAL" property="loginCount"/>
+	<result column="CONTINUOUS_LOGIN_COUNT" jdbcType="DECIMAL" property="continuousLoginCount"/>
+	<result column="LAST_LOGIN_TIME" jdbcType="TIMESTAMP" property="lastLoginTime"/>
+	<result column="STUDY_DAYS_COUNT" jdbcType="DECIMAL" property="studyDaysCount"/>
+	<result column="LAST_STUDY_TIME" jdbcType="TIMESTAMP" property="lastStudyTime"/>
+	<result column="STUDY_CHAPTER_COUNT" jdbcType="DECIMAL" property="studyChapterCount"/>
+	<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+</resultMap>
+<sql id="Base_Column_List">
+	ID,VERSION,LOGIN_COUNT,CONTINUOUS_LOGIN_COUNT,LAST_LOGIN_TIME,STUDY_DAYS_COUNT,LAST_STUDY_TIME,STUDY_CHAPTER_COUNT,CREATE_TIME,UPDATE_TIME
+</sql>
+<sql id="uc_Base_Column_List">
+	uc.ID,uc.VERSION,uc.LOGIN_COUNT,uc.CONTINUOUS_LOGIN_COUNT,uc.LAST_LOGIN_TIME,uc.STUDY_DAYS_COUNT,uc.LAST_STUDY_TIME,uc.STUDY_CHAPTER_COUNT,uc.CREATE_TIME,uc.UPDATE_TIME
+</sql>
+<select id="get" parameterType="long" resultMap="UserCountInfoMap">
+	select
+		<include refid="Base_Column_List"/>
+	from mb_user_count_info uc
+	where ID = #{id,jdbcType=DECIMAL}
+</select>
+<delete id="delete" parameterType="long">
+	delete
+	from mb_user_count_info
+	where ID = #{id,jdbcType=DECIMAL}
+</delete>
+<insert id="insert" parameterType="UserCountInfo">
+	insert into mb_user_count_info(
+		<include refid="Base_Column_List"/>
+	) values (
+	#{id,jdbcType=DECIMAL},
+	#{version,jdbcType=DECIMAL},
+    #{loginCount,jdbcType=DECIMAL},
+    #{continuousLoginCount,jdbcType=DECIMAL},
+	#{lastLoginTime,jdbcType=TIMESTAMP},
+	#{studyDaysCount,jdbcType=DECIMAL},
+    #{lastStudyTime,jdbcType=TIMESTAMP},
+	#{studyChapterCount,jdbcType=DECIMAL},
+    #{createTime,jdbcType=TIMESTAMP},
+    #{updateTime,jdbcType=TIMESTAMP}
+	)
+</insert>
+<update id="update" parameterType="UserCountInfo">
+	update mb_user_count_info uc
+	<set>
+		VERSION = VERSION + 1
+		<if test="loginCount != null">
+		    ,LOGIN_COUNT = #{loginCount,jdbcType=DECIMAL}
+		</if>
+        <if test="continuousLoginCount != null">
+            ,CONTINUOUS_LOGIN_COUNT = #{continuousLoginCount,jdbcType=DECIMAL}
+        </if>
+		<if test="lastLoginTime != null">
+			,LAST_LOGIN_TIME = #{lastLoginTime,jdbcType=TIMESTAMP}
+		</if>
+        <if test="studyDaysCount != null">
+            ,STUDY_DAYS_COUNT = #{studyDaysCount,jdbcType=DECIMAL}
+        </if>
+		<if test="lastStudyTime != null">
+			,LAST_STUDY_TIME = #{lastStudyTime,jdbcType=TIMESTAMP}
+		</if>
+        <if test="studyChapterCount != null">
+            ,STUDY_CHAPTER_COUNT = #{studyChapterCount,jdbcType=DECIMAL}
+        </if>
+        <if test="updateTime != null">
+            ,UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="createTime != null">
+            ,CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+        </if>
+	</set>
+	where ID = #{id,jdbcType=DECIMAL}
+</update>
+<select id="findListForExample" parameterType="UserCountInfo" resultMap="UserCountInfoMap">
+	select
+	<include refid="uc_Base_Column_List"/>
+	from mb_user_count_info uc
+	<include refid="common_query_condition"/>
+</select>
+<select id="findListForMap" parameterType="map" resultMap="UserCountInfoMap">
+	select
+	<include refid="uc_Base_Column_List"/>
+	from mb_user_count_info uc
+	<include refid="common_query_condition"/>
+</select>
+<select id="getUserCountInfoByUserId" parameterType="java.lang.Long" resultMap="UserCountInfoMap" useCache="false">
+	select
+	<include refid="uc_Base_Column_List"/>
+	from mb_user_count_info uc
+	where id = #{userId,jdbcType=DECIMAL}
+</select>
+<sql id="common_query_condition">
+	<where>
+		<if test="id != null">
+			uc.id = #{id,jdbcType=DECIMAL}
+		</if>
+	</where>
+</sql>
+	<select id="findList" parameterType="map" resultMap="UserCountInfoMap">
+		select
+		<include refid="uc_Base_Column_List"/>
+		from mb_user_count_info uc
+		<include refid="find_list_condition"/>
+	</select>
+	<sql id="find_list_condition">
+		<where>
+			<if test="id != null">
+				uc.id = #{id,jdbcType=DECIMAL}
+			</if>
+		</where>
+	</sql>
+	
+</mapper>

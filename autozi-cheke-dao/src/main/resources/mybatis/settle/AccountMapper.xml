@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.autozi.cheke.settle.mapper.AccountMapper">
+<cache eviction="LRU" type="org.mybatis.caches.memcached.MemcachedCache"/>
+<resultMap id="AccountMap" type="Account">
+	<result column="ID" jdbcType="DECIMAL" property="id"/>
+	<result column="VERSION" jdbcType="DECIMAL" property="version"/>
+	<result column="OWNER_ID" jdbcType="DECIMAL" property="ownerId"/>
+	<result column="TYPE" jdbcType="DECIMAL" property="type"/>
+	<result column="ACCOUNT" jdbcType="DECIMAL" property="account"/>
+	<result column="LOCK_ACCOUNT" jdbcType="DECIMAL" property="lockAccount"/>
+	<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+	<result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+</resultMap>
+<sql id="Base_Column_List">
+	ID,VERSION,OWNER_ID,TYPE,ACCOUNT,LOCK_ACCOUNT,CREATE_TIME,UPDATE_TIME
+</sql>
+<sql id="pa_Base_Column_List">
+	pa.ID,pa.VERSION,pa.OWNER_ID,pa.TYPE,pa.ACCOUNT,pa.LOCK_ACCOUNT,pa.CREATE_TIME,pa.UPDATE_TIME
+</sql>
+<select id="get" parameterType="long" resultMap="AccountMap">
+	select
+		<include refid="Base_Column_List"/>
+	from pay_account pa
+	where ID = #{id,jdbcType=DECIMAL}
+</select>
+<delete id="delete" parameterType="long">
+	delete
+	from pay_account
+	where ID = #{id,jdbcType=DECIMAL}
+</delete>
+<insert id="insert" parameterType="Account">
+	insert into pay_account(
+		<include refid="Base_Column_List"/>
+	) values (
+	#{id,jdbcType=DECIMAL},
+	#{version,jdbcType=DECIMAL},
+	#{ownerId,jdbcType=DECIMAL},
+	#{type,jdbcType=DECIMAL},
+	#{account,jdbcType=DECIMAL},
+	#{lockAccount,jdbcType=DECIMAL},
+	#{createTime,jdbcType=TIMESTAMP},
+	#{updateTime,jdbcType=TIMESTAMP}
+	)
+</insert>
+<update id="update" parameterType="Account">
+	update pay_account pa
+	<set>
+		VERSION = VERSION + 1
+		<if test="ownerId != null">
+		,OWNER_ID = #{ownerId,jdbcType=DECIMAL}
+		</if>
+		<if test="type != null">
+		,TYPE = #{type,jdbcType=DECIMAL}
+		</if>
+		<if test="account != null">
+		,ACCOUNT = #{account,jdbcType=DECIMAL}
+		</if>
+		<if test="lockAccount != null">
+		,LOCK_ACCOUNT = #{lockAccount,jdbcType=DECIMAL}
+		</if>
+		<if test="createTime != null">
+		,CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="updateTime != null">
+		,UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+		</if>
+	</set>
+	where ID = #{id,jdbcType=DECIMAL} and version = #{version,jdbcType=DECIMAL}
+</update>
+<select id="findListForExample" parameterType="Account" resultMap="AccountMap">
+	select
+	<include refid="pa_Base_Column_List"/>
+	from pay_account pa
+	<include refid="common_query_condition"/>
+</select>
+<select id="findListForMap" parameterType="map" resultMap="AccountMap">
+	select
+	<include refid="pa_Base_Column_List"/>
+	from pay_account pa
+	<if test="partyName !=null or  partyClass !=null or companyName !=null">
+		LEFT JOIN bas_party bp on bp.id = pa.OWNER_ID
+	</if>
+	<include refid="common_query_condition"/>
+</select>
+<sql id="common_query_condition">
+	<where>
+		<if test="id != null">
+			pa.id = #{id,jdbcType=DECIMAL}
+		</if>
+		<if test="ownerId != null">
+			and  pa.OWNER_ID = #{ownerId,jdbcType=DECIMAL}
+		</if>
+		<if test="type != null">
+			and  pa.TYPE = #{type,jdbcType=DECIMAL}
+		</if>
+		<if test="partyName !=null">
+			and bp.NAME like concat('%',#{partyName},'%')
+		</if>
+		<if test="companyName !=null">
+			and bp.company_name like concat('%',#{companyName},'%')
+		</if>
+		<if test="partyClass !=null">
+			and bp.PARTY_CLASS = #{partyClass}
+		</if>
+		<if test="limit1 != null">
+			limit 1
+		</if>
+	</where>
+</sql>
+</mapper>

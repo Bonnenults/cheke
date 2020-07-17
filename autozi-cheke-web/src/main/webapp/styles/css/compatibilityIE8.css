@@ -1,0 +1,13 @@
+.lf_set_public .lf_set_management input[type='checkbox']{ position: static; left: 0; filter: "alpha(opacity=1)"; }
+.lf_set_public INPUT{ padding:0;}
+.lf_logo_xy div{ display: none; }
+.lf_logo_xy input{ padding: 0; margin: 0; width: auto; display: inline; filter: "alpha(opacity=1)";}
+.lf_register_agree input{ filter: "alpha(opacity=1)";}
+
+
+.qy_center_table .lf_label_checkBox input[type='checkbox']{ position: static; left: 0; filter: "alpha(opacity=1)"; }
+.qy_center_table .lf_label_checkBox div{ display: none;}
+.qy_center_table .lf_label_checkBox input{ padding:0;}
+
+
+.project_classification ul li label input[type='checkbox'] { position: static; left: 0; filter: "alpha(opacity=1)"; }

@@ -1,0 +1,64 @@
+<div class="qy_center_table" id="data_table_list">
+    <table>
+        <tbody>
+        <tr>
+            <th width="3%">#</th>
+            <th width="10%">推客用户名</th>
+            <th>推客昵称</th>
+            <th width="7%">推客手机号</th>
+            <th width="8%">上级邀请码</th>
+            <th width="8%">本人邀请码</th>
+            <th width="10%">注册时间</th>
+            <th width="6%">获得总佣金</th>
+            <th width="7%">审核状态</th>
+            <th width="6%">下级推客数</th>
+            <th width="15%" class="no_border">操作</th>
+        </tr>
+        <#if (page??)&&(page.result??)&&(page.result?size>0)>
+            <#list page.result as view>
+            <tr>
+
+                <td>${page.firstElementIndex + view_index }</td>
+                <td><#if view.loginName??>${view.loginName?html}</#if></td>
+                <td><#if view.name??>${view.name?html}</#if></td>
+                <td><#if view.phone??>${view.phone?html}</#if></td>
+                <td><#if view.inviteCode??>${view.inviteCode?html}</#if></td>
+                <td><#if view.inviteCodeMine??>${view.inviteCodeMine?html}</#if></td>
+                <td><#if view.createTime??>${view.createTime?string("yyyy-MM-dd HH:mm")}</#if></td>
+                <td><#if view.money??>${view.money?html}</#if></td>
+                <td>
+                    <#if view.idCardStatus??&&view.idCardStatus==1>
+                        已审核
+                    <#elseif view.idCardStatus??&&view.idCardStatus==3>
+                        未审核
+                    <#elseif view.idCardStatus??&&view.idCardStatus==4>
+                        待修改
+                    <#elseif view.idCardStatus??&&view.idCardStatus==5>
+                        待上传
+                    </#if>
+                </td>
+                <td><#if view.userCount??>${view.userCount?html}</#if></td>
+                <td class="no_border">
+                    <#if view.idCardStatus??&&view.idCardStatus==3>
+                        <a class="qy_alink" href="${contextpath}/tuike/user/list/audit.action?id=${view.id}">审核身份证</a>
+                    <#else>
+                        <a class="qy_alink" href="${contextpath}/tuike/user/list/audit.action?id=${view.id}">查看详情</a>
+                    </#if>
+                    <#if view.userStatus??&&view.userStatus==2>
+                        <a class="qy_alink" href="javascript:User.lockOrUnLockTuikeUser(${view.id},1)">解锁</a>
+                    <#else>
+                        <a class="qy_alink" href="javascript:User.lockOrUnLockTuikeUser(${view.id},2)">锁定</a>
+                    </#if>
+                </td>
+            </tr>
+            </#list>
+        <#else>
+        <tr>
+            <td colspan='10'>没有符合条件的记录</td>
+        </tr>
+        </#if>
+        </tbody>
+    </table>
+</div>
+$JXC
+<#include "../../common/paging_common.html">

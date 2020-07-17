@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.autozi.cheke.user.mapper.ChekeCommentMapper">
+<cache eviction="LRU" type="org.mybatis.caches.memcached.MemcachedCache"/>
+<resultMap id="ChekeCommentMap" type="ChekeComment">
+	<result column="ID" jdbcType="DECIMAL" property="id"/>
+	<result column="VERSION" jdbcType="DECIMAL" property="version"/>
+	<result column="REPLY_ID" jdbcType="DECIMAL" property="replyId"/>
+	<result column="COURSE_ID" jdbcType="DECIMAL" property="courseId"/>
+	<result column="USER_ID" jdbcType="DECIMAL" property="userId"/>
+	<result column="CONTENT" jdbcType="VARCHAR" property="content"/>
+	<result column="IS_SUB" jdbcType="DECIMAL" property="isSub"/>
+    <result column="REPLY_COUNT" jdbcType="DECIMAL" property="replyCount"/>
+	<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+</resultMap>
+<sql id="Base_Column_List">
+	ID,VERSION,REPLY_ID,COURSE_ID,USER_ID,CONTENT,IS_SUB,REPLY_COUNT,CREATE_TIME,UPDATE_TIME
+</sql>
+<sql id="cc_Base_Column_List">
+	cc.ID,cc.VERSION,cc.REPLY_ID,cc.COURSE_ID,cc.USER_ID,cc.CONTENT,cc.IS_SUB,cc.REPLY_COUNT,cc.CREATE_TIME,cc.UPDATE_TIME
+</sql>
+<select id="get" parameterType="long" resultMap="ChekeCommentMap">
+	select
+		<include refid="Base_Column_List"/>
+	from cheke_comment cc
+	where ID = #{id,jdbcType=DECIMAL}
+</select>
+<delete id="delete" parameterType="long">
+	delete
+	from cheke_comment
+	where ID = #{id,jdbcType=DECIMAL}
+</delete>
+<insert id="insert" parameterType="ChekeComment">
+	insert into cheke_comment(
+		<include refid="Base_Column_List"/>
+	) values (
+	#{id,jdbcType=DECIMAL},
+	#{version,jdbcType=DECIMAL},
+	#{replyId,jdbcType=DECIMAL},
+	#{courseId,jdbcType=DECIMAL},
+    #{userId,jdbcType=DECIMAL},
+	#{content,jdbcType=VARCHAR},
+	#{isSub,jdbcType=DECIMAL},
+    #{replyCount,jdbcType=DECIMAL},
+	#{createTime,jdbcType=TIMESTAMP},
+	#{updateTime,jdbcType=TIMESTAMP}
+	)
+
+</insert>
+<update id="update" parameterType="ChekeComment">
+	update cheke_comment cc
+	<set>
+		VERSION = VERSION + 1
+		<if test="replyId != null">
+		    ,REPLY_ID = #{replyId,jdbcType=DECIMAL}
+		</if>
+		<if test="courseId != null">
+		    ,COURSE_ID = #{courseId,jdbcType=DECIMAL}
+		</if>
+        <if test="userId != null">
+            ,USER_ID = #{userId,jdbcType=DECIMAL}
+        </if>
+		<if test="content != null">
+		,CONTENT = #{content,jdbcType=VARCHAR}
+		</if>
+		<if test="isSub != null">
+		,IS_SUB = #{isSub,jdbcType=DECIMAL}
+		</if>
+        <if test="replyCount != null">
+            ,REPLY_COUNT = #{replyCount,jdbcType=DECIMAL}
+        </if>
+		<if test="createTime != null">
+		,CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="updateTime != null">
+		,UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+		</if>
+	</set>
+	where ID = #{id,jdbcType=DECIMAL}
+</update>
+<select id="findListForExample" parameterType="ChekeComment" resultMap="ChekeCommentMap">
+	select
+	<include refid="cc_Base_Column_List"/>
+	from cheke_comment cc
+    <include refid="common_query_condition"/>
+	order by create_time DESC
+</select>
+<select id="findListForMap" parameterType="map" resultMap="ChekeCommentMap">
+	select
+	<include refid="cc_Base_Column_List"/>
+	from cheke_comment cc
+	<include refid="common_query_condition"/>
+    order by create_time DESC
+</select>
+<sql id="common_query_condition">
+	<where>
+		<if test="id != null">
+			cc.id = #{id,jdbcType=DECIMAL}
+		</if>
+        <if test="replyId != null">
+            and cc.reply_id = #{replyId,jdbcType=DECIMAL}
+        </if>
+        <if test="courseId != null">
+            and cc.COURSE_ID = #{courseId,jdbcType=DECIMAL}
+        </if>
+        <if test="userId != null">
+            and cc.user_id = #{userId,jdbcType=DECIMAL}
+        </if>
+        <if test="isSub != null">
+            and cc.is_sub = #{isSub,jdbcType=DECIMAL}
+        </if>
+        <if test="createTime != null">
+            AND cc.create_time &gt;= #{createTime,jdbcType=TIMESTAMP}
+        </if>
+	</where>
+</sql>
+</mapper>

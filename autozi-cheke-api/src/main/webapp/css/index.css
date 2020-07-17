@@ -1,0 +1,66 @@
+.html,body{ background: #fff;}
+div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,blockquote,p{padding:0; margin:0; font-style:normal;}
+table,td,tr,th{font-size:12px;}
+ul li{list-style-type:none;}
+img{vertical-align:top;border:0;}
+ul {list-style:none;}
+address,cite,code,em,th,i{font-weight:normal; }
+table{border-collapse:collapse;}
+textarea{ resize:none;overflow:auto;}
+i{font-style: normal;}
+.clear:after{
+	content:'';
+	display:block; 
+	clear:both;
+	}
+.clear{
+	zoom:1;
+	}
+.video_title{width: 100%; padding: 14px 17px 14px; background: #fff; overflow: hidden;}
+.video_title div{ float: left;}
+.video_title .text_logo{ width:50px; height:50px; margin-right: 10px;}
+.video_title .text_logo img{display: block; width: 100%;}
+.video_title div:nth-child(1) img{ display: block; width: 100%; height: 100%; background-size: 100% 100%;}
+.video_title .text_info h5{ font-size: 16px; color: #343434; padding-top:5px;font-weight: 400;padding-top: 8px;}
+.video_title div:nth-child(2) p{ font-size: 12px; color:#9c9c9c; padding: 0; height: 16px;}
+.video_title a{display: block; float: right; font-size: 16px; height: 30px; line-height: 30px; width: 66px;color: #2773ff; text-align: center; 
+border: 1px solid #2773ff; border-radius: 5px; margin-top: 8px;}
+.video_title_two{opacity:0; position: fixed;top: 0px; z-index: 9999;}
+.video_title_bt{margin:30px 15px 0;font-size: 28px; color: #343434; font-weight: bold; line-height: 32px;}
+.message_cen{ padding: 14px 17px; border-top:1px solid #e5e5e5; background: #fff;}
+.message_cen h5{ font-size: 15px; color: #343434; overflow: hidden;}
+.message_cen h5 span{text-align: right; color: #bbbbbb; float: right;}
+/*.message_cen div{ margin: 0 10px;}*/
+.message_cen input{ height: 32px; line-height: 32px; background: #f7f7f7; border: none; margin: 14px 0 0 0; color: #333;
+    border-radius: 50px; width: 100%; padding:0 4%; font-size: 12px;}
+.message_cen textarea{ height: 85px; background: #f7f7f7; border: none; color: #333; margin-top: 14px; font-size: 12px; width: 100%; padding:10px 4%;}
+.message_cen a{ display: block; width: 94px; height: 33px; background: #2a75ff; font-size: 16px; margin: 0 auto;
+    border-radius: 3px; color: #fff; text-align: center; line-height: 33px; margin-top: 10px;}
+.tex_center{ margin: 0 15px 0 15px; background: #FFFFFF;word-break: break-all;padding-bottom: 50px;}
+.tex_center img{ display: block; width: 100% /*!important*/;}
+.tex_center p{ font-size: 16px; color: #343434; line-height: 28px; margin: 20px 0;word-break: break-all;}
+.tex_center p a{ color: #333333;}
+.video_title .text_info p{ margin:0 !important;}
+.tex_center h3{ font-size: 20px; font-weight: bold;}
+.tex_center .message_cen{ padding: 14px 0px;}
+.detail_look{padding:0 17px;overflow: hidden; background: #fff; zoom: normal; padding-bottom: 15px; margin-top: 20px;}
+.detail_look div:nth-child(1){ width: 100px; float: left; }
+.detail_look div:nth-child(1) span img{ width: 20px !important; height: 13px; display: inline-block; vertical-align: middle; margin-right: 5px;}
+.detail_look div:nth-child(1) span,.detail_look div:nth-child(2) span{ display: inline-block; font-size: 12px; color: #c0c0c0;}
+.detail_look div:nth-child(2){ float: right; margin-right: 2px;}
+.detail_look div:nth-child(2) span img{ width: 14px !important; height: 16px; display: inline-block; vertical-align: initial; margin-right: 5px;}
+.detail_look div:nth-child(2) img:nth-child(1){ vertical-align: -3px;}
+.detail_look div:nth-child(2) img:nth-child(2){ vertical-align: -6px;}
+.detail_look div:nth-child(2) span:nth-child(1){ margin-right: 20px;}
+.title_text{ background: #FFFFFF; padding: 10px 17px 14px; font-size: 15px; color: #9c9c9c;}
+.bofang_num img{width: 16px !important; height: 16px !important;vertical-align: -3px !important;}
+/*new Alert*/
+
+.mask{width: 100%;height: 100%;position: fixed;top: 0;left: 0;background-color: rgba(0, 0, 0, .7);display: none;opacity: 0.4;}
+.alert{box-sizing: border-box;width: 60%;max-height: 40%;position: fixed;top: 50%;left: 0;right: 0;
+	-webkit-transform: translateY(-50%);transform: translateY(-50%);margin: 0 auto;padding: 10px;
+	background-color: #fcfcfc;border-radius: 4px;box-shadow: 0 0 4px;text-align: center;font-size: 10pt;font-weight: normal;
+	word-wrap: break-word;overflow-x: hidden;overflow-y: auto;display: none;}
+
+/*验证提示*/
+.msgShow{ display: none; width: 40%; background: #2a75ff; color: #fff; border-radius: 5px; position: fixed; top: 50%; left: 60%; margin-top: -25px; margin-left: -30%; font-size: 12px; text-align: center; padding: 5px;}

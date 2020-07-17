@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.autozi.cheke.party.mapper.ChekeFansMapper">
+<cache eviction="LRU" type="org.mybatis.caches.memcached.MemcachedCache"/>
+<resultMap id="ChekeFansMap" type="ChekeFans">
+	<result column="ID" jdbcType="DECIMAL" property="id"/>
+	<result column="VERSION" jdbcType="DECIMAL" property="version"/>
+	<result column="USER_ID" jdbcType="DECIMAL" property="userId"/>
+	<result column="PARTY_ID" jdbcType="DECIMAL" property="partyId"/>
+	<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+	<result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+</resultMap>
+<sql id="Base_Column_List">
+	ID,VERSION,USER_ID,PARTY_ID,CREATE_TIME,UPDATE_TIME
+</sql>
+<sql id="cf_Base_Column_List">
+	cf.ID,cf.VERSION,cf.USER_ID,cf.PARTY_ID,cf.CREATE_TIME,cf.UPDATE_TIME
+</sql>
+<select id="get" parameterType="long" resultMap="ChekeFansMap">
+	select
+		<include refid="Base_Column_List"/>
+	from cheke_fans cf
+	where ID = #{id,jdbcType=DECIMAL}
+</select>
+<delete id="delete" parameterType="long">
+	delete
+	from cheke_fans
+	where ID = #{id,jdbcType=DECIMAL}
+</delete>
+<delete id="cancelFollow" parameterType="ChekeFans">
+	delete
+	from cheke_fans
+	where user_id = #{userId,jdbcType=DECIMAL} and party_id = #{partyId,jdbcType=DECIMAL}
+</delete>
+<insert id="insert" parameterType="ChekeFans">
+	insert into cheke_fans(
+		<include refid="Base_Column_List"/>
+	) values (
+	#{id,jdbcType=DECIMAL},
+	#{version,jdbcType=DECIMAL},
+	#{userId,jdbcType=DECIMAL},
+	#{partyId,jdbcType=DECIMAL},
+	#{createTime,jdbcType=TIMESTAMP},
+	#{updateTime,jdbcType=TIMESTAMP}
+	)
+</insert>
+<update id="update" parameterType="ChekeFans">
+	update cheke_fans cf
+	<set>
+		VERSION = VERSION + 1
+		<if test="userId != null">
+		,USER_ID = #{userId,jdbcType=DECIMAL}
+		</if>
+		<if test="partyId != null">
+		,PARTY_ID = #{partyId,jdbcType=DECIMAL}
+		</if>
+		<if test="createTime != null">
+		,CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="updateTime != null">
+		,UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+		</if>
+	</set>
+	where ID = #{id,jdbcType=DECIMAL}
+</update>
+<select id="findListForExample" parameterType="ChekeFans" resultMap="ChekeFansMap">
+	select
+	<include refid="cf_Base_Column_List"/>
+	from cheke_fans cf
+	<include refid="common_query_condition"/>
+</select>
+<select id="findListForMap" parameterType="map" resultMap="ChekeFansMap" useCache="false">
+	select
+	<include refid="cf_Base_Column_List"/>
+	from cheke_fans cf
+	<include refid="common_query_condition"/>
+	order by cf.create_time desc
+</select>
+<sql id="common_query_condition">
+	<where>
+		<if test="id != null">
+			cf.id = #{id,jdbcType=DECIMAL}
+		</if>
+		<if test="userId != null">
+			and cf.user_id = #{userId,jdbcType=DECIMAL}
+		</if>
+		<if test="partyId != null">
+			and cf.party_id = #{partyId,jdbcType=DECIMAL}
+		</if>
+	</where>
+</sql>
+	<select id="getFansCountByPartyId" parameterType="java.lang.Long" resultType="java.lang.Integer" useCache="false">
+		select count(*) from cheke_fans cf where cf.party_id = #{partyId,jdbcType=DECIMAL}
+	</select>
+</mapper>

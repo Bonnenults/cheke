@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>alert弹窗框</title>
+		<link href="css/style.css" rel="stylesheet" />
+		<style>
+			.alert {
+				width: 200px;
+				text-align: center;
+				color: #fff;
+				margin: 10px auto;
+				border-radius: 5px;
+				line-height: 30px;
+				cursor: pointer;
+				background: #4ab819;
+			}
+			.confirm {
+				background: #196fb8;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--<div class="alert confirm" onclick="_confirm1()">confirm_无标题</div>-->
+		<div class="alert confirm" onclick="_confirm2()">confirm_带标题</div>
+		
+		<input type="button" value="点我" onclick="fund()">
+	</body>
+	<script src="js/jquery-1.7.1.min.js"></script>
+	<script src="js/ui.js"></script>
+	<script type="text/javascript">
+//		function _confirm1() {
+//			mizhu.confirm('', '是否要取消关注？', function(flag) {
+//				if(flag) {
+//					mizhu.alert('', '取消成功');
+//				}
+//			});
+//		}
+		function _confirm2() {
+			mizhu.confirm('提示', '是否要取消发布？', function(flag) {
+				if(flag) {
+					mizhu.alert('', '取消成功');
+				}
+			});
+		}
+		function fund() {
+			mizhu.alert('你好','你好');
+		}
+	</script>
+
+</html>

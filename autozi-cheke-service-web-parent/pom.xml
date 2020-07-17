@@ -1,0 +1,88 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.autozi.cheke</groupId>
+	<artifactId>autozi-cheke-service-web-parent</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>com.autozi.cheke.service.web.parent</name>
+	<description>中驰车福-service-web-cheke-父项目</description>
+
+	<modules>
+		<module>../autozi-cheke-service-web</module>
+		<module>../autozi-cheke-service-interface</module>
+		<module>../autozi-cheke-service-impl</module>
+		<module>../autozi-cheke-dao</module>
+		<module>../autozi-cheke-entity</module>
+	</modules>
+
+	<properties>
+		<o2c.version>1.0.0-SNAPSHOT</o2c.version>
+		<atzcommon.version>1.0.0-SNAPSHOT</atzcommon.version>
+		<spring.version>4.2.8.RELEASE</spring.version>
+		<springsecurity.version>4.2.2.RELEASE</springsecurity.version>
+		<junit.version>4.8.1</junit.version>
+	</properties>
+	<dependencyManagement>
+		<dependencies>
+			<!-- 通用组件引用 -->
+			<dependency>
+				<groupId>com.autozi</groupId>
+				<artifactId>autozi-cheke-common-core</artifactId>
+				<version>${atzcommon.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.autozi</groupId>
+				<artifactId>autozi-cheke-common-utils</artifactId>
+				<version>${atzcommon.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.autozi</groupId>
+				<artifactId>autozi-cheke-common-web</artifactId>
+				<version>${atzcommon.version}</version>
+			</dependency>
+			
+			<!-- dpl管理平台 自身业务 -->
+			<dependency>
+				<groupId>com.autozi.dpl</groupId>
+				<artifactId>autozi-entity-dpl</artifactId>
+				<version>${atzcommon.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.autozi.dpl</groupId>
+				<artifactId>autozi-service-interface-dpl</artifactId>
+				<version>${atzcommon.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.codehaus.jackson</groupId>
+				<artifactId>jackson-mapper-asl</artifactId>
+				<version>1.8.5</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	
+	<url>http://dpl.autozi.com</url>
+	
+	<build>
+		<plugins>
+			<plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-surefire-plugin</artifactId>
+		        <version>2.18.1</version>
+		        <configuration>
+		          <skip>true</skip>
+		        </configuration>
+		      </plugin>
+			<plugin>
+				  <groupId>org.apache.maven.plugins</groupId>
+				  <artifactId>maven-compiler-plugin</artifactId>
+				  <configuration>
+				  	 	<source>1.7</source> 
+                		<target>1.7</target>
+                		<encoding>UTF-8</encoding>
+				  </configuration>
+		      </plugin>
+		</plugins>
+	</build>
+</project>

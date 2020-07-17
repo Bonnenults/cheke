@@ -1,0 +1,106 @@
+<script type="text/javascript" src="${contextpath}/js/settle/account.js"></script>
+<div class="lf_carRight">
+    <div class="lf_carRight_center">
+        <h4 class="qy_center_title">
+            资金账户
+            <a class="qy_center_but" href="javascript:void (0);" onclick="Account.rechargeAccount();">充值</a>
+        </h4>
+        <div class="qy_center_plate">
+            <ul class="clear">
+                <li>
+                    <div class="qy_plate_float clear">
+                        <img src="${contextpath}/styles/images/yue.png" alt="">
+                        <div class="qy_plate_money">
+                            <span>${account.account?string('#0.00')}</span>
+                            <p>余额（元）</p>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="qy_plate_float clear">
+                        <img src="${contextpath}/styles/images/jinrixiaofei.png" alt="">
+                        <div class="qy_plate_money">
+                            <span><#if todayCost??>${todayCost?string('#0.00')}</#if></span>
+                            <p>昨日消费（元）</p>
+                        </div>
+                    </div>
+                </li>
+                <li style="margin-right: 0;">
+                    <div class="qy_plate_float clear">
+                        <img src="${contextpath}/styles/images/benzhouxiaofei.png" alt="">
+                        <div class="qy_plate_money">
+                            <span><#if weekCost??>${weekCost?string('#0.00')}</#if></span>
+                            <p>本周消费（元）</p>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="qy_center_tab clear">
+            <ul class="clear">
+                <li name="payStatus" class="act" onclick="Account.changeAccountOrderType(this,10)">待支付</li>
+                <li name="payStatus" onclick="Account.changeAccountOrderType(this,40)">已支付</li>
+                <li name="payStatus" onclick="Account.changeAccountOrderType(this,-10)">已取消</li>
+            </ul>
+
+        </div>
+        <div class="qy_center_main" id="changeId">
+            <div class="qy_center_mains act">
+                <div class="qy_center_seach clear">
+                    <form id="filter_form" action="/account/ck/list/listAccountOrderAjax.action" method="post">
+                        <input type="hidden" name="status" value="10">
+                    <div class="qy_seach_wrap clear">
+                        <span>
+                           <label class="qy_left">订单号：</label>
+                            <input class="qy_left" style="width:148px;" type="text" name="code" placeholder="">
+                        </span>
+                        <span>
+                           <label class="qy_left"> 充值时间：</label>
+                            <input name="createTimeStart" id="createTimeStart" onfocus="var my97EndDate=$dp.$('createTimeEnd');WdatePicker({onpicked:function(){my97EndDate.focus();},readOnly:true,maxDate:'#F{$dp.$D(\'createTimeEnd\');}',dateFmt:'yyyy-MM-dd 00:00:00'})" class="qy_calendar qy_left" type="text" placeholder="请选择......">
+                            <em class="qy_left">&nbsp;&nbsp;- &nbsp;</em>
+                            <input name="createTimeEnd" id="createTimeEnd" onfocus="WdatePicker({readOnly:true,dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'createTimeStart\');}',dateFmt:'yyyy-MM-dd 23:59:59'})" class="qy_calendar qy_left"  type="text" placeholder="请选择......">
+                        </span>
+                    </div>
+                    <div class="qy_seach_right">
+                        <a class="qy_seach_cx" href="javascript:void(0)" onclick="App.commonFormSubmit('filter_form');">查询</a>
+                        <a class="qy_seach_cz" href="javascript:;">重置</a>
+                    </div>
+                    </form>
+                </div>
+                <div class="qy_center_table">
+                    <table>
+                        <tbody>
+                        <tr>
+                            <th>#</th>
+                            <th>充值时间</th>
+                            <th>订单号</th>
+                            <th>充值金额</th>
+                            <th>平台服务费</th>
+                            <th>可用金额</th>
+                            <th class="no_border">操作</th>
+                        </tr>
+                        <#list orderPage.result as order>
+                        <tr>
+                            <td>${order_index + orderPage.firstElementIndex}</td>
+                            <td>${order.createTime?string("yyyy-MM-dd HH:mm")}</td>
+                            <td>${order.code}</td>
+                            <td>${order.realMoney?string("0.00")}</td>
+                            <td>${order.rateFee?string("0.00")}</td>
+                            <td>${order.accountMoney?string("0.00")}</td>
+                            <td class="no_border">
+                                <a class="qy_alink" href="${contextpath}/account/ck/list/toPay.action?accountOrderId=${order.id}">支付</a>
+                            </td>
+                        </tr>
+                        </#list>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="clear qy_page_wrap">
+                    <div id="page_common_nav">
+                         <#include "../../common/paging_common.html">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

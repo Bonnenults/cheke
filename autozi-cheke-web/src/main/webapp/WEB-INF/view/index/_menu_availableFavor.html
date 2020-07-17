@@ -1,0 +1,12 @@
+<#list mainMenus as menu>
+    <h6>${menu.text}</h6>
+    <#list menu.items as level2Menu>
+        <dl class="clearfix" style="height: auto;">
+            <dt>${level2Menu.text}</dt>
+            <#list level2Menu.items as level3Menu>
+            <dd><label>
+                <input type="checkbox" name="favorMenus" value="${level3Menu.id}" <#if favorMenus?seq_contains(level3Menu.id?string)>checked="checked"</#if> />${level3Menu.text}</label></dd>
+            </#list>
+        </dl>
+    </#list>
+</#list>

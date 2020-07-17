@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.autozi.cheke.user.mapper.MedalMapper">
+<cache eviction="LRU" type="org.mybatis.caches.memcached.MemcachedCache"/>
+<resultMap id="MedalMap" type="Medal">
+	<result column="ID" jdbcType="DECIMAL" property="id"/>
+	<result column="VERSION" jdbcType="DECIMAL" property="version"/>
+	<result column="MEDAL_NAME" jdbcType="VARCHAR" property="medalName"/>
+	<result column="IMAGE" jdbcType="VARCHAR" property="image"/>
+	<result column="IMAGE_ACTIVE" jdbcType="VARCHAR" property="imageActive"/>
+
+	<result column="INTRO" jdbcType="VARCHAR" property="intro"/>
+	<result column="STATUS" jdbcType="DECIMAL" property="status"/>
+	<result column="OBTAIN_NUM" jdbcType="DECIMAL" property="obtainNum"/>
+	<result column="ADORN_NUM" jdbcType="DECIMAL" property="adornNum"/>
+	<result column="CREATE_USER_ID" jdbcType="DECIMAL" property="createUserId"/>
+	<result column="UPDATE_USER_ID" jdbcType="DECIMAL" property="updateUserId"/>
+	<result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+	<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+	<result column="PUBLISH_TIME" jdbcType="TIMESTAMP" property="publishTime"/>
+	<result column="OFFLINE_TIME" jdbcType="TIMESTAMP" property="offlineTime"/>
+	<result column="TYPE" jdbcType="DECIMAL" property="type"/>
+</resultMap>
+<sql id="Base_Column_List">
+	ID,VERSION,MEDAL_NAME,IMAGE,IMAGE_ACTIVE,INTRO,STATUS,OBTAIN_NUM,ADORN_NUM,CREATE_USER_ID,UPDATE_USER_ID,UPDATE_TIME,CREATE_TIME,PUBLISH_TIME,OFFLINE_TIME,TYPE
+</sql>
+<sql id="mi_Base_Column_List">
+	m.ID,m.VERSION,m.MEDAL_NAME,m.IMAGE,m.IMAGE_ACTIVE,m.INTRO,m.STATUS,m.OBTAIN_NUM,m.ADORN_NUM,m.CREATE_USER_ID,m.UPDATE_USER_ID,m.UPDATE_TIME,m.CREATE_TIME,m.PUBLISH_TIME,m.OFFLINE_TIME,m.TYPE
+</sql>
+<select id="get" parameterType="long" resultMap="MedalMap">
+	select
+		<include refid="Base_Column_List"/>
+	from medal_info m
+	where ID = #{id,jdbcType=DECIMAL}
+</select>
+
+<delete id="delete" parameterType="long">
+	delete
+	from medal_info
+	where ID = #{id,jdbcType=DECIMAL}
+</delete>
+<insert id="insert" parameterType="Medal">
+	insert into medal_info(
+		<include refid="Base_Column_List"/>
+	) values (
+	#{id,jdbcType=DECIMAL},
+	#{version,jdbcType=DECIMAL},
+	#{medalName,jdbcType=VARCHAR},
+	#{image,jdbcType=VARCHAR},
+	#{imageActive,jdbcType=VARCHAR},
+	#{intro,jdbcType=VARCHAR},
+	#{status,jdbcType=DECIMAL},
+	#{obtainNum,jdbcType=DECIMAL},
+	#{adornNum,jdbcType=DECIMAL},
+    #{createUserId,jdbcType=DECIMAL},
+    #{updateUserId,jdbcType=DECIMAL},
+	#{updateTime,jdbcType=TIMESTAMP},
+	#{createTime,jdbcType=TIMESTAMP},
+    #{publishTime,jdbcType=TIMESTAMP},
+    #{offlineTime,jdbcType=TIMESTAMP},
+	#{type,jdbcType=DECIMAL}
+	)
+</insert>
+<update id="update" parameterType="Medal">
+	update medal_info m
+	<set>
+		VERSION = VERSION + 1
+		<if test="medalName != null">
+		    ,MEDAL_NAME = #{medalName,jdbcType=VARCHAR}
+		</if>
+		<if test="image != null">
+			,IMAGE = #{image,jdbcType=VARCHAR}
+		</if>
+        <if test="imageActive != null">
+            ,IMAGE_ACTIVE = #{imageActive,jdbcType=VARCHAR}
+        </if>
+		<if test="intro != null">
+		    ,INTRO = #{intro,jdbcType=VARCHAR}
+		</if>
+		<if test="status != null">
+		    ,STATUS = #{status,jdbcType=DECIMAL}
+		</if>
+        <if test="obtainNum != null">
+            ,OBTAIN_NUM = #{obtainNum,jdbcType=DECIMAL}
+        </if>
+        <if test="adornNum != null">
+            ,ADORN_NUM = #{adornNum,jdbcType=DECIMAL}
+        </if>
+        <if test="createUserId != null">
+            ,CREATE_USER_ID = #{createUserId,jdbcType=DECIMAL}
+        </if>
+        <if test="updateUserId != null">
+            ,UPDATE_USER_ID = #{updateUserId,jdbcType=DECIMAL}
+        </if>
+		<if test="updateTime != null">
+		    ,UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="createTime != null">
+		    ,CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+		</if>
+        <if test="publishTime != null">
+            ,PUBLISH_TIME = #{publishTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="offlineTime != null">
+            ,OFFLINE_TIME = #{offlineTime,jdbcType=TIMESTAMP}
+        </if>
+		<if test="type != null">
+			,TYPE = #{type,jdbcType=DECIMAL}
+		</if>
+	</set>
+	where ID = #{id,jdbcType=DECIMAL}
+</update>
+<select id="findListForExample" parameterType="Medal" resultMap="MedalMap">
+	select
+	<include refid="mi_Base_Column_List"/>
+	from medal_info m
+	<include refid="common_query_condition"/>
+</select>
+<select id="findListForMap" parameterType="map" resultMap="MedalMap">
+	select
+	<include refid="mi_Base_Column_List"/>
+	from medal_info m
+	<include refid="common_query_condition"/>
+	order by m.update_time desc,m.create_time desc
+</select>
+<sql id="common_query_condition">
+	<where>
+		<if test="id != null">
+			m.id = #{id,jdbcType=DECIMAL}
+		</if>
+		<if test="medalName != null">
+			and m.MEDAL_NAME = #{medalName,jdbcType=DECIMAL}
+		</if>
+		<if test="status != null">
+			and m.STATUS = #{status,jdbcType=DECIMAL}
+		</if>
+		<if test="createTimeStart != null">
+			<![CDATA[ AND m.create_time >= DATE_FORMAT(#{createTimeStart},'%Y-%m-%d %H:%i:%s')]]>
+		</if>
+		<if test="createTimeEnd != null">
+			<![CDATA[ AND m.create_time <= DATE_FORMAT(#{createTimeEnd},'%Y-%m-%d %H:%i:%s')]]>
+		</if>
+		<if test="publishTimeStart != null">
+			<![CDATA[ AND m.publish_time >= DATE_FORMAT(#{publishTimeStart},'%Y-%m-%d %H:%i:%s')]]>
+		</if>
+		<if test="publishTimeEnd != null">
+			<![CDATA[ AND m.publish_time <= DATE_FORMAT(#{publishTimeEnd},'%Y-%m-%d %H:%i:%s')]]>
+		</if>
+		<if test="offlineTimeStart != null">
+			<![CDATA[ AND m.offline_time >= DATE_FORMAT(#{offlineTimeStart},'%Y-%m-%d %H:%i:%s')]]>
+		</if>
+		<if test="offlineTimeEnd != null">
+			<![CDATA[ AND m.offline_time <= DATE_FORMAT(#{offlineTimeEnd},'%Y-%m-%d %H:%i:%s')]]>
+		</if>
+	</where>
+</sql>
+<select id="findList" parameterType="map" resultMap="MedalMap">
+    select
+    <include refid="mi_Base_Column_List"/>
+    from medal_info m
+    <include refid="find_list_condition"/>
+</select>
+<sql id="find_list_condition">
+    <where>
+        <if test="id != null">
+            m.id = #{id,jdbcType=DECIMAL}
+        </if>
+        <if test="medalName != null">
+            and m.MEDAL_NAME = #{medalName,jdbcType=DECIMAL}
+        </if>
+        <if test="status != null">
+            and m.STATUS = #{status,jdbcType=DECIMAL}
+        </if>
+        <if test="createTimeStart != null">
+            <![CDATA[ AND m.create_time >= DATE_FORMAT(#{createTimeStart},'%Y-%m-%d %H:%i:%s')]]>
+        </if>
+        <if test="createTimeEnd != null">
+            <![CDATA[ AND m.create_time <= DATE_FORMAT(#{createTimeEnd},'%Y-%m-%d %H:%i:%s')]]>
+        </if>
+    </where>
+</sql>
+
+</mapper>

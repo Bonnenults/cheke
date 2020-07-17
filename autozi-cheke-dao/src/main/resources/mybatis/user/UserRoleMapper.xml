@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.autozi.cheke.user.mapper.UserRoleMapper">
+	<cache eviction="LRU" type="org.mybatis.caches.memcached.MemcachedCache"/>
+	<resultMap id="UserRoleMap" type="UserRole">
+		<id column="ID" property="id" jdbcType="DECIMAL"/>
+		<result column="VERSION" property="version" jdbcType="DECIMAL"/>
+		<result column="USER_ID" property="userId" jdbcType="DECIMAL"/>
+		<result column="ROLE_ID" property="roleId" jdbcType="DECIMAL"/>
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		ID,
+		VERSION,
+		USER_ID,
+		ROLE_ID
+	</sql>
+	
+    <select id="get" resultMap="UserRoleMap" parameterType="long">
+        select
+        <include refid="Base_Column_List"/>
+        from BAS_USER_ROLE
+        where ID = #{id,jdbcType=DECIMAL}
+    </select>
+    
+    <delete id="delete" parameterType="long">
+        delete from BAS_USER_ROLE
+        where ID = #{id,jdbcType=DECIMAL}
+    </delete>
+    
+    <insert id="insert" parameterType="UserRole">
+        insert into BAS_USER_ROLE (
+        	<include refid="Base_Column_List"/>
+        )
+        values (
+			#{id,jdbcType=DECIMAL},
+			#{version,jdbcType=DECIMAL},
+			#{userId,jdbcType=DECIMAL},
+			#{roleId,jdbcType=DECIMAL}
+        )
+    </insert>
+    
+    <update id="update" parameterType="UserRole">
+    	update BAS_USER_ROLE
+    	<set>
+    		VERSION = VERSION+1
+    		<if test="userId !=null">
+    			,USER_ID = #{userId,jdbcType=DECIMAL}
+    		</if>
+    		<if test="roleId !=null">
+    			,ROLE_ID = #{roleId,jdbcType=DECIMAL}
+    		</if>
+    	</set>
+    	<where>
+    		ID=#{id,jdbcType=DECIMAL} and VERSION=#{version,jdbcType=DECIMAL}
+    	</where>
+    </update>
+    
+    <sql id="commonSQLWhere">
+    	<where>
+    		<if test="id !=null">
+				and ID = #{id,jdbcType=DECIMAL}
+            </if>
+    		<if test="userId !=null">
+    			and USER_ID = #{userId,jdbcType=DECIMAL}
+    		</if>
+    		<if test="roleId !=null">
+    			and ROLE_ID = #{roleId,jdbcType=DECIMAL}
+    		</if>
+    	</where>
+    </sql>
+    
+    <select id="findListForMap" resultMap="UserRoleMap" parameterType="java.util.Map">
+        select 
+        	<include refid="Base_Column_List"/>
+        from BAS_USER_ROLE
+        <include refid="commonSQLWhere"/>
+    </select>
+    
+    <select id="findListForExample" resultMap="UserRoleMap" parameterType="UserRole">
+        select 
+        	<include refid="Base_Column_List"/>
+        from BAS_USER_ROLE
+        <include refid="commonSQLWhere"/>
+    </select>
+	<delete id="deleteUserRole" parameterType="long">
+		delete from BAS_USER_ROLE where user_id=#{id}
+	</delete>
+</mapper>

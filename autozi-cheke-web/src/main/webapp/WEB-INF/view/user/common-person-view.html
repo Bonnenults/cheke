@@ -1,0 +1,34 @@
+<div class="nb_userInfo_main_form">
+    <label for="">真实姓名：</label>
+    <p><#if (party.connectorName??)>${party.connectorName}</#if></p>
+</div>
+<div class="nb_userInfo_main_form">
+    <label for="">身份证号：</label>
+    <p><#if (party.idNumber??)>${party.idNumber}</#if></p>
+</div>
+
+<div class="permanently clear" style="padding-bottom: 30px;">
+    <label style="width: 207px;color: #333333;" class="permanentlyOne"></label>
+    <div class="modify_perman" style="margin-left: 207px;">
+        <div class="modfity_img_style">
+            <div class="modify_box_up_img id_person_img01">
+                        <#if (party??&&party.identifyImgA??)>
+                            <img src="${party.identifyImgA}"/>
+                        </#if>
+            </div>
+            <span>身份证正面</span>
+        </div>
+        <div class="modfity_img_style">
+            <div class="modify_box_up_img id_person_img02">
+                        <#if (party.identifyImgB??)>
+                            <img src="${party.identifyImgB}"/>
+                        </#if>
+            </div>
+            <span>身份证反面</span>
+        </div>
+    </div>
+</div>
+<div class="nb_userInfo_main_form">
+    <label for="">手机号码：</label>
+    <p><#if (party.mobile??)>${party.mobile}</#if></p>
+</div>

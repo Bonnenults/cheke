@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>车客</title>
+    <script type="text/javascript" src="${contextpath}/js/message/leaveword/leavewordAdmin.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+    $(function(){
+        LeaveWordAdmin.initLeaveWordAdmin();
+    })
+</script>
+
+<div class="lf_carCenter clear">
+
+    <div class="lf_carRight">
+        <div class="lf_carRight_center">
+            <div class="qy_center_main">
+                    <form id="filter_form" action="/leaveWord/admin/list/listLeaveWord.action" method="post">
+                        <input type="hidden" name="channelType" id="channelType">
+                        <div class="qy_center_seach clear">
+                            <div class="qy_seach_wrap clear">
+                            <span>
+                                <label class="qy_left"> 推客昵称：</label>
+                                <input class="qy_left text_adjustment" type="text" name="createUserName" maxlength="30">
+                            </span>
+                            <span>
+                                <label class="qy_left"> 推客手机号：</label>
+                                <input class="qy_left text_adjustment" type="text" name="createUserPhone" maxlength="30">
+                            </span>
+                             <span>
+                                <label class="qy_left">留言时间：</label>
+                                <input id="createTimeStart" name="createTimeStart" class="qy_calendar qy_left" type="text" placeholder="请选择"
+                                                                                                 onfocus="var my97EndDate=$dp.$('createTimeEnd');
+						 																		WdatePicker({onpicked:function(){my97EndDate.focus();},
+						 																		readOnly:true,maxDate:'#F{$dp.$D(\'createTimeEnd\');}',dateFmt:'yyyy-MM-dd 00:00:00'})">
+                                <em class="qy_left">&nbsp;- &nbsp;</em>
+                                <input id="createTimeEnd" name="createTimeEnd" class="qy_calendar qy_left" type="text" placeholder="请选择"
+                                                                                                 onfocus="WdatePicker({readOnly:true,minDate:'#F{$dp.$D(\'createTimeStart\');}',dateFmt:'yyyy-MM-dd 23:59:59'})">
+                            </span>
+                            <span style="display: none">
+                                <label class="qy_left qy_left">留言频道：</label>
+                                <div class="project_category qy_left text_adjustment">
+                                    <!--文本框-->
+                                    <input class="inves_all_money" type="text" placeholder="请选择" value="" name="" />
+                                    <div class="border_lists" id="channel_type">
+                                        <a href="javascript:;" data-title="0">全部</a>
+                                    <#list articleChannelMap?keys as key>
+                                        <a href="javascript:;" title="${key}"> ${articleChannelMap[key]} </a>
+                                    </#list>
+                                    </div>
+                                </div>
+                            </span>
+                            <span>
+                                <label class="qy_left"> 留言手机号：</label>
+                                <input class="qy_left text_adjustment" type="text" name="leavePhone">
+                            </span>
+                            </div>
+                            <div class="qy_seach_right">
+                                <a class="qy_seach_cx" href="javascript:void(0)" onclick="App.commonFormSubmit('filter_form');">查询</a>
+                                <a class="qy_seach_cz" href="javascript:;">重置</a>
+                            </div>
+                        </div>
+                    </form>
+
+
+                    <div class="qy_center_table" id="data_table_list">
+                        <table>
+                            <tbody>
+                            <tr>
+                                <th width="4%">#</th>
+                                <th width="8%">推客昵称</th>
+                                <th width="8%">推客手机号</th>
+                                <th width="8%">留言时间</th>
+                                <th width="16%">标题</th>
+                                <th width="10%">留言姓名</th>
+                                <th width="10%">留言手机号</th>
+                                <th width="14%" >留言内容</th>
+                            </tr>
+                                    <#if (page??)&&(page.result??)&&(page.result?size>0)>
+                                        <#list page.result as view>
+                                        <tr>
+                                            <td>${page.firstElementIndex + view_index }</td>
+                                            <td><#if view.createUserName??>${view.createUserName?html}</#if></td>
+                                            <td><#if view.createUserPhone??>${view.createUserPhone?html}</#if></td>
+                                            <td><#if view.createTime??>${view.createTime?string("yyyy-MM-dd HH:mm")}</#if></td>
+                                            <td><#if view.leaveTitle??>${view.leaveTitle?html}</#if></td>
+                                            <td><#if view.leaveName??>${view.leaveName?html}</#if></td>
+                                            <td><#if view.leavePhone??>${view.leavePhone?html}</#if></td>
+                                            <td><#if view.leaveMessage??>${view.leaveMessage?html}</#if></td>
+                                        </tr>
+                                        </#list>
+                                    <#else>
+                                        <tr>
+                                            <td colspan='8'>没有符合条件的记录</td>
+                                        </tr>
+                                    </#if>
+                            </tbody>
+                        </table>
+                    </div>
+
+                <div class="clear qy_page_wrap">
+                    <div id="page_common_nav">
+                        <#include "../../../common/paging_common.html">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

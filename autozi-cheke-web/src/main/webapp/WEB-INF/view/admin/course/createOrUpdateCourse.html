@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>新增课程</title>
+
+        <!--<script type="text/javascript" src="${contextpath}/js/framework/upload/jquery.uploadify.js" ></script>-->
+        <!--<script type="text/javascript" src="${contextpath}/js/framework/jquery-1.12.0.min.js" ></script>-->
+        <script type="text/javascript" src="${contextpath}/js/framework/upload/ajaxfileupload.js" ></script>
+        <script type="text/javascript" src="${contextpath}/js/course/courseAdmin.js"></script>
+        <style>
+            .modify_box_up object{left:0}
+        </style>
+	</head>
+	<body>
+    <script type="text/javascript">
+        $(function(){
+            CourseAdmin.initCourse();
+        })
+    </script>
+		<h2 style="width:50%;padding-left: 42px;padding-top: 20px;font-weight: normal;">新增课程</h2>
+		<div class="modify_item">
+			<form class="modify_form" id="form_data" method="post" action="/course/admin/create/createOrUpdateCourse.action">
+
+				<input type="hidden" name="id" value="${co.id!''}"> <#-- 课程id -->
+                <input type="hidden" name="type" id="type" value="${co.type!''}"> <#-- 课程类型，，头条、新闻、 -->
+
+				<input type="hidden" name="image" id="image" value="${co.image!''}"><#-- 图片 -->
+
+				<p>
+					<label><span>*</span>课程标题：</label>
+					<input type="text" name="courseName" value="${co.courseName!''}"/>
+				</p>
+
+                <p>
+                    <label><span>*</span>课程简介：</label>
+                    <input type="text" name="intro" value="${co.intro!''}"/>
+                </p>
+
+				<div class="permanently clear">
+					<label class="permanentlyOne newLabel"><span>*</span>课程类别：</label>
+					<div class="project_category">
+						<input type="text" placeholder="请选择" value="${typeName!''}" name="type_name" />
+						<div class="border_lists" id="project_type">
+						<#list courseTypeMap?keys as key>
+                            <a href="javascript:;" data-title="${key}"> ${courseTypeMap[key]} </a>
+						</#list>
+						</div>
+					</div>
+				</div>
+
+                <p>
+                    <label><span>*</span>课程标签：</label>
+                    <input type="text" name="tag" value="${co.tag!''}"/>
+                </p>
+
+				<p>
+					<label><span>*</span>课程来源：</label>
+					<input type="text" name="source" value="${co.source!''}"/>
+				</p>
+
+				<!--图片上传-->
+				<div class="permanently clear">
+					<label class="permanentlyOne newLabel">课程缩略图：</label>
+					<div class="modify_perman">
+						<div class="modify_box_up"> 
+							<input type="file"  id="file1" name="file1" onchange="CourseAdmin.upload(1,1024)"/> 选择文件
+						</div> 
+					</div>
+					<span class="gary_tishi">限制上传一张,1M以内</span>
+				</div>
+				<div class="modity_img">
+					 <span id="projectImg_span">
+						 <#if co.image?? && co.image != ''>
+                             <img src="${co.image}" /> <a href="javascript:;" onclick="CourseAdmin.deleteImg()" class="image_juzhong" style="color: red">删除</a>
+						 </#if>
+					 </span>
+				</div>
+
+				<p>
+					<label><span>*</span>课程章节数：</label>
+					<input type="number" name="chapterNum" value="${co.chapterNum!''}"/>
+				</p>
+
+                <div class="permanently clear">
+                    <label class="permanentlyOne newLabel"><span>*</span>是否永久有效：</label>
+                    <div class="radioStyle">
+                        <label for="item1">
+                            <input id="item1" type="radio" name="is_forever" value="1" <#if co.beginTime??><#else>checked</#if> >
+                            <div></div>
+                            <span>是</span>
+                        </label>
+                    </div>
+                    <div class="radioStyle">
+                        <label for="item2">
+                            <input id="item2" type="radio" name="is_forever" value="0" <#if co.beginTime??>checked<#else></#if>>
+                            <div></div>
+                            <span>否</span>
+                        </label>
+                    </div>
+                </div>
+
+				<!--起止时间-->
+				<p id="beginEndTimeShow" <#if co.beginTime??>style="display: block"<#else>style="display: none"</#if> >
+					<label><span>*</span>起止时间：</label>
+					<input class="modify_time" type="text" placeholder="请选择..." value="<#if co.beginTime??>${co.beginTime?string('yyyy-MM-dd HH:mm:ss')}<#else> </#if>" id="beginTime" name="beginTime"
+						   																		onfocus="var my97EndDate=$dp.$('endTime');
+						 																		WdatePicker({onpicked:function(){my97EndDate.focus();},
+						 																		readOnly:true,maxDate:'#F{$dp.$D(\'endTime\');}',dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'%y-%M-%d'})"/>
+					<span class="modify_time_line"> - </span>
+					<input class="modify_time" type="text" placeholder="请选择..." value="<#if co.endTime??>${co.endTime?string('yyyy-MM-dd HH:mm:ss')}<#else> </#if>" id="endTime" name="endTime"
+                           																		onfocus="WdatePicker({readOnly:true,minDate:'#F{$dp.$D(\'beginTime\');}',dateFmt:'yyyy-MM-dd 23:59:59'})"/>
+				</p>
+
+			</form>
+			<div class="modify_submit">
+				<input type="button" value="提交" onclick="CourseAdmin.saveOrUpdate()"/>
+			</div>
+		</div>
+	</body>
+
+
+</html>

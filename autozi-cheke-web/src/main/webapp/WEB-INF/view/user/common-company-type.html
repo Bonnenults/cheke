@@ -1,0 +1,11 @@
+<div class="project_category">
+    <input type="hidden" id="companyType" value="<#if (party.companyType??)>${party.companyType}</#if>" name="companyType" />
+    <input type="text" readonly="readonly" placeholder="请选择" value="<#if (companyTypeName??)>${companyTypeName}</#if>" id="companyTypeName" name="companyTypeName" />
+    <div class="border_lists" id="companyTypeOption">
+    <#if (companyType??)>
+        <#list companyType?keys as key>
+            <a href="javascript:Party.selectCompanyType(${key});">${companyType[key]}</a>
+        </#list>
+    </#if>
+    </div>
+</div>

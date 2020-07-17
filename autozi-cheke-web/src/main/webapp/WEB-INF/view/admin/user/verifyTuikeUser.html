@@ -1,0 +1,88 @@
+<script type="text/javascript" src="${contextpath}/js/user/user.js" ></script>
+<div class="lf_carRight_center">
+    <div class="nb_userInfo_main">
+        <h4 class="nb_userInfo_main_title"><span></span>个人信息</h4>
+        <div class="nb_userInfo_main_form">
+            <label for="">真实姓名：</label>
+            <p><#if user.realName??>${user.realName}</#if></p>
+        </div>
+        <div class="nb_userInfo_main_form">
+            <label for="">公司名称：</label>
+            <p><#if user.companyName??>${user.companyName}</#if></p>
+        </div>
+        <div class="nb_userInfo_main_form">
+            <label for="">职位名称：</label>
+            <p><#if user.jobName??>${user.jobName}</#if></p>
+        </div>
+        <div class="nb_userInfo_main_form">
+            <label for="">地址：</label>
+            <p><#if user.address??>${user.address}</#if></p>
+        </div>
+    <#if user.idCardStatus??&&user.idCardStatus==4>
+
+        <div class="nb_userInfo_main_form" >
+            <label for="" style="color:red;">拒绝原因：</label>
+            <p style="color:red;">${user.refuseReason}</p>
+        </div>
+    </#if>
+        <div class="permanently clear" style="padding-bottom: 30px;">
+            <label style="width: 207px;color: #333333;" class="permanentlyOne"></label>
+            <div class="modify_perman" style="margin-left: 207px;">
+                <div class="modfity_img_style">
+                    <div class="modify_box_up_img id_person_img01">
+                        <span id="identifyImgASpan">
+                        <#if (user??&&user.identifyImgA??)>
+                            <img src="${user.identifyImgA}"/>
+                        </#if>
+                        </span>
+                    </div>
+                    <span>身份证正面</span>
+                </div>
+                <div class="modfity_img_style">
+                    <div class="modify_box_up_img id_person_img02">
+                        <span id="identifyImgBSpan">
+                        <#if (user.identifyImgB??)>
+                            <img src="${user.identifyImgB}"/>
+                        </#if>
+                        </span>
+                    </div>
+                    <span>身份证反面</span>
+                </div>
+            </div>
+        </div>
+
+            <div class="nb_submit">
+                <input type="hidden" id="userId" value="<#if (user??&&user.id??)>${user.id}</#if>">
+<#if user.idCardStatus??&&user.idCardStatus==3>
+    <a href="javascript:void(0)" onclick="TuikeUser.passVerify();">
+        <button class="nb_btn_by">审核通过</button>
+    </a>
+    <a href="javascript:void(0)" onclick="TuikeUser.openRefuseDialog()">
+        <button class="nb_btn_refuse">拒绝</button>
+    </a>
+</#if>
+
+                <a href="javascript:void(0)" onclick="TuikeUser.returnList();">
+                    <button class="nb_btn_back">返回</button>
+                </a>
+            </div>
+
+
+    </div>
+</div>
+<!--遮罩层-->
+<div class="mask_float"></div>
+<!--拒绝原因弹框-->
+<div class="bomb_box" id="reasons_for">
+    <div class="bomb_pwd_in">
+        <p>
+            <span>拒绝原因：</span>
+            <textarea placeholder="请输入拒绝原因" id="refuseReason"></textarea>
+        </p>
+    </div>
+    <div class="pwd_bottom_btn">
+        <a id="reasons_ok" class="confirmation_pwd" href="javascript:void(0)" onclick="TuikeUser.refuseVerify();">确认</a>
+        <a id="reasons_close" class="confirmation_pwd" href="javascript:void(0)" onclick="TuikeUser.closeRefuseDialog();">关闭</a>
+    </div>
+</div>
+

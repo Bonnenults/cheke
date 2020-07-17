@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>广告</title>
+		<!--<script type="text/javascript" src="${contextpath}/js/framework/jquery-1.12.0.min.js" ></script>-->
+        <script charset="utf-8" src="${contextpath}/js/framework/kindeditor/kindeditor-all-min.js"></script>
+        <script charset="utf-8" src="${contextpath}/js/framework/kindeditor/lang/zh-CN.js"></script>
+        <script type="text/javascript" src="${contextpath}/js/framework/upload/ajaxfileupload.js" ></script>
+        <script type="text/javascript" src="${contextpath}/js/article/video/video.js"></script>
+        <style>
+            .modify_box_up object{left:0}
+        </style>
+	</head>
+	<body>
+	<script type="text/javascript">
+		$(function(){
+			Video.initVideo();
+		})
+	</script>
+	<h2 style="width:50%;padding-left: 42px;padding-top: 20px;font-weight: normal;">新增广告</h2>
+		<div class="modify_item">
+			<form class="modify_form" id="form_data" method="post" action="/article/ad/create/createOrUpdateArticle.action">
+
+                <input type="hidden" name="channelType" value="4"> <#-- 推广频道 -->
+				<input type="hidden" name="id" value="${art.id!''}"> <#-- 资讯id -->
+                <input type="hidden" name="type" id="type" value="${art.type!31}"> <#-- 资讯类型，，头条、新闻、 -->
+
+				<input type="hidden" name="image" id="image" value="${art.image!''}"><#-- 图片 -->
+                <input type="hidden" name="image2" id="image2" value="${art.image2!''}"><#-- 图片 -->
+                <input type="hidden" name="image3" id="image3" value="${art.image3!''}"><#-- 图片 -->
+
+                <input type="hidden" name="video_url" id="video_url" value="${art.video_url!''}"><#-- 视频 -->
+
+                <input type="hidden" name="aIsTask" id="aIsTask" value="${art.aIsTask!'0'}"> <#-- 是否生成任务 -->
+
+				<p>
+					<label><span>*</span>推广标题：</label>
+					<input type="text" name="title" value="${art.title!''}"/>
+				</p>
+               <!-- <p>
+                    <label><span>*</span>培训简介：</label>
+                    <input type="text" name="intro" value="${art.intro!''}"/>
+                </p>-->
+				<div class="permanently clear">
+					<label class="permanentlyOne newLabel"><span>*</span>推广类别：</label>
+					<div class="project_category">
+						<input type="text" placeholder="请选择" value="${typeName!'视频'}" name="type_name" />
+						<div class="border_lists" id="project_type">
+						<#list articleTypeMap?keys as key>
+                            <a href="javascript:;" data-title="${key}"> ${articleTypeMap[key]} </a>
+						</#list>
+						</div>
+					</div>
+				</div>
+
+				<p>
+					<label><span>*</span>推广标签：</label>
+					<input type="text" name="mark" value="${art.mark!''}"/>
+				</p>
+
+				<#--<p>
+					<label>推广分类：</label>
+					<input type="text" name="tag" value="${art.tag!''}"/>
+				</p>-->
+
+                <div class="permanently clear">
+                    <label class="permanentlyOne newLabel"><span>*</span>推广分类：</label>
+                    <div class="project_classification">
+                        <ul class="clear">
+						<#if articleTag??>
+							<#list articleTag as tag>
+                                <li>
+                                    <label class="lf_label_checkBox" for="project_class${tag_index}">
+                                        <input class="clarity" id="project_class${tag_index}" type="checkbox" name="article_tag" <#if (tag.selectFlag??) && (tag.selectFlag == 1)>checked</#if> value="${tag.id}"/>
+                                        <div></div>
+                                        <span>${tag.name}</span>
+                                    </label>
+                                </li>
+							</#list>
+						</#if>
+                        </ul>
+                    </div>
+                </div>
+				<p>
+					<label><span>*</span>推广来源：</label>
+					<input type="text" name="source" value="${art.source!''}"/>
+				</p>
+
+				<!--视频上传-->
+				<div class="permanently clear" id="video_upload">
+					<label class="permanentlyOne newLabel"><span>*</span>推广视频：</label>
+					<div class="modify_perman">
+						<div class="modify_box_up">
+							<input type="file"  id="video1" name="file1" onchange="Video.qiniuUpload(1,1024000)"/> 选择文件
+						</div>
+					</div>
+					<span class="gary_tishi">视频限制1000M以内</span>
+				</div>
+				<!--单图片上传-->
+				<div class="permanently clear" id="single_upload">
+					<label class="permanentlyOne newLabel"><span>*</span>推广海报：</label>
+					<div class="modify_perman">
+						<div class="modify_box_up">
+							<input type="file"  id="file1" name="file1" onchange="Video.upload(1,5000)"/> 选择文件
+						</div>
+					</div>
+					<span class="gary_tishi">限制上传一张</span>
+				</div>
+				<!--多图片上传-->
+				<div class="permanently clear" id="multi_upload">
+					<label class="permanentlyOne newLabel"><span>*</span>推广海报：</label>
+					<div class="modify_perman">
+						<div class="modify_box_up">
+							<input type="file"  id="file2" name="file2" onchange="Video.imgupload(2,5000)"/> 图片1
+						</div>
+                        <div class="modify_box_up">
+                            <input type="file"  id="file3" name="file3" onchange="Video.imgupload(3,5000)"/> 图片2
+                        </div>
+                        <div class="modify_box_up">
+                            <input type="file"  id="file4" name="file4" onchange="Video.imgupload(4,5000)"/> 图片3
+                        </div>
+					</div>
+					<span class="gary_tishi">限制上传三张</span>
+				</div>
+				<div class="modity_img">
+					<div id="projectImg_span" style="width: 25%;float: left">
+						<#if art.image?? && art.image != ''>
+							<img src="${art.image}" /> <a href="javascript:;" onclick="Video.deleteImg()" class="image_juzhong" style="color: red;">删除</a>
+						</#if>
+					</div>
+                    <div id="projectImg_span1" style="width: 25%;float: left;min-height:1px;">
+					    <#if art.image?? && art.image != ''>
+                            <img src="${art.image}" /> <a href="javascript:;" onclick="Video.deleteImgShow(1)" class="image_juzhong" style="color: red;">删除</a>
+					    </#if>
+                    </div>
+                    <div id="projectImg_span2" style="width: 25%;float: left;min-height:1px;">
+                        <#if art.image2?? && art.image2 != ''>
+                            <img src="${art.image2}" /> <a href="javascript:;" onclick="Video.deleteImgShow(2)" class="image_juzhong" style="color: red;">删除</a>
+                        </#if>
+                    </div>
+                    <div id="projectImg_span3" style="width: 25%;float: left;">
+                        <#if art.image3?? && art.image3 != ''>
+                            <img src="${art.image3}" /> <a href="javascript:;" onclick="Video.deleteImgShow(3)" class="image_juzhong" style="color: red">删除</a>
+                        </#if>
+                    </div>
+                    <span id="projectVideo_span">
+                        <#if art.video_url?? && art.video_url != ''>
+                            <video src="${art.video_url}" /> <a href="javascript:;" onclick="Video.deleteImg()" class="image_juzhong" style="color: red">删除</a>
+                        </#if>
+                    </span>
+				</div>
+
+
+                <div class="permanently clear">
+                    <label class="permanentlyOne newLabel"><span>*</span>是否永久有效：</label>
+                    <div class="radioStyle">
+                        <label for="item1">
+                            <input id="item1" type="radio" name="is_forever" value="1" <#if art.beginTime??><#else>checked</#if> >
+                            <div></div>
+                            <span>是</span>
+                        </label>
+                    </div>
+                    <div class="radioStyle">
+                        <label for="item2">
+                            <input id="item2" type="radio" name="is_forever" value="0" <#if art.beginTime??>checked<#else></#if> >
+                            <div></div>
+                            <span>否</span>
+                        </label>
+                    </div>
+                </div>
+
+				<!--起止时间-->
+				<p id="beginEndTimeShow" <#if art.beginTime??>style="display: block"<#else>style="display: none"</#if>>
+					<label><span>*</span>起止时间：</label>
+					<input class="modify_time" type="text" placeholder="请选择..." value="<#if art.beginTime??>${art.beginTime?string('yyyy-MM-dd HH:mm:ss')}<#else> </#if>" id="beginTime" name="beginTime"
+						   																		onfocus="var my97EndDate=$dp.$('endTime');
+						 																		WdatePicker({onpicked:function(){my97EndDate.focus();},
+						 																		readOnly:true,maxDate:'#F{$dp.$D(\'endTime\');}',dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'%y-%M-%d'})"/>
+					<span class="modify_time_line"> - </span>
+					<input class="modify_time" type="text" placeholder="请选择..." value="<#if art.endTime??>${art.endTime?string('yyyy-MM-dd HH:mm:ss')}<#else> </#if>" id="endTime" name="endTime"
+                           																		onfocus="WdatePicker({readOnly:true,minDate:'#F{$dp.$D(\'beginTime\');}',dateFmt:'yyyy-MM-dd 23:59:59'})"/>
+				</p>
+
+				<p>
+					<label><span>*</span>推广正文：</label>
+					<textarea id="body" class="project_content ue_ditor_style" name="body">${art.body!''}</textarea>
+				</p>
+
+				<div class="permanently clear">
+					<label class="permanentlyOne newLabel"><span>*</span>是生成推广任务：</label>
+					<div class="radioStyle">
+				    		<label for="task1">
+					        <input id="task1" type="radio" name="a_is_task" value="1" <#if art.aIsTask ?? && art.aIsTask == 1>checked</#if>>
+					        <div></div>
+					        <span>是</span>
+				        </label>
+				    </div>
+				    <div class="radioStyle">
+				    	<label for="task2">
+					        <input id="task2" type="radio" name="a_is_task" value="0" <#if art.aIsTask?? && art.aIsTask == 0>checked<#elseif !(art.aIsTask??)>checked</#if>>
+					        <div></div>
+					        <span>否</span>
+				        </label>
+				    </div>
+				    <span class="tousu_tishi">提示：推广按点击进行付费,单次点击费用不少于0.1元</span>
+				</div>
+
+				<div id="money_info" class="permanently clear" <#if art.aIsTask?? && art.aIsTask == 1>style="display: block"<#else>style="display: none"</#if>>
+					<label class="permanentlyOne newLabel"><span>*</span>费用总投入：</label>
+					<!--文本框-->
+					<input class="inves_all_money" placeholder="0" type="text" name="allCost" id="allCost" value="${countInfo.allCost!''}"/>
+
+					<span class="total_sptext">元</span>
+					<span class="total_sptext" style="color: #fc6060; margin-left: 15px;">*</span>
+					<span class="total_sptext">单次点击：</span>
+
+					<#--<div class="project_category" style="width:130px;display: inline-block;">
+						<!--文本框&ndash;&gt;
+						<input style="width:130px" class="inves_all_money" type="text" placeholder="请选择" value="" name="" />
+						<div style="width: 130px;" class="border_lists">
+							<a style="width: 110px;" href="javascript:;">0.5</a>
+							<a style="width: 110px;" href="javascript:;">1.5</a>
+						</div>
+					</div>-->
+
+                    <input class="inves_all_moneytwo" placeholder="0" type="text" name="onceCost" id="onceCost" value="${countInfo.onceCost!''}"/>
+
+					<span class="total_sptext">元</span>
+					<span class="total_sptext" style="color: #fc6060; margin-left: 15px;">*</span>
+					<span class="total_sptext">一个用户单条任务最多可获得：</span>
+
+					<!--文本框-->
+					<input class="inves_all_money" placeholder="0" type="text" name="mostCost" id="mostCost" value="${countInfo.mostCost!''}"/>
+					<span class="total_sptext">元</span>
+					<span class="tousu_tishi">提示：一经发布，不可撤销</span>
+				</div>
+
+			</form>
+			<div class="modify_submit">
+				<input type="button" value="提交" onclick="Video.saveOrUpdateForadmin()"/>
+			</div>
+		</div>
+
+        <!--遮罩层-->
+        <div class="mask"></div>
+        <div id="loading" style="position:absolute;top:40%;left:40%;z-index: 9999;display:none">
+            <img src="${contextpath}/styles/images/loading1.gif" width="50" height="50">
+        </div>
+	</body>
+
+	<script type="text/javascript">
+			//实例化编辑器
+            var editor;
+            KindEditor.ready(function(K) {
+                editor = K.create('textarea[name="body"]', {
+                    designMode : false,
+                    allowFileManager : false,	//不允许选择已经上传的图片
+                    allowImageRemote : false,	//不允许上传网络图片
+					filterMode: false,
+                    resizeType:1,	//不可改变编辑器大小
+                    themeType : 'simple',
+                    cssPath : contextpath+'/js/framework/kindeditor/plugins/code/prettify.css',
+                    uploadJson :contextpath+'/upload/extImageKindEditor.action',
+                    afterCreate : function() {
+                        var self = this;
+                        K.ctrl(document, 13, function() {
+                            self.sync();
+                        });
+                        K.ctrl(self.edit.doc, 13, function() {
+                            self.sync();
+                        });
+                    },
+                    afterBlur: function () { this.sync(); },
+                    items : [
+                        'source','|', 'undo', 'redo', '|', 'preview','cut', 'copy', 'paste',
+                        'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
+                        'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent',
+                        'clearhtml', 'quickformat', 'selectall', '|', '/',
+                        'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+                        'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image', 'multiimage',
+                        'table', 'hr', 'emoticons', 'pagebreak',
+                        '|', 'fullscreen'
+                    ]
+                });
+
+            });
+	</script>
+</html>

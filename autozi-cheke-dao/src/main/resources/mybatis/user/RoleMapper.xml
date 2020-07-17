@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.autozi.cheke.user.mapper.RoleMapper">
+  <cache eviction="LRU" type="org.mybatis.caches.memcached.MemcachedCache"/>
+
+  <resultMap id="RoleMap" type="Role" >
+
+    <id column="ID" property="id" jdbcType="DECIMAL" />
+    <result column="VERSION" property="version" jdbcType="DECIMAL" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+    <result column="PARTY_ID" property="partyId" jdbcType="DECIMAL" />
+    <result column="STATUS" property="status" jdbcType="DECIMAL"/>
+    <result column="SYSTEM_ROLES" property="systemRolesStr" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+
+    ID, VERSION, NAME, DESCRIPTION,PARTY_ID, STATUS, SYSTEM_ROLES
+  </sql>
+  <select id="get" resultMap="RoleMap" parameterType="long" >
+
+    select
+    <include refid="Base_Column_List" />
+    from bas_role
+    where ID = #{id,jdbcType=DECIMAL}
+  </select>
+  <delete id="delete" parameterType="long" >
+
+    delete from bas_role
+    where ID = #{id,jdbcType=DECIMAL}
+  </delete>
+  <insert id="insert" parameterType="Role">
+
+    insert into bas_role (ID, VERSION, NAME,
+      DESCRIPTION,PARTY_ID,STATUS, SYSTEM_ROLES)
+    values (#{id,jdbcType=DECIMAL}, #{version,jdbcType=DECIMAL}, #{name,jdbcType=VARCHAR},
+      #{description,jdbcType=VARCHAR},#{partyId,jdbcType=DECIMAL},#{status,jdbcType=DECIMAL}, #{systemRolesStr,jdbcType=VARCHAR})
+    
+  </insert>
+  <update id="update" parameterType="Role" >
+
+    update bas_role
+    set VERSION = VERSION+1,
+      NAME = #{name,jdbcType=VARCHAR},
+      DESCRIPTION = #{description,jdbcType=VARCHAR},
+      PARTY_ID = #{partyId,jdbcType=DECIMAL},
+      STATUS = #{status,jdbcType=DECIMAL},
+      SYSTEM_ROLES = #{systemRolesStr,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=DECIMAL} and version=#{version,jdbcType=DECIMAL}
+  </update>
+
+  <delete id="deleteFromUser" parameterType="long">
+	delete from bas_user_role where role_id=#{id}
+  </delete>
+
+  <select id="findUserIdsByRole" parameterType="long" resultType="long" useCache="false">
+	select user_id from bas_user_role where role_id=#{id}
+  </select>
+
+  <select id="getRoleIdByName" parameterType="string" resultType="long" useCache="false">
+  	select id from bas_role where name=#{name}
+  </select>
+  <select id="findRoleByPartyId" parameterType="map" resultMap="RoleMap" useCache="false">
+  	SELECT * FROM bas_role WHERE PARTY_ID=#{partyId} AND STATUS!=#{status} ORDER BY ID ASC
+  </select>
+
+  <select id="findListForMap" parameterType="map" resultMap="RoleMap" >
+  	select * from bas_role
+      <where>
+          <if test="partyId != null">
+              party_id=#{partyId}
+          </if>
+          <if test="removeStatus != null">
+              and status != #{removeStatus}
+          </if>
+          <if test="status != null">
+              and status = #{status}
+          </if>
+          <if test="roleName != null">
+              and name like concat('%',#{roleName},'%')
+          </if>
+      </where>
+  </select>
+  <select id="findRoleByUserId" parameterType="long" resultMap="RoleMap" useCache="false">
+  	select r.*
+    from bas_user u
+      join bas_user_role ur on u.id = ur.user_id
+      join bas_role r on ur.role_id = r.id
+    where u.id = #{user_id}  limit 1
+  </select>
+      <select id="solrSelet" resultMap="RoleMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from bas_role
+  	<where>
+  		<if test="status!=null">
+  		  status != #{status}
+  		</if>
+  	</where>
+   
+  </select>
+  
+  <select id="checkRoleUnique" parameterType="map" resultMap="RoleMap">
+  	select * from bas_role 
+  		<where>
+  			<if test="roleName!=null">
+  				name=#{roleName}
+  			</if>
+  			<if test="status!=null">
+  				and status =#{status}
+  			</if>
+  			<if test="partyId!=null">
+  				and party_id=#{partyId}
+  			</if>
+  		</where>
+  </select>
+</mapper>

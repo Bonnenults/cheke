@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="com.autozi.web.o2c:war">
+    <output-path>$PROJECT_DIR$/../autozi-web-o2c/target</output-path>
+    <root id="archive" name="o2c_v1.0.war">
+      <element id="artifact" artifact-name="com.autozi.web.o2c:war exploded" />
+    </root>
+  </artifact>
+</component>

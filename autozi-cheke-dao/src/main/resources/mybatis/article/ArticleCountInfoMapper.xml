@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.autozi.cheke.article.mapper.ArticleCountInfoMapper">
+<cache eviction="LRU" type="org.mybatis.caches.memcached.MemcachedCache"/>
+<resultMap id="ArticleCountInfoMap" type="ArticleCountInfo">
+	<result column="ID" jdbcType="DECIMAL" property="id"/>
+	<result column="VERSION" jdbcType="DECIMAL" property="version"/>
+	<result column="ARTICLE_ID" jdbcType="DECIMAL" property="articleId"/>
+	<result column="STU_NUM" jdbcType="DECIMAL" property="stuNum"/>
+	<result column="COMPLETED_NUM" jdbcType="DECIMAL" property="completedNum"/>
+	<result column="TWITTER" jdbcType="DECIMAL" property="twitter"/>
+	<result column="LEAVE_WORDS" jdbcType="DECIMAL" property="leaveWords"/>
+	<result column="LIKES" jdbcType="DECIMAL" property="likes"/>
+	<result column="DISLIKES" jdbcType="DECIMAL" property="dislikes"/>
+	<result column="PAGE_VIEW" jdbcType="DECIMAL" property="pageView"/>
+	<result column="SHARE_AMOUNT" jdbcType="DECIMAL" property="shareAmount"/>
+	<result column="WX_FRIENDS_CIRCLE" jdbcType="DECIMAL" property="wxFriendsCircle"/>
+	<result column="WX_FRIENDS" jdbcType="DECIMAL" property="wxFriends"/>
+	<result column="QQ_ZONE" jdbcType="DECIMAL" property="qqZone"/>
+	<result column="QQ_FRIENDS" jdbcType="DECIMAL" property="qqFriends"/>
+	<result column="SINA" jdbcType="DECIMAL" property="sina"/>
+	<result column="ALL_COST" jdbcType="DECIMAL" property="allCost"/>
+	<result column="ONCE_COST" jdbcType="DECIMAL" property="onceCost"/>
+	<result column="MOST_COST" jdbcType="DECIMAL" property="mostCost"/>
+	<result column="USED_COST" jdbcType="DECIMAL" property="usedCost"/>
+</resultMap>
+<sql id="Base_Column_List">
+	ID,VERSION,ARTICLE_ID,STU_NUM,COMPLETED_NUM,TWITTER,LEAVE_WORDS,LIKES,DISLIKES,PAGE_VIEW,SHARE_AMOUNT,WX_FRIENDS_CIRCLE,WX_FRIENDS,QQ_ZONE,QQ_FRIENDS,SINA,ALL_COST,ONCE_COST,MOST_COST,USED_COST
+</sql>
+<sql id="aci_Base_Column_List">
+	aci.ID,aci.VERSION,aci.ARTICLE_ID,aci.STU_NUM,aci.COMPLETED_NUM,aci.TWITTER,aci.LEAVE_WORDS,aci.LIKES,aci.DISLIKES,aci.PAGE_VIEW,aci.SHARE_AMOUNT,aci.WX_FRIENDS_CIRCLE,aci.WX_FRIENDS,aci.QQ_ZONE,aci.QQ_FRIENDS,aci.SINA,aci.ALL_COST,aci.ONCE_COST,aci.MOST_COST,aci.USED_COST
+</sql>
+<select id="get" parameterType="long" resultMap="ArticleCountInfoMap">
+	select
+		<include refid="Base_Column_List"/>
+	from article_count_info aci
+	where ID = #{id,jdbcType=DECIMAL}
+</select>
+<delete id="delete" parameterType="long">
+	delete
+	from article_count_info
+	where ID = #{id,jdbcType=DECIMAL}
+</delete>
+<insert id="insert" parameterType="ArticleCountInfo">
+	insert into article_count_info(
+		<include refid="Base_Column_List"/>
+	) values (
+	#{id,jdbcType=DECIMAL},
+	#{version,jdbcType=DECIMAL},
+	#{articleId,jdbcType=DECIMAL},
+	#{stuNum,jdbcType=DECIMAL},
+	#{completedNum,jdbcType=DECIMAL},
+	#{twitter,jdbcType=DECIMAL},
+	#{leaveWords,jdbcType=DECIMAL},
+	#{likes,jdbcType=DECIMAL},
+	#{dislikes,jdbcType=DECIMAL},
+	#{pageView,jdbcType=DECIMAL},
+	#{shareAmount,jdbcType=DECIMAL},
+	#{wxFriendsCircle,jdbcType=DECIMAL},
+	#{wxFriends,jdbcType=DECIMAL},
+	#{qqZone,jdbcType=DECIMAL},
+	#{qqFriends,jdbcType=DECIMAL},
+	#{sina,jdbcType=DECIMAL},
+	#{allCost,jdbcType=DECIMAL},
+	#{onceCost,jdbcType=DECIMAL},
+	#{mostCost,jdbcType=DECIMAL},
+	#{usedCost,jdbcType=DECIMAL}
+	)
+</insert>
+<update id="update" parameterType="ArticleCountInfo">
+	update article_count_info aci
+	<set>
+		VERSION = VERSION + 1
+		<if test="articleId != null">
+		,ARTICLE_ID = #{articleId,jdbcType=DECIMAL}
+		</if>
+		<if test="stuNum != null">
+			,STU_NUM = #{stuNum,jdbcType=DECIMAL}
+		</if>
+		<if test="completedNum != null">
+			,COMPLETED_NUM = #{completedNum,jdbcType=DECIMAL}
+		</if>
+		<if test="twitter != null">
+		,TWITTER = #{twitter,jdbcType=DECIMAL}
+		</if>
+		<if test="leaveWords != null">
+		,LEAVE_WORDS = #{leaveWords,jdbcType=DECIMAL}
+		</if>
+		<if test="likes != null">
+		,LIKES = #{likes,jdbcType=DECIMAL}
+		</if>
+		<if test="dislikes != null">
+		,DISLIKES = #{dislikes,jdbcType=DECIMAL}
+		</if>
+		<if test="pageView != null">
+		,PAGE_VIEW = #{pageView,jdbcType=DECIMAL}
+		</if>
+		<if test="shareAmount != null">
+		,SHARE_AMOUNT = #{shareAmount,jdbcType=DECIMAL}
+		</if>
+		<if test="wxFriendsCircle != null">
+		,WX_FRIENDS_CIRCLE = #{wxFriendsCircle,jdbcType=DECIMAL}
+		</if>
+		<if test="wxFriends != null">
+		,WX_FRIENDS = #{wxFriends,jdbcType=DECIMAL}
+		</if>
+		<if test="qqZone != null">
+		,QQ_ZONE = #{qqZone,jdbcType=DECIMAL}
+		</if>
+		<if test="qqFriends != null">
+		,QQ_FRIENDS = #{qqFriends,jdbcType=DECIMAL}
+		</if>
+		<if test="sina != null">
+		,SINA = #{sina,jdbcType=DECIMAL}
+		</if>
+		<if test="allCost != null">
+		,ALL_COST = #{allCost,jdbcType=DECIMAL}
+		</if>
+		<if test="onceCost != null">
+		,ONCE_COST = #{onceCost,jdbcType=DECIMAL}
+		</if>
+		<if test="mostCost != null">
+		,MOST_COST = #{mostCost,jdbcType=DECIMAL}
+		</if>
+		<if test="usedCost != null">
+		,USED_COST = #{usedCost,jdbcType=DECIMAL}
+		</if>
+	</set>
+	where ID = #{id,jdbcType=DECIMAL}
+</update>
+<update id="updateNul" parameterType="ArticleCountInfo">
+	update article_count_info aci
+	<set>
+		VERSION = VERSION + 1
+		<if test="articleId != null">
+			,ARTICLE_ID = #{articleId,jdbcType=DECIMAL}
+		</if>
+		<if test="stuNum != null">
+			,STU_NUM = #{stuNum,jdbcType=DECIMAL}
+		</if>
+		<if test="completedNum != null">
+			,COMPLETED_NUM = #{completedNum,jdbcType=DECIMAL}
+		</if>
+		<if test="twitter != null">
+			,TWITTER = #{twitter,jdbcType=DECIMAL}
+		</if>
+		<if test="leaveWords != null">
+			,LEAVE_WORDS = #{leaveWords,jdbcType=DECIMAL}
+		</if>
+		<if test="likes != null">
+			,LIKES = #{likes,jdbcType=DECIMAL}
+		</if>
+		<if test="dislikes != null">
+			,DISLIKES = #{dislikes,jdbcType=DECIMAL}
+		</if>
+		<if test="pageView != null">
+			,PAGE_VIEW = #{pageView,jdbcType=DECIMAL}
+		</if>
+		<if test="shareAmount != null">
+			,SHARE_AMOUNT = #{shareAmount,jdbcType=DECIMAL}
+		</if>
+		<if test="wxFriendsCircle != null">
+			,WX_FRIENDS_CIRCLE = #{wxFriendsCircle,jdbcType=DECIMAL}
+		</if>
+		<if test="wxFriends != null">
+			,WX_FRIENDS = #{wxFriends,jdbcType=DECIMAL}
+		</if>
+		<if test="qqZone != null">
+			,QQ_ZONE = #{qqZone,jdbcType=DECIMAL}
+		</if>
+		<if test="qqFriends != null">
+			,QQ_FRIENDS = #{qqFriends,jdbcType=DECIMAL}
+		</if>
+		<if test="sina != null">
+			,SINA = #{sina,jdbcType=DECIMAL}
+		</if>
+		,ALL_COST = #{allCost,jdbcType=DECIMAL}
+		,ONCE_COST = #{onceCost,jdbcType=DECIMAL}
+		,MOST_COST = #{mostCost,jdbcType=DECIMAL}
+	 	,USED_COST = #{usedCost,jdbcType=DECIMAL}
+	</set>
+	where ID = #{id,jdbcType=DECIMAL}
+</update>
+<select id="findListForExample" parameterType="ArticleCountInfo" resultMap="ArticleCountInfoMap">
+	select
+	<include refid="aci_Base_Column_List"/>
+	from article_count_info aci
+	<include refid="common_query_condition"/>
+</select>
+<select id="findListForMap" parameterType="map" resultMap="ArticleCountInfoMap">
+	select
+	<include refid="aci_Base_Column_List"/>
+	from article_count_info aci
+	<include refid="common_query_condition"/>
+</select>
+<sql id="common_query_condition">
+	<where>
+		<if test="id != null">
+			aci.id = #{id,jdbcType=DECIMAL}
+		</if>
+		<if test="articleId != null">
+			AND aci.article_id = #{articleId,jdbcType=DECIMAL}
+		</if>
+	</where>
+</sql>
+
+	<select id="countTotalCostForParty" parameterType="java.util.Map" resultType="java.lang.Double" useCache="false">
+		select IFNULL(sum(IFNULL(all_cost,0)-IFNULL(used_cost,0)),0) as allCost from article_count_info aci LEFT JOIN article a on aci.article_id=a.id
+		<where>
+			a.a_is_task=1
+			<if test="partyId != null">
+				and a.create_party_id = #{partyId,jdbcType=DECIMAL}
+			</if>
+			<if test="status != null">
+				and a.status = #{status,jdbcType=DECIMAL}
+			</if>
+			<if test="onlineAndEndStatus != null">
+				AND a.status IN (2,4)
+			</if>
+			<if test="createTimeStart != null">
+				and a.create_time &gt;= #{createTimeStart,jdbcType=TIMESTAMP}
+			</if>
+			<if test="createTimeEnd != null">
+				and a.create_time &lt;= #{createTimeEnd,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+	</select>
+
+	<select id="countCostForParty" parameterType="java.util.Map" resultType="java.lang.Double" useCache="false">
+		select IFNULL(sum(change_account),0) as costMoney from pay_account_log pal LEFT JOIN article_order ao on pal.source_id=ao.id
+		LEFT JOIN article a on ao.article_id=a.id
+		<where>
+			<if test="partyId != null">
+				and a.create_party_id = #{partyId,jdbcType=DECIMAL}
+			</if>
+			<if test="status != null">
+				and a.status = #{status,jdbcType=DECIMAL}
+			</if>
+			<if test="createTimeStart != null">
+				and pal.create_time &gt;= #{createTimeStart,jdbcType=TIMESTAMP}
+			</if>
+			<if test="createTimeEnd != null">
+				and pal.create_time &lt;= #{createTimeEnd,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+	</select>
+</mapper>

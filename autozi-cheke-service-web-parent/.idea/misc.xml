@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="EntryPointsManager">
+    <entry_points version="2.0" />
+  </component>
+  <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$/../autozi-service-web-o2c" />
+    <file type="web" url="file://$PROJECT_DIR$/../autozi-web-o2c" />
+  </component>
+  <component name="IdProvider" IDEtalkID="0587A720AC208F49B62F77090B53480D" />
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/../autozi-service-web-o2c/pom.xml" />
+        <option value="$PROJECT_DIR$/../autozi-service-impl-o2c/pom.xml" />
+        <option value="$PROJECT_DIR$/../autozi-dal-o2c/pom.xml" />
+        <option value="$PROJECT_DIR$/../../../../o2o/o2oV3.0_svn_idea_15.0.4/autozi-common-parent/pom.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="0" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" default="true" assert-keyword="true" jdk-15="true" project-jdk-name="1.7" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+  <component name="SvnBranchConfigurationManager">
+    <option name="myConfigurationMap">
+      <map>
+        <entry key="$PROJECT_DIR$/../autozi-dal-o2c">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="svn://172.16.21.5/com.autozi/autozio2c/branches" />
+                  <option value="svn://172.16.21.5/com.autozi/autozio2c/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="svn://172.16.21.5/com.autozi/autozio2c/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../autozi-entity-o2c">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="svn://172.16.21.5/com.autozi/autozio2c/branches" />
+                  <option value="svn://172.16.21.5/com.autozi/autozio2c/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="svn://172.16.21.5/com.autozi/autozio2c/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../autozi-service-impl-o2c">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="svn://172.16.21.5/com.autozi/autozio2c/branches" />
+                  <option value="svn://172.16.21.5/com.autozi/autozio2c/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="svn://172.16.21.5/com.autozi/autozio2c/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../autozi-service-interface-o2c">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="svn://172.16.21.5/com.autozi/autozio2c/branches" />
+                  <option value="svn://172.16.21.5/com.autozi/autozio2c/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="svn://172.16.21.5/com.autozi/autozio2c/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../autozi-service-web-o2c">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="svn://172.16.21.5/com.autozi/autozio2c/branches" />
+                  <option value="svn://172.16.21.5/com.autozi/autozio2c/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="svn://172.16.21.5/com.autozi/autozio2c/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../autozi-web-o2c">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="svn://172.16.21.5/com.autozi/autozio2c/branches" />
+                  <option value="svn://172.16.21.5/com.autozi/autozio2c/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="svn://172.16.21.5/com.autozi/autozio2c/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="svn://172.16.21.5/com.autozi/autozio2c/branches" />
+                  <option value="svn://172.16.21.5/com.autozi/autozio2c/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="svn://172.16.21.5/com.autozi/autozio2c/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../o2o/o2oV3.0_svn_idea_15.0.4/autozi-common-parent">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="svn://172.16.21.5/com.autozi/autozi-common/branches" />
+                  <option value="svn://172.16.21.5/com.autozi/autozi-common/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="svn://172.16.21.5/com.autozi/autozi-common/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="mySupportsUserInfoFilter" value="true" />
+  </component>
+</project>

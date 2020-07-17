@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.autozi.cheke.settle.mapper.InvoiceOrderMapper">
+<cache eviction="LRU" type="org.mybatis.caches.memcached.MemcachedCache"/>
+<resultMap id="InvoiceOrderMap" type="InvoiceOrder">
+	<result column="ID" jdbcType="DECIMAL" property="id"/>
+	<result column="VERSION" jdbcType="DECIMAL" property="version"/>
+	<result column="INVOICE_ID" jdbcType="DECIMAL" property="invoiceId"/>
+	<result column="ORDER_ID" jdbcType="DECIMAL" property="orderId"/>
+	<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+	<result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+</resultMap>
+<sql id="Base_Column_List">
+	ID,VERSION,INVOICE_ID,ORDER_ID,CREATE_TIME,UPDATE_TIME
+</sql>
+<sql id="pio_Base_Column_List">
+	pio.ID,pio.VERSION,pio.INVOICE_ID,pio.ORDER_ID,pio.CREATE_TIME,pio.UPDATE_TIME
+</sql>
+<select id="get" parameterType="long" resultMap="InvoiceOrderMap">
+	select
+		<include refid="Base_Column_List"/>
+	from pay_invoice_order pio
+	where ID = #{id,jdbcType=DECIMAL}
+</select>
+<delete id="delete" parameterType="long">
+	delete
+	from pay_invoice_order
+	where ID = #{id,jdbcType=DECIMAL}
+</delete>
+<insert id="insert" parameterType="InvoiceOrder">
+	insert into pay_invoice_order(
+		<include refid="Base_Column_List"/>
+	) values (
+	#{id,jdbcType=DECIMAL},
+	#{version,jdbcType=DECIMAL},
+	#{invoiceId,jdbcType=DECIMAL},
+	#{orderId,jdbcType=DECIMAL},
+	#{createTime,jdbcType=TIMESTAMP},
+	#{updateTime,jdbcType=TIMESTAMP}
+	)
+</insert>
+<update id="update" parameterType="InvoiceOrder">
+	update pay_invoice_order pio
+	<set>
+		VERSION = VERSION + 1
+		<if test="invoiceId != null">
+		,INVOICE_ID = #{invoiceId,jdbcType=DECIMAL}
+		</if>
+		<if test="orderId != null">
+		,ORDER_ID = #{orderId,jdbcType=DECIMAL}
+		</if>
+		<if test="createTime != null">
+		,CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="updateTime != null">
+		,UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+		</if>
+	</set>
+	where ID = #{id,jdbcType=DECIMAL}
+</update>
+<select id="findListForExample" parameterType="InvoiceOrder" resultMap="InvoiceOrderMap">
+	select
+	<include refid="pio_Base_Column_List"/>
+	from pay_invoice_order pio
+	<include refid="common_query_condition"/>
+</select>
+<select id="findListForMap" parameterType="map" resultMap="InvoiceOrderMap">
+	select
+	<include refid="pio_Base_Column_List"/>
+	from pay_invoice_order pio
+	<include refid="common_query_condition"/>
+</select>
+<sql id="common_query_condition">
+	<where>
+		<if test="id != null">
+			pio.id = #{id,jdbcType=DECIMAL}
+		</if>
+		<if test="orderId != null">
+			pio.order_id = #{orderId,jdbcType=DECIMAL}
+		</if>
+		<if test="invoiceId != null">
+			pio.invoice_id = #{invoiceId,jdbcType=DECIMAL}
+		</if>
+	</where>
+</sql>
+</mapper>

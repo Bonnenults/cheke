@@ -1,0 +1,130 @@
+<script type="text/javascript" src="${contextpath}/js/user/user.js"></script>
+<div class="lf_carCenter clear">
+    <div class="lf_carRight">
+        <div class="lf_carRight_center">
+
+            <div class="qy_center_main">
+                    <form id="filter_form" action="/tuike/user/list/listTuikeUser.action" method="get">
+                        <div class="qy_center_seach clear">
+                            <div class="qy_seach_wrap clear">
+
+                            <span>
+                                <label class="qy_left"> 推客用户名：</label>
+                                <input class="qy_left" style="width:166px;" type="text" placeholder="" name="loginName">
+                            </span>
+                            <span>
+                                <label class="qy_left"> 推客手机号：</label>
+                                <input class="qy_left" style="width:166px;" type="text" placeholder="" name="phone">
+                            </span>
+                            <span>
+                                <label class="qy_left qy_left">审核状态：</label>
+                                <div class="project_category qy_left text_adjustment" style="width:178px;display: inline-block;float:none;margin:0;">
+                                    <!--文本框-->
+                                    <input type="hidden" id="idCardStatus" name="idCardStatus">
+                                    <input style="width:178px;padding:0;" class="inves_all_money" type="text" placeholder="全部" />
+                                    <div style="width: 178px;" class="border_lists" id="status_class">
+                                        <a href="javascript:;" value="">全部</a>
+                                        <a href="javascript:;" value="1">已审核</a>
+                                        <a href="javascript:;" value="3">未审核</a>
+                                        <a href="javascript:;" value="4">待修改</a>
+                                        <a href="javascript:;" value="5">待上传</a>
+                                    </div>
+                                </div>
+                            </span>
+                            <span>
+                                <label class="qy_left">注册时间：</label>
+                                <input id="createTimeStart" name="createTimeStart" class="qy_calendar qy_left" type="text" placeholder="请选择......"
+                                                                                                onfocus="var my97EndDate=$dp.$('createTimeEnd');
+						 																		WdatePicker({onpicked:function(){my97EndDate.focus();},
+						 																		readOnly:true,maxDate:'#F{$dp.$D(\'createTimeEnd\');}',dateFmt:'yyyy-MM-dd 00:00:00'})">
+                                <em class="qy_left">&nbsp;&nbsp;- &nbsp;</em>
+                                <input id="createTimeEnd" name="createTimeEnd" class="qy_calendar qy_left" type="text" placeholder="请选择......"
+                                                                                                onfocus="WdatePicker({readOnly:true,minDate:'#F{$dp.$D(\'createTimeStart\');}',dateFmt:'yyyy-MM-dd 23:59:59'})">
+                            </span>
+
+                            </div>
+                            <div class="qy_seach_right">
+                                <a class="qy_seach_cx" href="javascript:void(0)" onclick="App.commonFormSubmit('filter_form');">查询</a>
+                                <a class="qy_seach_cz" href="javascript:;">重置</a>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="qy_center_table" id="data_table_list">
+                        <table>
+                            <tbody>
+                            <tr>
+                                <th width="3%">#</th>
+                                <th width="10%">推客用户名</th>
+                                <th>推客昵称</th>
+                                <th width="7%">推客手机号</th>
+                                <th width="8%">上级邀请码</th>
+                                <th width="8%">本人邀请码</th>
+                                <th width="10%">注册时间</th>
+                                <th width="6%">获得总佣金</th>
+                                <th width="7%">审核状态</th>
+                                <th width="6%">下级推客数</th>
+                                <th width="15%" class="no_border">操作</th>
+                            </tr>
+                                    <#if (page??)&&(page.result??)&&(page.result?size>0)>
+                                        <#list page.result as view>
+                                        <tr>
+
+                                            <td>${page.firstElementIndex + view_index }</td>
+                                            <td><#if view.loginName??>${view.loginName?html}</#if></td>
+                                            <td><#if view.name??>${view.name?html}</#if></td>
+                                            <td><#if view.phone??>${view.phone?html}</#if></td>
+                                            <td><#if view.inviteCode??>${view.inviteCode?html}</#if></td>
+                                            <td><#if view.inviteCodeMine??>${view.inviteCodeMine?html}</#if></td>
+                                            <td><#if view.createTime??>${view.createTime?string("yyyy-MM-dd HH:mm")}</#if></td>
+                                            <td><#if view.money??>${view.money?html}</#if></td>
+                                            <td>
+                                                <#if view.idCardStatus??&&view.idCardStatus==1>
+                                                    已审核
+                                                <#elseif view.idCardStatus??&&view.idCardStatus==3>
+                                                    未审核
+                                                <#elseif view.idCardStatus??&&view.idCardStatus==4>
+                                                    待修改
+                                                <#elseif view.idCardStatus??&&view.idCardStatus==5>
+                                                    待上传
+                                                </#if>
+                                            </td>
+                                            <td><#if view.userCount??>${view.userCount?html}</#if></td>
+                                            <td class="no_border">
+                                                <#if view.idCardStatus??&&view.idCardStatus==3>
+                                                    <a class="qy_alink" href="${contextpath}/tuike/user/list/audit.action?id=${view.id}">审核身份证</a>
+                                                <#else>
+                                                    <a class="qy_alink" href="${contextpath}/tuike/user/list/audit.action?id=${view.id}">查看详情</a>
+                                                </#if>
+                                                <#if view.userStatus??&&view.userStatus==2>
+                                                     <a class="qy_alink" href="javascript:User.lockOrUnLockTuikeUser(${view.id},1)">解锁</a>
+                                                <#else>
+                                                     <a class="qy_alink" href="javascript:User.lockOrUnLockTuikeUser(${view.id},2)">锁定</a>
+                                                </#if>
+                                            </td>
+                                        </tr>
+                                        </#list>
+                                    <#else>
+                                        <tr>
+                                            <td colspan='10'>没有符合条件的记录</td>
+                                        </tr>
+                                    </#if>
+                            </tbody>
+                        </table>
+                    </div>
+
+                <div class="clear qy_page_wrap">
+                    <div id="page_common_nav">
+                        <#include "../../common/paging_common.html">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $("#status_class a").click(function(){
+        $("#idCardStatus").val($(this).attr("value"));
+    });
+</script>

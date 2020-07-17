@@ -1,0 +1,44 @@
+<div class="qy_center_table" id="data_table_list">
+    <table>
+        <tbody>
+        <tr>
+            <th>#</th>
+            <th>推客号</th>
+            <th style="width:130px;">私信时间</th>
+            <th style="width:130px;">私信内容</th>
+            <th style="width:130px;">回复状态</th>
+            <th class="no_border" style="width:230px;">操作</th>
+        </tr>
+        <#if (page??)&&(page.result??)&&(page.result?size>0)>
+            <#list page.result as view>
+            <tr>
+                <td>${page.firstElementIndex + view_index }</td>
+                <td><#if view.userName??>${view.userName?html}</#if></td>
+                <td><#if view.updateTime??>${view.updateTime?string("yyyy-MM-dd HH:mm")}</#if></td>
+                <td><#if view.content??>${view.content?html}</#if></td>
+                <td>
+                    <#if view.status??&&view.status==1>
+                        未回复
+                    <#elseif view.status??&&view.status==2>
+                        已回复
+                    </#if>
+                </td>
+                <td class="no_border">
+                    <#if view.status??&&view.status==1>
+                        <a class="qy_alink" href="javascript:Letter.viewDetail('${view.id}')">回复私信</a>
+                    <#elseif view.status??&&view.status==2>
+                        <a class="qy_alink" href="javascript:Letter.viewDetail('${view.id}')">查看详细</a>
+                    </#if>
+                </td>
+            </tr>
+            </#list>
+        <#else>
+        <tr>
+            <td colspan='10'>没有符合条件的记录</td>
+        </tr>
+        </#if>
+        </tbody>
+    </table>
+</div>
+$JXC
+<#include "../../common/paging_common.html">

@@ -1,0 +1,182 @@
+<script type="text/javascript" src="${contextpath}/js/settle/invoice.js"></script>
+<script>
+    $(function(){
+        Invoice.initCheckBox();
+    });
+</script>
+<div class="lf_carCenter clear">
+    <div class="lf_carRight">
+        <div class="lf_carRight_center">
+
+            <div class="qy_center_tab clear">
+                <ul class="clear">
+                    <li class="act" onclick="Invoice.changeStatus(0)">未开票</li>
+                    <li onclick="Invoice.changeStatus(1)">审核中</li>
+                    <li onclick="Invoice.changeStatus(2)">已开票</li>
+                </ul>
+            </div>
+
+            <div class="qy_center_main">
+
+                    <form id="filter_form" action="/invoice/cheke/list/listAccountOrder.action" method="get">
+                        <input type="hidden" name="invoiceStatus" id="invoiceStatus" value="0">
+
+                        <div class="qy_center_seach clear">
+                            <div class="qy_seach_wrap clear">
+                            <span>
+                                <label class="qy_left">充值时间：</label>
+                                <input id="createTimeStart" name="createTimeStart" class="qy_calendar qy_left" type="text" placeholder="请选择......"
+                                                                                                onfocus="$('.border_lists').hide();var my97EndDate=$dp.$('createTimeEnd');
+						 																		WdatePicker({onpicked:function(){my97EndDate.focus();},
+						 																		readOnly:true,maxDate:'#F{$dp.$D(\'createTimeEnd\');}',dateFmt:'yyyy-MM-dd 00:00:00'})">
+                                <em class="qy_left">&nbsp;&nbsp;- &nbsp;</em>
+                                <input id="createTimeEnd" name="createTimeEnd" class="qy_calendar qy_left" type="text" placeholder="请选择......"
+                                                                                                onfocus="WdatePicker({readOnly:true,minDate:'#F{$dp.$D(\'createTimeStart\');}',dateFmt:'yyyy-MM-dd 23:59:59'})">
+                            </span>
+                            <span>
+                                <label class="qy_left">支付时间：</label>
+                                <input id="payTimeStart" name="payTimeStart" class="qy_calendar qy_left" type="text" placeholder="请选择......"
+                                       onfocus="var my97EndDate=$dp.$('payTimeEnd');WdatePicker({onpicked:function(){my97EndDate.focus();},
+						 																		readOnly:true,maxDate:'#F{$dp.$D(\'payTimeEnd\');}',dateFmt:'yyyy-MM-dd 00:00:00'})">
+                                <em class="qy_left">&nbsp;&nbsp;- &nbsp;</em>
+                                <input id="payTimeEnd" name="payTimeEnd" class="qy_calendar qy_left" type="text" placeholder="请选择......"
+                                       onfocus="WdatePicker({readOnly:true,minDate:'#F{$dp.$D(\'payTimeStart\');}',dateFmt:'yyyy-MM-dd 23:59:59'})">
+                            </span>
+                            <span id="invoiceTimeSpan" style="display: none">
+                                <label class="qy_left">开票时间：</label>
+                                <input id="invoiceTimeStart" name="invoiceTimeStart" class="qy_calendar qy_left" type="text" placeholder="请选择......"
+                                       onfocus="var my97EndDate=$dp.$('invoiceTimeEnd');WdatePicker({onpicked:function(){my97EndDate.focus();},
+                                                                                                readOnly:true,maxDate:'#F{$dp.$D(\'invoiceTimeEnd\');}',dateFmt:'yyyy-MM-dd 00:00:00'})">
+                                <em class="qy_left">&nbsp;&nbsp;- &nbsp;</em>
+                                <input id="invoiceTimeEnd" name="invoiceTimeEnd" class="qy_calendar qy_left" type="text" placeholder="请选择......"
+                                       onfocus="WdatePicker({readOnly:true,minDate:'#F{$dp.$D(\'invoiceTimeStart\');}',dateFmt:'yyyy-MM-dd 23:59:59'})">
+                            </span>
+                            <span>
+                                <label class="qy_left"> 订单号：</label>
+                                <input class="qy_left" style="width:166px;" type="text" name="id">
+                            </span>
+                            </div>
+                            <div class="qy_seach_right">
+                                <a class="qy_seach_cx" href="javascript:void(0)" onclick="App.commonFormSubmit('filter_form');">查询</a>
+                                <a class="qy_seach_cz" href="javascript:;">重置</a>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="qy_center_table" id="data_table_list">
+                        <table>
+                            <tbody>
+                            <tr>
+                                <#if invoiceStatus??&&invoiceStatus=="0">
+                                    <th style="width:30px;">
+                                        <label class="lf_label_checkBox" for="06">
+                                            <input class="clarity" id="06" type="checkbox"/>
+                                            <div></div>
+                                        </label>
+                                    </th>
+                                </#if>
+                                <th>#</th>
+                                <th>充值时间</th>
+                                <th>订单号</th>
+                                <th>支付时间</th>
+                                <th>充值金额</th>
+                                <th>平台服务费</th>
+                                <#if invoiceStatus??&&invoiceStatus=="2">
+                                    <th>开票时间</th>
+                                </#if>
+                                <#if invoiceStatus??&&invoiceStatus=="0">
+                                    <th class="no_border">操作</th>
+                                </#if>
+                            </tr>
+                                    <#if (page??)&&(page.result??)&&(page.result?size>0)>
+                                        <#list page.result as view>
+                                        <tr>
+                                            <#if invoiceStatus??&&invoiceStatus=="0">
+                                                <td>
+                                                    <label class="lf_label_checkBox">
+                                                        <input class="clarity individual" type="checkbox" id="selectIds" name="orderId" value="${view.id!''}">
+                                                        <div></div>
+                                                    </label>
+                                                </td>
+                                            </#if>
+                                            <td>${page.firstElementIndex + view_index }</td>
+                                            <td><#if view.createTime??>${view.createTime?string("yyyy-MM-dd HH:mm")}</#if></td>
+                                            <td><#if view.code??>${view.code?html}</#if></td>
+                                            <td><#if view.payTime??>${view.payTime?string("yyyy-MM-dd HH:mm")}</#if></td>
+                                            <td><#if view.realMoney??>${view.realMoney?string("0.00")}</#if></td>
+                                            <td><#if view.rateFee??>${view.rateFee?string("0.00")}</#if></td>
+                                            <#if invoiceStatus??&&invoiceStatus=="2">
+                                                <td><#if view.invoiceTime??>${view.invoiceTime?string("yyyy-MM-dd HH:mm")}</#if></td>
+                                            </#if>
+                                            <#if invoiceStatus??&&invoiceStatus=="0">
+                                                <td class="no_border">
+                                                    <a class="qy_alink" href="javascript:Invoice.applyInvoice(${view.id})">申请发票</a>
+                                                </td>
+                                            </#if>
+                                        </tr>
+                                        </#list>
+                                    <#else>
+                                        <tr>
+                                            <td colspan='10'>没有符合条件的记录</td>
+                                        </tr>
+                                    </#if>
+                            </tbody>
+                        </table>
+                    </div>
+
+                <div class="clear qy_page_wrap" id="pagingDiv">
+                    <!--未开票才有合并开票-->
+                    <#if invoiceStatus?string=='0'>
+                    <!--温馨提示-->
+                    <p style="font-size: 12px;color: #fb3838; padding:0 0 25px 0;">温馨提示： 每个月只可申请一次开票；</p>
+                    <a class="qy_but" href="javascript:Invoice.mutipleApply();">合并开发票</a>
+                    </#if>
+                    <div id="page_common_nav">
+                        <#include "../../common/paging_common.html">
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--遮罩层-->
+<div class="mask_float"></div>
+<!--发票详情弹框-->
+<div class="bomb_box" id="invoice_details" style="display: none">
+    <h2 class="bomb_title">发票详情</h2>
+    <div class="bomb_pwd_in">
+        <form id="apply_invoice_form" action="/invoice/cheke/list/applyInvoice.action" method="get">
+            <input type="hidden" name="orderIds" id="orderIds" value="">
+            <input type="hidden" name="money" id="money" value="0">
+        <p class="tousu_tishi">温馨提示：我们会在一个工作日内完成审核！</p>
+        <p class="box_sty_bomb">
+            <span>发票抬头：</span><input type="text" name="invoiceTitle" id="invoiceTitle" placeholder="公司名称" value=""/>
+        </p>
+        <p class="box_sty_bomb">
+            <span>纳税人识别号：</span><input name="invoiceNumber" id="invoiceNumber" type="text" placeholder="纳税人识别号" value=""/>
+        </p>
+        <p class="invoice_details_info01">
+            <span>发票内容：</span>
+            <label><input name="invoiceContent" type="radio" value="系统服务费" checked/>系统服务费</label>
+            <label><input name="invoiceContent" type="radio" value="软件服务费"/>软件服务费</label>
+            <label><input name="invoiceContent" type="radio" value="技术服务费"/>技术服务费</label>
+        </p>
+        <p class="box_sty_bomb">
+            <span>地址、电话：</span><input type="text" name="invoiceAddress" id="invoiceAddress" placeholder="地址、电话" value=""/>
+        </p>
+        <p class="box_sty_bomb">
+            <span>开户行及账号：</span><input type="text" name="invoiceBank" id="invoiceBank" placeholder="开户行及银行账号" value=""/>
+        </p>
+        </form>
+    </div>
+    <div class="pwd_bottom_btn">
+        <a href="javascript:Invoice.closeSubmitBox();">取消</a>
+        <#if partyClass??&&partyClass==4>
+            <a class="confirmation_pwd" href="javascript:Invoice.submitInvoicePerson();">确认</a>
+        <#else>
+            <a class="confirmation_pwd" href="javascript:Invoice.submitInvoice();">确认</a>
+        </#if>
+    </div>
+</div>

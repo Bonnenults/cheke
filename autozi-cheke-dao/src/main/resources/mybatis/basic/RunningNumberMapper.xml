@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.autozi.cheke.basic.mapper.RunningNumberMapper">
+    <cache eviction="LRU" type="org.mybatis.caches.memcached.MemcachedCache"/>
+    <resultMap id="RunningNumberMap" type="RunningNumber">
+        <result column="ID" jdbcType="DECIMAL" property="id"/>
+        <result column="VERSION" jdbcType="DECIMAL" property="version"/>
+        <result column="TYPE" jdbcType="VARCHAR" property="type"/>
+        <result column="RUNNING_NUMBER" jdbcType="VARCHAR" property="runningNumber"/>
+        <result column="RUNNING_TIME" jdbcType="TIMESTAMP" property="runningTime"/>
+        <result column="PARTY_ID" jdbcType="DECIMAL" property="partyId"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+		ID,VERSION,TYPE,RUNNING_NUMBER,RUNNING_TIME,PARTY_ID
+	</sql>
+    <sql id="CRN_Base_Column_List">
+		CRN.ID,CRN.VERSION,CRN.TYPE,CRN.RUNNING_NUMBER,CRN.RUNNING_TIME,CRN.PARTY_ID
+	</sql>
+    <select id="get" parameterType="long" resultMap="RunningNumberMap">
+        select
+        <include refid="Base_Column_List"/>
+        from COM_RUNNING_NUMBER CRN
+        where ID = #{id,jdbcType=DECIMAL}
+    </select>
+    <delete id="delete" parameterType="long">
+		delete
+		from COM_RUNNING_NUMBER
+		where ID = #{id,jdbcType=DECIMAL}
+	</delete>
+    <insert id="insert" parameterType="RunningNumber">
+        insert into COM_RUNNING_NUMBER(
+        <include refid="Base_Column_List"/>
+        ) values (
+        #{id,jdbcType=DECIMAL},
+        #{version,jdbcType=DECIMAL},
+        #{type,jdbcType=VARCHAR},
+        #{runningNumber,jdbcType=VARCHAR},
+        #{runningTime,jdbcType=TIMESTAMP},
+        #{partyId,jdbcType=DECIMAL}
+        )
+    </insert>
+    <update id="update" parameterType="RunningNumber">
+        update COM_RUNNING_NUMBER CRN
+        <set>
+            VERSION = VERSION + 1
+            <if test="type != null">
+                ,TYPE = #{type,jdbcType=VARCHAR}
+            </if>
+            <if test="runningNumber != null">
+                ,RUNNING_NUMBER = #{runningNumber,jdbcType=VARCHAR}
+            </if>
+            <if test="runningTime != null">
+                ,RUNNING_TIME = #{runningTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="partyId != null">
+                ,PARTY_ID = #{partyId,jdbcType=DECIMAL}
+            </if>
+        </set>
+        where ID = #{id,jdbcType=DECIMAL} and version = #{version,jdbcType=DECIMAL}
+    </update>
+    <select id="findListForExample" parameterType="RunningNumber" resultMap="RunningNumberMap">
+        select
+        <include refid="CRN_Base_Column_List"/>
+        from COM_RUNNING_NUMBER CRN
+        <include refid="common_query_condition"/>
+    </select>
+    <select id="findListForMap" parameterType="map" resultMap="RunningNumberMap" useCache="false">
+        select
+        <include refid="CRN_Base_Column_List"/>
+        from COM_RUNNING_NUMBER CRN
+        <include refid="common_query_condition"/>
+    </select>
+    <sql id="common_query_condition">
+        <where>
+            <if test="id != null">
+                and CRN.id = #{id,jdbcType=DECIMAL}
+            </if>
+            <if test="partyId != null">
+                and CRN.PARTY_ID = #{partyId,jdbcType=DECIMAL}
+            </if>
+            <if test="type != null">
+                and CRN.type = #{type,jdbcType=DECIMAL}
+            </if>
+        </where>
+    </sql>
+    <select id="findByType" parameterType="string" resultMap="RunningNumberMap">
+		select * from com_running_number where TYPE=#{type}
+  	</select>
+</mapper>

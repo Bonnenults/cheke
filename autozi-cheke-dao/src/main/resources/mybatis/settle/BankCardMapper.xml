@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.autozi.cheke.settle.mapper.BankCardMapper">
+<cache eviction="LRU" type="org.mybatis.caches.memcached.MemcachedCache"/>
+<resultMap id="BankCardMap" type="BankCard">
+	<result column="ID" jdbcType="DECIMAL" property="id"/>
+	<result column="VERSION" jdbcType="DECIMAL" property="version"/>
+	<result column="ACCOUNT_ID" jdbcType="DECIMAL" property="accountId"/>
+	<result column="NAME" jdbcType="VARCHAR" property="name"/>
+	<result column="BANK_NAME" jdbcType="VARCHAR" property="bankName"/>
+	<result column="CARD_NUMBER" jdbcType="VARCHAR" property="cardNumber"/>
+	<result column="BANK_CODE" jdbcType="VARCHAR" property="bankCode"/>
+	<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+	<result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+</resultMap>
+<sql id="Base_Column_List">
+	ID,VERSION,ACCOUNT_ID,NAME,BANK_NAME,CARD_NUMBER,BANK_CODE,CREATE_TIME,UPDATE_TIME
+</sql>
+<sql id="pbc_Base_Column_List">
+	pbc.ID,pbc.VERSION,pbc.ACCOUNT_ID,pbc.NAME,pbc.BANK_NAME,pbc.CARD_NUMBER,pbc.BANK_CODE,pbc.CREATE_TIME,pbc.UPDATE_TIME
+</sql>
+<select id="get" parameterType="long" resultMap="BankCardMap">
+	select
+		<include refid="Base_Column_List"/>
+	from pay_bank_card pbc
+	where ID = #{id,jdbcType=DECIMAL}
+</select>
+<delete id="delete" parameterType="long">
+	delete
+	from pay_bank_card
+	where ID = #{id,jdbcType=DECIMAL}
+</delete>
+<insert id="insert" parameterType="BankCard">
+	insert into pay_bank_card(
+		<include refid="Base_Column_List"/>
+	) values (
+	#{id,jdbcType=DECIMAL},
+	#{version,jdbcType=DECIMAL},
+	#{accountId,jdbcType=DECIMAL},
+	#{name,jdbcType=VARCHAR},
+	#{bankName,jdbcType=VARCHAR},
+	#{cardNumber,jdbcType=VARCHAR},
+	#{bankCode,jdbcType=VARCHAR},
+	#{createTime,jdbcType=TIMESTAMP},
+	#{updateTime,jdbcType=TIMESTAMP}
+	)
+</insert>
+<update id="update" parameterType="BankCard">
+	update pay_bank_card pbc
+	<set>
+		VERSION = VERSION + 1
+		<if test="accountId != null">
+		,ACCOUNT_ID = #{accountId,jdbcType=DECIMAL}
+		</if>
+		<if test="name != null">
+		,NAME = #{name,jdbcType=VARCHAR}
+		</if>
+		<if test="bankName != null">
+		,BANK_NAME = #{bankName,jdbcType=VARCHAR}
+		</if>
+		<if test="cardNumber != null">
+		,CARD_NUMBER = #{cardNumber,jdbcType=VARCHAR}
+		</if>
+		<if test="bankCode != null">
+		,BANK_CODE = #{bankCode,jdbcType=VARCHAR}
+		</if>
+		<if test="createTime != null">
+		,CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="updateTime != null">
+		,UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+		</if>
+	</set>
+	where ID = #{id,jdbcType=DECIMAL}
+</update>
+<select id="findListForExample" parameterType="BankCard" resultMap="BankCardMap">
+	select
+	<include refid="pbc_Base_Column_List"/>
+	from pay_bank_card pbc
+	<include refid="common_query_condition"/>
+</select>
+<select id="findListForMap" parameterType="map" resultMap="BankCardMap">
+	select
+	<include refid="pbc_Base_Column_List"/>
+	from pay_bank_card pbc
+	<include refid="common_query_condition"/>
+</select>
+<sql id="common_query_condition">
+	<where>
+		<if test="id != null">
+			pbc.id = #{id,jdbcType=DECIMAL}
+		</if>
+		<if test="accountId != null">
+			pbc.account_id = #{accountId,jdbcType=DECIMAL}
+		</if>
+	</where>
+</sql>
+</mapper>

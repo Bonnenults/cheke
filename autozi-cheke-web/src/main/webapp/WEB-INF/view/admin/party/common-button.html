@@ -1,0 +1,15 @@
+<div class="nb_submit">
+    <input type="hidden" id="partyId" value="<#if (partyLog??&&partyLog.id??)>${partyLog.id}</#if>">
+    <#if partyLog.status==2||partyLog.status==3>
+        <a href="javascript:void(0)" onclick="PartyAdmin.passVerify();">
+            <button class="nb_btn_by">审核通过</button>
+        </a>
+        <a href="javascript:void(0)" onclick="PartyAdmin.openRefuseDialog()">
+            <button class="nb_btn_refuse">拒绝</button>
+        </a>
+    </#if>
+    <a href="javascript:void(0);" onclick="PartyAdmin.returnList();">
+        <button class="nb_btn_back">返回</button>
+    </a>
+</div>
+

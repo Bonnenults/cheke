@@ -1,0 +1,183 @@
+<script type="text/javascript" src="${contextpath}/js/framework/upload/ajaxfileupload.js" ></script>
+<script type="text/javascript" src="${contextpath}/js/party/party.js"></script>
+<style>
+    .author_left object {
+        left: 0
+    }
+</style>
+<script>
+    $(function () {
+        Party.initValidator();
+        Party.initOneLevelArea();
+        $("#invoiceTitle").attr("placeholder","与公司名称自动填写保持一致");
+        $(".certificateName").html("组织机构代码证/营业执照扫描件");
+    });
+</script>
+<div class="lf_carRight_center">
+<#include "common-userinfo.html">
+    <div class="nb_userInfo_main" id="nb_userInfo_main_view">
+        <p class="ng_comments">
+            <a class="nb_edit" href="javascript:Party.editParty();"><span class="nb_editIcon"></span>编辑</a>
+        </p>
+        <h4 class="nb_userInfo_main_title"><span></span>媒介信息</h4>
+        <div class="nb_userInfo_main_form">
+            <label for="">媒介全称：</label>
+            <p><#if (party??&&party.companyName??)>${party.companyName}</#if></p>
+        </div>
+        <div class="nb_userInfo_main_form">
+            <label for="">媒介属性：</label>
+            <p><#if (party??&&party.mediaType??&&party.mediaType==2)>
+                <span>新闻媒体</span>
+            <#else>
+                <span>群媒体</span>
+            </#if>
+            </p>
+        </div>
+        <div class="nb_userInfo_main_form">
+            <label for="">媒介简介：</label>
+            <p><#if (party??&&party.description??)>${party.description}</#if>
+            </p>
+        </div>
+        <!--所在地-->
+        <#include "common-area-view.html">
+
+        <div class="nb_userInfo_main_form">
+            <label for="">媒介类别：</label>
+            <p><#if (companyTypeName??)>${companyTypeName}</#if>
+            </p>
+        </div>
+        <!--资质证明-->
+        <#include "common-certificate-view.html">
+        <h4 class="nb_userInfo_main_title"><span></span>发票信息</h4>
+        <#include "common-invoice-view.html">
+        <h4 class="nb_userInfo_main_title"><span></span>运营负责人</h4>
+        <#include "common-person-view.html">
+    </div>
+
+    <div class="nb_userInfo_main" id="nb_userInfo_main_edit" style="display: none">
+        <form id="editForm" action="" method="post">
+            <input type="hidden" id="partyClass" name="partyClass" value="3">
+            <input type="hidden" id="userId" name="userId" value="<#if (user.id??)>${user.id}</#if>">
+            <input type="hidden" id="partyId" name="id" value="<#if (party??&&party.id??)>${party.id}</#if>">
+            <p class="ng_comments">
+                <a class="nb_edit" href="javascript:Party.cancelEdit();"><span class="nb_editIcon"></span>撤消</a>
+            </p>
+            <p class="ng_comments">注：＊为必填</p>
+            <h4 class="nb_userInfo_main_title"><span></span>媒介信息</h4>
+            <div class="nb_userInfo_main_form">
+                <label for=""><span>＊</span>媒介全称：</label>
+                <input type="text" name="companyName" id="companyName" onchange="Party.bindCompanyName()" value="<#if (party??&&party.companyName??)>${party.companyName}</#if>"
+                       placeholder="请输入媒介全称，需与媒介资质上登记的名称一致">
+            </div>
+            <div class="nb_userInfo_main_form nb_mediaType">
+                <label for=""><span style="color: red">＊</span>媒介属性：</label>
+                <div class="radioStyle">
+                    <label for="item1">
+                    <#if (party??&&party.mediaType??&&party.mediaType==2)>
+                        <input id="item1" type="radio" name="mediaType" value="1">
+                    <#else>
+                        <input id="item1" type="radio" name="mediaType" value="1" checked="true">
+                    </#if>
+                        <div></div>
+                        <span>群媒体<span>以公司形式专注于生产的小团体</span></span>
+                    </label>
+                </div>
+                <div class="radioStyle nb_MG">
+                    <label for="item2">
+                    <#if (party??&&party.mediaType??&&party.mediaType==2)>
+                        <input id="item2" type="radio" name="mediaType" value="2" checked="true">
+                    <#else>
+                        <input id="item2" type="radio" name="mediaType" value="2">
+                    </#if>
+                        <div></div>
+                        <span>新闻媒体<span>报纸、杂志、电台、电视台、门户网站等新闻单位。包括大媒体下属品牌或者子栏目</span></span>
+                    </label>
+                </div>
+            </div>
+            <div class="nb_userInfo_main_form">
+                <label class="tLabel" for="">媒介简介：</label>
+            <textarea name="description" id="description" value="" cols="30" rows="10"
+                      placeholder="请简单介绍本媒介，便于大家快速了解，字数不多于30字"><#if (party??&&party.description??)>${party.description}</#if></textarea>
+            </div>
+            <!--所在地-->
+            <#include "common-area.html">
+            <div class="permanently clear">
+                <label style="width: 207px; margin-right: 5px;" class="permanentlyOne"><span>*</span>媒介类别：</label>
+            <#include "common-company-type.html">
+            </div>
+            <!--营业执照-->
+            <div class="permanently clear">
+                <label style="width: 207px;color: #333333;" class="permanentlyOne"><span>*</span>资质证明：</label>
+                <div class="modify_perman">
+                    <div class="modfity_img_style">
+                        <div class="modify_box_up_img">
+                        <span id="certificateImgSpan">
+                        <#if (party??&&party.certificateImg??)>
+                            <img src="${party.certificateImg}" />
+                        </#if>
+                        </span>
+                            <input type="hidden" value="<#if (party??&&party.certificateImg??)>${party.certificateImg}</#if>" name="certificateImg" id="certificateImg" />
+                            <input type="file" name="file1" id="file1" onchange="Party.upload(1)" />
+                        <span id="certificateImg_a">
+                        <#if (party??&&party.certificateImg??)>
+                            <a href="javascript:Party.deleteCertificateImg();"></a>
+                        </#if>
+                        </span>
+                        </div>
+                        <span class="certificateName">组织机构代码证/营业执照扫描件</span>
+                    </div>
+                    <div class="modfity_img_style">
+                        <div class="modify_box_up_img xuke_img">
+                        <span id="certificateOtherSpan">
+                        <#if (party??&&party.certificateOther??)>
+                            <img src="${party.certificateOther}" />
+                        </#if>
+                        </span>
+                            <input type="hidden" value="<#if (party??&&party.certificateOther??)>${party.certificateOther}</#if>" name="certificateOther" id="certificateOther" />
+                            <input type="file" name="file2" id="file2" onchange="Party.upload(2)" />
+                        <span id="certificateOther_a">
+                        <#if (party??&&party.certificateOther??)>
+                            <a href="javascript:Party.deleteCertificateOther();"></a>
+                        </#if>
+                        </span>
+                        </div>
+                        <span>其它</span>
+                    </div>
+                </div>
+            </div>
+            <p class="updtate_text">请上传组织机构代码证/营业执照扫描件最新年检副本的清晰彩色扫描件或照片！</p>
+            <div class="nb_userInfo_main_form nb_userInfo_none">
+                <label class="nb_user_style" for=""></label>
+                <input type="text" value="" name="socialCreditCode" id="socialCreditCode" placeholder="请输入15位工商营业执照注册号或18位统一社会信用代码">
+            </div>
+            <div class="permanently clear">
+                <label style="width: 207px; color: #333333;" class="permanentlyOne"><span>*</span>媒介账号开通授权书：</label>
+                <input type="hidden" value="<#if (party.authorImg??)>${party.authorImg}</#if>" name="authorImg" id="authorImg" />
+                <div class="modify_perman">
+                    <div class="modify_box_up author_left">
+                        上传图片
+                        <input type="file" name="file3" id="file3" onchange="Party.upload(3)" />
+                    </div>
+                </div>
+                <span class="gary_tishi">支付jpg、png，不超过2M</span>
+            </div>
+            <p class="down_thistext">下载填写《媒介账号开通授权书》<a href="${contextpath}/styles/20180119.doc" download="账号开通授权书模板">点击下载此模板</a>，填写完整后加盖公章，上传清晰的彩色扫描件或照片。</p>
+            <div>
+    <span id="img_span" style="display: block; margin-left: 230px; margin-top: 20px;">
+    <#if party.authorImg??>
+        <img src="${party.authorImg}" width="254px;" height="173px;">
+            <br><a href="javascript:;" onclick="Party.deleteAuthorImg()" class="image_juzhong" style="color: #5a8bff; display: inline-block; width: 273px; padding: 10px 0; text-align: center;">删除</a>
+    </#if>
+    </span>
+            </div>
+            <!--发票和个人信息-->
+            <#include "common-invoice-person.html">
+        </form>
+
+    </div>
+    <div class="nb_submit" id="submitButtonDiv" style="display: none;">
+        <a href="javascript:void(0)">
+            <button class="nb_submit_btn" onclick="Party.edit(3)">提交审核</button>
+        </a>
+    </div>
+</div>

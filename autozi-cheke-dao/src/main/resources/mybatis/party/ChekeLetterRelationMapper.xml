@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.autozi.cheke.party.mapper.ChekeLetterRelationMapper">
+<cache eviction="LRU" type="org.mybatis.caches.memcached.MemcachedCache"/>
+<resultMap id="ChekeLetterRelationMap" type="ChekeLetterRelation">
+	<result column="ID" jdbcType="DECIMAL" property="id"/>
+	<result column="VERSION" jdbcType="DECIMAL" property="version"/>
+	<result column="USER_ID" jdbcType="DECIMAL" property="userId"/>
+	<result column="PARTY_ID" jdbcType="DECIMAL" property="partyId"/>
+	<result column="CONTENT" jdbcType="VARCHAR" property="content"/>
+	<result column="STATUS" jdbcType="DECIMAL" property="status"/>
+	<result column="PARTY_NAME" jdbcType="VARCHAR" property="partyName"/>
+	<result column="PARTY_CLASS" jdbcType="DECIMAL" property="partyClass"/>
+	<result column="USER_NAME" jdbcType="VARCHAR" property="userName"/>
+	<result column="PHONE" jdbcType="VARCHAR" property="phone"/>
+	<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+	<result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+</resultMap>
+<sql id="Base_Column_List">
+	ID,VERSION,USER_ID,PARTY_ID,CONTENT,STATUS,PARTY_NAME,PARTY_CLASS,USER_NAME,PHONE,CREATE_TIME,UPDATE_TIME
+</sql>
+<sql id="clr_Base_Column_List">
+	clr.ID,clr.VERSION,clr.USER_ID,clr.PARTY_ID,clr.CONTENT,clr.STATUS,clr.PARTY_NAME,clr.PARTY_CLASS,clr.USER_NAME,clr.PHONE,clr.CREATE_TIME,clr.UPDATE_TIME
+</sql>
+<select id="get" parameterType="long" resultMap="ChekeLetterRelationMap">
+	select
+		<include refid="Base_Column_List"/>
+	from cheke_letter_relation clr
+	where ID = #{id,jdbcType=DECIMAL}
+</select>
+<delete id="delete" parameterType="long">
+	delete
+	from cheke_letter_relation
+	where ID = #{id,jdbcType=DECIMAL}
+</delete>
+<insert id="insert" parameterType="ChekeLetterRelation">
+	insert into cheke_letter_relation(
+		<include refid="Base_Column_List"/>
+	) values (
+	#{id,jdbcType=DECIMAL},
+	#{version,jdbcType=DECIMAL},
+	#{userId,jdbcType=DECIMAL},
+	#{partyId,jdbcType=DECIMAL},
+	#{content,jdbcType=VARCHAR},
+	#{status,jdbcType=DECIMAL},
+	#{partyName,jdbcType=VARCHAR},
+	#{partyClass,jdbcType=DECIMAL},
+	#{userName,jdbcType=VARCHAR},
+	#{phone,jdbcType=VARCHAR},
+	#{createTime,jdbcType=TIMESTAMP},
+	#{updateTime,jdbcType=TIMESTAMP}
+	)
+</insert>
+<update id="update" parameterType="ChekeLetterRelation">
+	update cheke_letter_relation clr
+	<set>
+		VERSION = VERSION + 1
+		<if test="userId != null">
+		,USER_ID = #{userId,jdbcType=DECIMAL}
+		</if>
+		<if test="partyId != null">
+		,PARTY_ID = #{partyId,jdbcType=DECIMAL}
+		</if>
+		<if test="content != null">
+			,CONTENT = #{content,jdbcType=VARCHAR}
+		</if>
+		<if test="status != null">
+		,STATUS = #{status,jdbcType=DECIMAL}
+		</if>
+		<if test="partyName != null">
+		,PARTY_NAME = #{partyName,jdbcType=VARCHAR}
+		</if>
+		<if test="partyClass != null">
+		,PARTY_CLASS = #{partyClass,jdbcType=DECIMAL}
+		</if>
+		<if test="userName != null">
+		,USER_NAME = #{userName,jdbcType=VARCHAR}
+		</if>
+		<if test="phone != null">
+		,PHONE = #{phone,jdbcType=VARCHAR}
+		</if>
+		<if test="createTime != null">
+		,CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="updateTime != null">
+		,UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+		</if>
+	</set>
+	where ID = #{id,jdbcType=DECIMAL}
+</update>
+<select id="findListForExample" parameterType="ChekeLetterRelation" resultMap="ChekeLetterRelationMap">
+	select
+	<include refid="clr_Base_Column_List"/>
+	from cheke_letter_relation clr
+	<include refid="list_query_condition"/>
+</select>
+	<sql id="list_query_condition">
+		<where>
+			<if test="id != null">
+				clr.id = #{id,jdbcType=DECIMAL}
+			</if>
+			<if test="userId != null">
+				and clr.user_id = #{userId,jdbcType=DECIMAL}
+			</if>
+			<if test="partyId != null">
+				and clr.party_id = #{partyId,jdbcType=DECIMAL}
+			</if>
+			<if test="status != null and status!=0">
+				and clr.status = #{status,jdbcType=DECIMAL}
+			</if>
+			<if test="userName != null">
+				and clr.userName like concat('%',#{userName,jdbcType=VARCHAR},'%')
+			</if>
+		</where>
+	</sql>
+<select id="findListForMap" parameterType="map" resultMap="ChekeLetterRelationMap">
+	select
+	<include refid="clr_Base_Column_List"/>
+	from cheke_letter_relation clr LEFT JOIN bas_user bu on clr.user_id = bu.id
+	<include refid="common_query_condition"/>
+	order by clr.update_time desc,clr.create_time desc
+</select>
+<sql id="common_query_condition">
+	<where>
+		<if test="id != null">
+			clr.id = #{id,jdbcType=DECIMAL}
+		</if>
+		<if test="status != null and status!=0">
+			and clr.status = #{status,jdbcType=DECIMAL}
+		</if>
+		<if test="userId != null">
+			and clr.user_id = #{userId,jdbcType=DECIMAL}
+		</if>
+		<if test="userName != null">
+			and bu.login_name like concat('%',#{userName,jdbcType=VARCHAR},'%')
+		</if>
+		<if test="phone != null">
+			and bu.phone like concat('%',#{phone,jdbcType=VARCHAR},'%')
+		</if>
+		<if test="partyId != null">
+			and clr.party_id = #{partyId,jdbcType=DECIMAL}
+		</if>
+		<if test="partyName != null">
+			and clr.party_name like concat('%',#{partyName,jdbcType=VARCHAR},'%')
+		</if>
+		<if test="createTimeStart != null">
+			AND clr.update_time &gt;= #{createTimeStart,jdbcType=TIMESTAMP}
+		</if>
+		<if test="createTimeEnd != null">
+			AND clr.update_time &lt;= #{createTimeEnd,jdbcType=TIMESTAMP}
+		</if>
+	</where>
+</sql>
+	<select id="findPartyLetterList" parameterType="map" resultType="java.util.Map" useCache="false">
+		select clr.*,count(1) as letterCount from cheke_letter_relation clr
+		<where>
+			<if test="partyName != null">
+				clr.party_name like concat('%',#{partyName,jdbcType=VARCHAR},'%')
+			</if>
+			<if test="partyClass != null and partyClass!=0">
+				and clr.party_class = #{partyClass,jdbcType=VARCHAR}
+			</if>
+			<if test="partyId != null">
+				and clr.party_id = #{partyId,jdbcType=DECIMAL}
+			</if>
+		</where>
+		group by clr.party_id order by update_time desc,create_time desc
+	</select>
+
+	<select id="getLetterCount" parameterType="java.util.Map" resultType="java.lang.Integer" useCache="false">
+		select count(1) as letterCount from cheke_letter_relation clr where clr.party_id = #{partyId,jdbcType=DECIMAL} and clr.status = #{status,jdbcType=DECIMAL}
+	</select>
+</mapper>

@@ -1,0 +1,32 @@
+<div class="qy_center_table" id="data_table_list">
+    <table>
+        <tbody>
+        <tr>
+            <th width="4%">#</th>
+            <th width="8%">推客ID</th>
+            <th width="8%">留言时间</th>
+            <th width="14%">标题</th>
+            <th width="20%" >留言内容</th>
+            <th width="10%">留言手机号</th>
+        </tr>
+        <#if (page??)&&(page.result??)&&(page.result?size>0)>
+            <#list page.result as view>
+                <tr>
+                    <td>${page.firstElementIndex + view_index }</td>
+                    <td><#if view.createUserId??>${view.createUserId?html}</#if></td>
+                    <td><#if view.createTime??>${view.createTime?string("yyyy-MM-dd HH:mm")}</#if></td>
+                    <td><#if view.title??>${view.title?html}</#if></td>
+                    <td><#if view.content??>${view.content?html}</#if></td>
+                    <td><#if view.contactInfo??>${view.contactInfo?html}</#if></td>
+                </tr>
+            </#list>
+            <#else>
+                <tr>
+                    <td colspan='8'>没有符合条件的记录</td>
+                </tr>
+        </#if>
+        </tbody>
+    </table>
+</div>
+$JXC
+<#include "../../../common/paging_common.html">

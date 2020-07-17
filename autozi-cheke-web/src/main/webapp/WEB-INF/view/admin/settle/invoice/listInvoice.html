@@ -1,0 +1,155 @@
+<script type="text/javascript" src="${contextpath}/js/settle/invoice.js"></script>
+
+<div class="lf_carCenter clear">
+<#--    左侧菜单栏      -->
+    <div class="lf_carRight">
+        <div class="lf_carRight_center">
+
+            <div class="qy_center_tab clear">
+                <ul class="clear">
+                    <li id="tab1"  onclick="InvoiceAdmin.changeStatus(1)">审核发票</li>
+                    <li id="tab2" onclick="InvoiceAdmin.changeStatus(2)">发票记录</li>
+                    <input type="hidden" id="tabStatus" value="${status}">
+                </ul>
+            </div>
+            <script>
+                $(function () {
+                    var tabStatus = $("#tabStatus").val();
+                    if(tabStatus ==1){
+                       $("#tab1").addClass("act");
+                    }else{
+                        $("#tab2").addClass("act");
+                    }
+                })
+            </script>
+
+            <div class="qy_center_main">
+
+                <form id="filter_form" action="/invoice/admin/list/listInvoice.action" method="post">
+                    <input type="hidden" name="status" id="status" value="1">
+
+                    <div class="qy_center_seach clear">
+                        <div class="qy_seach_wrap clear">
+                            <span>
+                                <label class="qy_left"> 车客名称：</label>
+                                <input class="qy_left" style="width:166px;" type="text" name="partyName">
+                            </span>
+                            <span>
+                            <label class="qy_left qy_left">属性：</label>
+                                <div class="project_category qy_left text_adjustment" style="display: inline-block;float:none;margin:0;">
+                                    <!--文本框-->
+                                    <input type="hidden" id="partyClass" name="partyClass">
+                                    <input style="" class="inves_all_money" type="text" placeholder="全部"/>
+                                    <div style="" class="border_lists" id="project_type">
+                                        <a href="javascript:void (0);" onclick="App.selectDiv('partyClass','')">全部</a>
+                                        <a href="javascript:void (0);" onclick="App.selectDiv('partyClass',1)">企业单位</a>
+                                        <a href="javascript:void (0);" onclick="App.selectDiv('partyClass',2)">政府机构</a>
+                                        <a href="javascript:void (0);" onclick="App.selectDiv('partyClass',3)">展览媒介</a>
+                                        <a href="javascript:void (0);" onclick="App.selectDiv('partyClass',4)">个人</a>
+                                    </div>
+                                </div>
+                            </span>
+                            <span>
+                                <label class="qy_left">申请时间：</label>
+                                <input id="createTimeStart" name="createTimeStart" class="qy_calendar qy_left" type="text" placeholder="请选择......"
+                                       onfocus="var my97EndDate=$dp.$('createTimeEnd');
+						 																		WdatePicker({onpicked:function(){my97EndDate.focus();},
+						 																		readOnly:true,maxDate:'#F{$dp.$D(\'createTimeEnd\');}',dateFmt:'yyyy-MM-dd 00:00:00'})">
+                                <em class="qy_left">&nbsp;&nbsp;- &nbsp;</em>
+                                <input id="createTimeEnd" name="createTimeEnd" class="qy_calendar qy_left" type="text" placeholder="请选择......"
+                                       onfocus="WdatePicker({readOnly:true,minDate:'#F{$dp.$D(\'createTimeStart\');}',dateFmt:'yyyy-MM-dd 23:59:59'})">
+                            </span>
+                        </div>
+                        <div class="qy_seach_right">
+                            <a class="qy_seach_cx" href="javascript:void(0)" onclick="App.commonFormSubmit('filter_form');">查询</a>
+                            <a class="qy_seach_cz" href="javascript:;">重置</a>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="qy_center_table" id="data_table_list">
+                    <table>
+                        <tbody>
+                        <tr>
+                            <th style="width:30px;">#</th>
+                            <th>车客名称</th>
+                            <th style="width:130px;">车客属性</th>
+                            <th style="width:130px;">开票金额</th>
+                            <th style="width:130px;">申请时间</th>
+                            <#if status??&&status=="2">
+                                <th style="width:130px;">开票时间</th>
+                            </#if>
+                            <th class="no_border" style="width:230px;">操作</th>
+                        </tr>
+                        <#if (page??)&&(page.result??)&&(page.result?size>0)>
+                            <#list page.result as view>
+                            <tr>
+                                <td>${page.firstElementIndex + view_index }</td>
+                                <td><#if view.partyName??>${view.partyName?html}</#if></td>
+                                <td>
+                                    <#if view.partyClass??&&view.partyClass==1>
+                                        企业单位
+                                    <#elseif view.partyClass??&&view.partyClass==2>
+                                        政府机构
+                                    <#elseif view.partyClass??&&view.partyClass==3>
+                                        新闻媒介
+                                    <#elseif view.partyClass??&&view.partyClass==4>
+                                        个人
+                                    </#if>
+                                </td>
+                                <td><#if view.money??>${view.money?string("0.00")}</#if></td>
+                                <td><#if view.createTime??>${view.createTime?string("yyyy-MM-dd HH:mm")}</#if></td>
+                                <#if status??&&status=="2">
+                                    <td><#if view.updateTime??>${view.updateTime?string("yyyy-MM-dd HH:mm")}</#if></td>
+                                </#if>
+                                <td class="no_border">
+                                    <a class="qy_alink" href="${contextpath}/invoice/admin/list/listInvoiceOrder.action?invoiceId=${view.id}">查看明细</a>
+                                    <#if status??&&status=="1">
+                                         <a class="qy_alink" href="javascript:Invoice.viewInvoice(${view.id})">确认已开票</a>
+                                    </#if>
+                                </td>
+                            </tr>
+                            </#list>
+                        <#else>
+                        <tr>
+                            <td colspan='10'>没有符合条件的记录</td>
+                        </tr>
+                        </#if>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="clear qy_page_wrap">
+                    <div id="page_common_nav">
+                    <#include "../../../common/paging_common.html">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--遮罩层-->
+<div class="mask_float"></div>
+<!--发票详情弹框-->
+<div class="bomb_box" id="invoice_details_view" style="display: none;height: 340px;">
+    <h2 class="bomb_title" style="font-size: 16px;">发票详情</h2>
+    <div class="bomb_pwd_in">
+        <input type="hidden" id="invoiceIdDialog">
+        <p class="box_sty_bomb">
+            <span style="width: 90px; text-align: right;">发票抬头：</span><input style="border: none" type="text" readonly="readonly" name="invoiceTitle" id="invoiceTitle_view"  value=""/>
+        </p>
+        <p class="box_sty_bomb">
+            <span style="width: 90px; text-align: right;">纳税人识别号：</span><input style="border: none" name="invoiceNumber" readonly="readonly" id="invoiceNumber_view" type="text"  value=""/>
+        </p>
+        <p class="box_sty_bomb">
+            <span>发票金额：</span><input name="money" readonly="readonly" id="money_view" type="text" />
+        </p>
+        <p class="box_sty_bomb" style="text-align: center; padding: 20px;">
+            确认该发票已开成功？
+        </p>
+    </div>
+    <div class="pwd_bottom_btn">
+        <a href="javascript:Invoice.closeViewBox();">关闭</a>
+        <a class="confirmation_pwd" href="javascript:Invoice.confirmInvoice();">确认</a>
+    </div>
+</div>

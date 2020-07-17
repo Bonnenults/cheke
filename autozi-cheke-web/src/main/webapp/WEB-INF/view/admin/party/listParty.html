@@ -1,0 +1,116 @@
+<script type="text/javascript" src="${contextpath}/js/party/partyAdmin.js"></script>
+<script type="text/javascript" src="${contextpath}/js/user/user.js"></script>
+<style>
+    #editPwd{position:absolute; left: 50%;top: 50%; z-index: 9999; margin-left: -220px; margin-top: -150px; background: #FFFFFF;width:440px; height:300px; border-radius: 2px; display: none;}
+</style>
+<div class="lf_carCenter clear">
+    <#--    左侧菜单栏      -->
+    <div class="lf_carRight">
+        <div class="lf_carRight_center">
+
+            <div class="qy_center_tab clear">
+                <ul class="clear">
+                    <li class="act" onclick="PartyAdmin.changeStatus(2)">新增审核</li>
+                    <li onclick="PartyAdmin.changeStatus(3)">修改审核</li>
+                    <li onclick="PartyAdmin.changeStatus(1)">已通过</li>
+                    <li onclick="PartyAdmin.changeStatus(6)">已拒绝</li>
+                    <li onclick="PartyAdmin.changeStatus(0)">全部</li>
+                </ul>
+            </div>
+
+            <div class="qy_center_main">
+
+                    <form id="filter_form" action="/admin/party/list/listParty.action" method="get">
+                        <input type="hidden" name="status" id="status" value="2">
+
+                        <div class="qy_center_seach clear">
+                            <div class="qy_seach_wrap clear">
+                            <span>
+                                <label class="qy_left qy_left">车客属性：</label>
+                                <div class="project_category qy_left text_adjustment" style="width:178px;display: inline-block;float:none;margin:0;">
+                                    <input type="hidden" value="" name="partyClass" id="partyClass"/>
+                                    <input style="width:178px;padding:0;" class="inves_all_money" type="text" placeholder="全部" value="" name="" />
+                                    <div style="width: 178px;" class="border_lists" id="party_class">
+                                        <a href="javascript:;" data-title="">全部</a>
+                                        <a href="javascript:;" data-title="1">企业单位</a>
+                                        <a href="javascript:;" data-title="2">政府机构</a>
+                                        <a href="javascript:;" data-title="3">展览媒介</a>
+                                        <a href="javascript:;" data-title="4">个人</a>
+                                    </div>
+                                </div>
+                            </span>
+                            <span>
+                                <label class="qy_left"> 车客名称：</label>
+                                <input class="qy_left" style="width:166px;" type="text" placeholder="" name="name">
+                            </span>
+                            <span>
+                                <label class="qy_left"> 车客用户名：</label>
+                                <input class="qy_left" style="width:166px;" type="text" placeholder="" name="loginName">
+                            </span>
+                            <span>
+                                <label class="qy_left">注册时间：</label>
+                                <input id="createTimeStart" name="createTimeStart" class="qy_calendar qy_left" type="text" placeholder="请选择......"
+                                                                                                onfocus="var my97EndDate=$dp.$('createTimeEnd');
+						 																		WdatePicker({onpicked:function(){my97EndDate.focus();},
+						 																		readOnly:true,maxDate:'#F{$dp.$D(\'createTimeEnd\');}',dateFmt:'yyyy-MM-dd 00:00:00'})">
+                                <em class="qy_left">&nbsp;&nbsp;- &nbsp;</em>
+                                <input id="createTimeEnd" name="createTimeEnd" class="qy_calendar qy_left" type="text" placeholder="请选择......"
+                                                                                                onfocus="WdatePicker({readOnly:true,minDate:'#F{$dp.$D(\'createTimeStart\');}',dateFmt:'yyyy-MM-dd 23:59:59'})">
+                            </span>
+
+                            </div>
+                            <div class="qy_seach_right">
+                                <a class="qy_seach_cx" href="javascript:void(0)" onclick="App.commonFormSubmit('filter_form');">查询</a>
+                                <a class="qy_seach_cz" href="javascript:;">重置</a>
+                            </div>
+                        </div>
+                    </form>
+
+                <#include "listParty-common.html">
+
+                <div class="clear qy_page_wrap">
+                    <div id="page_common_nav">
+                        <#include "../../common/paging_common.html">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--遮罩层-->
+<div class="mask_float" style="display: none"></div>
+<!--修改密码弹框-->
+<div class="bomb_box" style="display: none;" id="editPwd">
+    <h2 class="bomb_title">修改密码<a class="bomb_close" href="javascript:;"></a></h2>
+    <div class="bomb_pwd_in">
+        <input type="hidden" id="partyId">
+        <p class="box_sty_bomb">
+            <span>车客名称：</span><span id="partyName" style="width:200px;"></span>
+            <strong></strong>
+        </p>
+        <p class="box_sty_bomb">
+            <span>车客用户名：</span><span id="loginName"></span>
+            <strong></strong>
+        </p>
+        <p class="box_sty_bomb">
+            <span>新密码：</span><input type="password" id="pwd1"  value=""/>
+            <strong></strong>
+        </p>
+        <p class="box_sty_bomb">
+            <span>确认密码：</span><input type="password" id="pwd2"  value=""/>
+            <strong></strong>
+        </p>
+    </div>
+    <div class="pwd_bottom_btn">
+        <a href="javascript:void (0);" onclick="PartyAdmin.closeEditPwd();">取消</a>
+        <a class="" style="background: #5a8bff;" href="javascript:void (0);" onclick="PartyAdmin.submitPasswordForm();">修改</a>
+    </div>
+</div>
+<script>
+    $("#party_class a").click(function(){
+        $("#partyClass").val($(this).attr("data-title"));
+    });
+</script>

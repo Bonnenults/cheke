@@ -1,0 +1,84 @@
+<div class="lf_carRight">
+    <div class="lf_carRight_center">
+
+        <div class="qy_center_main">
+            <form id="filter_form" action="/account/admin/listAccount/listAccountForAdmin.action" method="post">
+                <div class="qy_center_seach clear">
+                    <div class="qy_seach_wrap clear">
+
+                        <span>
+                              <label class="qy_left">车客名称：</label>
+                              <input class="qy_left text_adjustment"  name="partyName" value="" type="text" placeholder="">
+                        </span>
+                        <span>
+                              <label class="qy_left">公司名称：</label>
+                              <input class="qy_left text_adjustment"  name="companyName" value="" type="text" placeholder="">
+                        </span>
+
+                        <span>
+                            <label class="qy_left qy_left">属性：</label>
+                            <div class="project_category qy_left text_adjustment" style="display: inline-block;float:none;margin:0;">
+                                <!--文本框-->
+                                <input type="hidden" id="partyClass" name="partyClass">
+                                <input style="" class="inves_all_money" type="text" placeholder="全部"/>
+                                <div style="" class="border_lists" id="project_type">
+                                    <a href="javascript:void (0);" onclick="App.selectDiv('partyClass','')">全部</a>
+                                    <a href="javascript:void (0);" onclick="App.selectDiv('partyClass',1)">企业单位</a>
+                                    <a href="javascript:void (0);" onclick="App.selectDiv('partyClass',2)">政府机构</a>
+                                    <a href="javascript:void (0);" onclick="App.selectDiv('partyClass',3)">展览媒介</a>
+                                    <a href="javascript:void (0);" onclick="App.selectDiv('partyClass',4)">个人</a>
+                                </div>
+                            </div>
+                        </span>
+                    </div>
+                    <div class="qy_seach_right">
+                        <a class="qy_seach_cx" href="javascript:void(0)" onclick="App.commonFormSubmit('filter_form');">查询</a>
+                        <a class="qy_seach_cz" href="javascript:;">重置</a>
+                    </div>
+                </div>
+            </form>
+
+            <div class="qy_center_table" id="data_table_list">
+                <table>
+                    <tbody>
+                    <tr>
+                        <th style="width: 40px;">#</th>
+                        <th style="width: 110px;">属性</th>
+                        <th>公司名称</th>
+                        <th style="width: 220px;">车客名称</th>
+                        <th style="width: 120px;">可用金额</th>
+                        <th style="width: 170px;">操作</th>
+                    </tr>
+                    <#if (page??)&&(page.result??)&&(page.result?size>0)>
+                    <#list page.result as account>
+                    <tr>
+                        <td>${account_index + page.firstElementIndex}</td>
+                        <td>${account.partyClassName!''}</td>
+                        <td>${account.companyName!''}</td>
+                        <td>${account.partyName!''}</td>
+                        <td>${account.account?string("0.00")}</td>
+                        <td>
+                            <a class="qy_alink" href="javascript:App.jump('/account/admin/listAccount/listAccountOrderByParty.action?partyId=${account.ownerId}')">充值记录</a>
+                            <a class="qy_alink" href="javascript:App.jump('/account/admin/listAccount/listCostByParty.action?partyId=${account.ownerId}')">消费记录</a>
+                        </td>
+                    </tr>
+                    </#list>
+                    <#else>
+                    <tr>
+                        <td colspan='6'>没有符合条件的记录</td>
+                    </tr>
+                    </#if>
+                    </tbody>
+                </table>
+            </div>
+
+
+            <div class="clear qy_page_wrap">
+                <div id="page_common_nav">
+                <#include "../../../common/paging_common.html">
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

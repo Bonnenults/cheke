@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.autozi.cheke.mobile.mapper.MobilePhoneCodeMapper">
+	<cache eviction="LRU" type="org.mybatis.caches.memcached.MemcachedCache"/>
+	<resultMap id="MobilePhoneCodeMap" type="MobilePhoneCode">
+		<result column="ID" jdbcType="DECIMAL" property="id"/>
+		<result column="VERSION" jdbcType="DECIMAL" property="version"/>
+		<result column="MOBILE_PHONE" jdbcType="VARCHAR" property="mobilePhone"/>
+		<result column="CODE" jdbcType="VARCHAR" property="code"/>
+		<result column="TOTAL_SEND_NUMBER" jdbcType="DECIMAL" property="totalSendNumber"/>
+		<result column="SEND_NUMBER" jdbcType="DECIMAL" property="sendNumber"/>
+		<result column="STATUS" jdbcType="DECIMAL" property="status"/>
+		<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+		<result column="LAST_SEND_TIME" jdbcType="TIMESTAMP" property="lastSendTime"/>
+		<result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+	</resultMap>
+	<sql id="Base_Column_List">
+		ID,VERSION,MOBILE_PHONE,CODE,TOTAL_SEND_NUMBER,SEND_NUMBER,STATUS,CREATE_TIME,LAST_SEND_TIME,UPDATE_TIME
+	</sql>
+	<sql id="MMPC_Base_Column_List">
+		MMPC.ID,MMPC.VERSION,MMPC.MOBILE_PHONE,MMPC.CODE,MMPC.TOTAL_SEND_NUMBER,MMPC.SEND_NUMBER,MMPC.STATUS,MMPC.CREATE_TIME,MMPC.LAST_SEND_TIME,MMPC.UPDATE_TIME
+	</sql>
+	<select id="get" parameterType="long" resultMap="MobilePhoneCodeMap">
+		select
+			<include refid="Base_Column_List"/>
+		from MB_MOBILE_PHONE_CODE MMPC
+		where ID = #{id,jdbcType=DECIMAL}
+	</select>
+	<delete id="delete" parameterType="long">
+		delete
+		from MB_MOBILE_PHONE_CODE
+		where ID = #{id,jdbcType=DECIMAL}
+	</delete>
+	<insert id="insert" parameterType="MobilePhoneCode">
+		insert into MB_MOBILE_PHONE_CODE(
+			<include refid="Base_Column_List"/>
+		) values (
+		#{id,jdbcType=DECIMAL},
+		#{version,jdbcType=DECIMAL},
+		#{mobilePhone,jdbcType=VARCHAR},
+		#{code,jdbcType=VARCHAR},
+		#{totalSendNumber,jdbcType=DECIMAL},
+		#{sendNumber,jdbcType=DECIMAL},
+		#{status,jdbcType=DECIMAL},
+		#{createTime,jdbcType=TIMESTAMP},
+		#{lastSendTime,jdbcType=TIMESTAMP},
+		#{updateTime,jdbcType=TIMESTAMP}
+		)
+	</insert>
+	<update id="update" parameterType="MobilePhoneCode">
+		update MB_MOBILE_PHONE_CODE MMPC
+		<set>
+			VERSION = VERSION + 1
+			<if test="mobilePhone != null">
+			,MOBILE_PHONE = #{mobilePhone,jdbcType=VARCHAR}
+			</if>
+			<if test="code != null">
+			,CODE = #{code,jdbcType=VARCHAR}
+			</if>
+			<if test="totalSendNumber != null">
+			,TOTAL_SEND_NUMBER = #{totalSendNumber,jdbcType=DECIMAL}
+			</if>
+			<if test="sendNumber != null">
+			,SEND_NUMBER = #{sendNumber,jdbcType=DECIMAL}
+			</if>
+			<if test="status != null">
+			,STATUS = #{status,jdbcType=DECIMAL}
+			</if>
+			<if test="createTime != null">
+			,CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="lastSendTime != null">
+			,LAST_SEND_TIME = #{lastSendTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null">
+			,UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</set>
+		where ID = #{id,jdbcType=DECIMAL}
+	</update>
+	<select id="findListForExample" parameterType="MobilePhoneCode" resultMap="MobilePhoneCodeMap">
+		select
+		<include refid="MMPC_Base_Column_List"/>
+		from MB_MOBILE_PHONE_CODE MMPC
+		<include refid="common_query_condition"/>
+	</select>
+	<select id="findListForMap" parameterType="map" resultMap="MobilePhoneCodeMap">
+		select
+		<include refid="MMPC_Base_Column_List"/>
+		from MB_MOBILE_PHONE_CODE MMPC
+		<include refid="common_query_condition"/>
+	</select>
+	<sql id="common_query_condition">
+		<where>
+			<if test="id != null">
+				MMPC.id = #{id,jdbcType=DECIMAL}
+			</if>
+		</where>
+	</sql>
+	<select id="getByMobilePhone" parameterType="map" resultMap="MobilePhoneCodeMap">
+		select
+			<include refid="Base_Column_List"/>
+		from MB_MOBILE_PHONE_CODE
+		where  MOBILE_PHONE= #{mobilePhone}
+	</select>
+</mapper>

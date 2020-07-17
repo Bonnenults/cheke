@@ -1,0 +1,89 @@
+<#assign cur_index=1/>
+<div class="ListFavorMenu_pre">
+        <ul>
+    <#if favorMenus??>
+	<#list favorMenus as menu>
+    	<li id="${menu.id}">
+    	<a href="javascript:top.frames[2].location='${contextpath}${menu.url}';void(0);" index="${cur_index}" data-menu="${menu.id}"  onmouseover="FavorMenusPro.moveFun(this);">${menu.text}</a>
+   	</li>
+	     <#assign cur_index=cur_index+1/>
+	</#list>
+	</#if>
+       </ul>
+       <div class="clear"></div>
+   </div>
+  <input id="FavorMenusMaxSize" value="1" type="hidden"/>
+<script>
+	$(function(){
+		FavorMenusPro.content_width = parseInt($("#favorOperations").width());
+		var li_width = 0;
+		var div_index_array = new Array();
+		
+		var IEFlag = document.all ? true : false;
+		var IE_V_6 = false;
+		var IE_V_7 = false;
+		if(IEFlag){
+			IE_V_6 = navigator.appVersion.match(/6./i)=="6." ? true : false;
+			IE_V_7 = navigator.appVersion.match(/7./i)=="7." ? true : false;
+		}
+		//alert(IEFlag+"|"+IE_V_6+"|"+IE_V_7);
+		if(IE_V_6||IE_V_7){
+			for(var i=1;i<=${favorMenusSize};i++){
+				li_width = li_width + parseInt($(".ListFavorMenu_pre a[index="+i+"]").parent().width());
+				if(li_width>=FavorMenusPro.content_width){
+					div_index_array.push(i-1);
+					li_width = 0;
+					i--;
+				}
+			}
+		}else{
+			for(var i=1;i<=${favorMenusSize};i++){
+				li_width = li_width + parseInt($(".ListFavorMenu_pre a[index="+i+"]").parent().width());
+				if(li_width>=FavorMenusPro.content_width){
+					div_index_array.push(i);
+					li_width = 0;
+				}
+			}
+		}
+		
+		
+		if(div_index_array.length<1){
+			$("#favorOperations").append('<div class="ListFavorMenu LeftFavorMenu CurFavorMenu" index="1"><ul class="LeftFavorMenu">')
+			.append('</ul><div class="clear"></div></div>');
+			$(".ListFavorMenu[index='1'] ul:first").html('').html($(".ListFavorMenu_pre ul"));
+			$("#FavorMenusMaxSize").val(1);
+		}else{
+			var div_list_num = 1;
+			for(var div_index = 0;div_index<=div_index_array.length;div_index++){
+				if(div_index==0){
+					$("#favorOperations").append('<div class="ListFavorMenu LeftFavorMenu CurFavorMenu" index="1"><ul class="LeftFavorMenu">')
+						.append('</ul><div class="clear"></div></div>');
+					for(var j = 1;j<=div_index_array[0];j++){
+						$(".ListFavorMenu[index='1'] ul:first").append($(".ListFavorMenu_pre a[index="+j+"]").parent());
+					}
+				}else{
+					if(div_index_array[div_index]<=${favorMenusSize}){
+						$("#favorOperations").append('<div class="ListFavorMenu LeftFavorMenu NormalFavorMenu" index="'+(div_index+1)+'"><ul class="LeftFavorMenu">')
+						.append('</ul><div class="clear"></div></div>');
+						for(var j = div_index_array[div_index-1]+1;j<=div_index_array[div_index];j++){
+							$(".ListFavorMenu[index='"+(div_index+1)+"'] ul:first").append($(".ListFavorMenu_pre a[index="+j+"]").parent());
+						}
+						div_list_num = div_list_num + 1;
+					}
+				}
+			}
+			if(div_index_array[div_index_array.length-1]<${favorMenusSize}){
+				div_list_num = div_list_num + 1;
+				$("#favorOperations").append('<div class="ListFavorMenu LeftFavorMenu NormalFavorMenu" index="'+div_list_num+'"><ul class="LeftFavorMenu">')
+				.append('</ul><div class="clear"></div></div>');
+				for(var j = div_index_array[div_index_array.length-1]+1;j<=${favorMenusSize};j++){
+					$(".ListFavorMenu[index='"+div_list_num+"'] ul:first").append($(".ListFavorMenu_pre a[index="+j+"]").parent());
+				}
+			}
+			$("#FavorMenusMaxSize").val(div_list_num);
+		}
+		FavorMenusPro.prevAndNextButFun();
+		$(".ListFavorMenu_pre").remove();
+	});
+</script>
+

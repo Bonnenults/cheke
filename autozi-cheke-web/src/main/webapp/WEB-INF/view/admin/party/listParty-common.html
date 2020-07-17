@@ -1,0 +1,55 @@
+
+<div class="qy_center_table" id="data_table_list">
+    <table>
+        <tbody>
+        <tr>
+            <th width="4%">#</th>
+            <th width="14%">车客属性</th>
+            <th width="10%">车客名称</th>
+            <th width="14%">车客用户名</th>
+            <th width="16%">注册时间</th>
+            <th width="10%" class="no_border">操作</th>
+        </tr>
+        <#if (page??)&&(page.result??)&&(page.result?size>0)>
+            <#list page.result as view>
+            <tr>
+
+                <td>${page.firstElementIndex + view_index }</td>
+                <td>
+                    <#if view.partyClass??&&view.partyClass==1>
+                        企业单位
+                    <#elseif view.partyClass??&&view.partyClass==2>
+                        政府机构
+                    <#elseif view.partyClass??&&view.partyClass==3>
+                        展览媒介
+                    <#elseif view.partyClass??&&view.partyClass==4>
+                        个人
+                    </#if>
+                </td>
+                <td><#if view.name??>${view.name?html}</#if></td>
+                <td><#if view.loginName??>${view.loginName?html}</#if></td>
+                <td><#if view.createTime??>${view.createTime?string("yyyy-MM-dd HH:mm")}</#if></td>
+
+                <td class="no_border">
+                    <#if view.status??&&(view.status==1||view.status==6)>
+                        <a class="qy_alink" href="${contextpath}/admin/party/list/audit.action?id=${view.id}">查看详情</a>
+                    <#elseif view.status==2||view.status==3>
+                        <a class="qy_alink" href="${contextpath}/admin/party/list/audit.action?id=${view.id}">审核</a>
+                    </#if>
+                    <a class="qy_alink" href="javascript:void(0);" onclick="PartyAdmin.openEditPwd(${view.id},'<#if view.name??>${view.name}</#if>','<#if view.loginName??>${view.loginName}</#if>')">密码</a>
+                    <#if view.userStatus??&&view.userStatus==2>
+                        <a class="qy_alink" href="javascript:PartyAdmin.lockOrUnLockCheke(${view.id},1)">解锁</a>
+                    <#else>
+                        <a class="qy_alink" href="javascript:PartyAdmin.lockOrUnLockCheke(${view.id},2)">锁定</a>
+                    </#if>
+                </td>
+            </tr>
+            </#list>
+        <#else>
+        <tr>
+            <td colspan='6'>没有符合条件的记录</td>
+        </tr>
+        </#if>
+        </tbody>
+    </table>
+</div>

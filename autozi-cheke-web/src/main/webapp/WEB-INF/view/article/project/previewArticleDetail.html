@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>信息管理项目详情</title>
+        <script charset="utf-8" src="${contextpath}/js/framework/kindeditor/kindeditor-all-min.js"></script>
+        <script charset="utf-8" src="${contextpath}/js/framework/kindeditor/lang/zh-CN.js"></script>
+	</head>
+	<body>
+		<h2 style="width:50%;padding-left: 42px;padding-top: 20px;font-weight: normal;">项目详情</h2>
+		<div class="modify_item">
+
+			<div class="mode_detail clear">
+                <div class="mode_detail_left clear">
+                    <div class="modify_number">
+                    	<img src="${contextpath}/styles/images/share.png" />
+                    	<div>
+                    		<strong>${countInfo.wxFriendsCircle + countInfo.qqZone + countInfo.sina + countInfo.wxFriends + countInfo.qqFriends}</strong><br />
+                    		<span>总分享(次)</span>
+                    	</div>
+                    </div>
+                    <div class="mo_statistics">
+                    	<p>朋友圈：<strong>${countInfo.wxFriendsCircle}</strong>次</p>
+                    	<p>QQ空间：<strong>${countInfo.qqZone}</strong>次</p>
+                    	<p>新浪微博：<strong>${countInfo.sina}</strong>次</p>
+                    </div>
+                    <div class="mo_statistics">
+                    	<p>微信好友：<strong>${countInfo.wxFriends}</strong>次</p>
+                    	<p>QQ好友：<strong>${countInfo.qqFriends}</strong>次</p>
+                    </div>
+                </div>
+                <div class="mode_detail_right clear">
+                    <div class="modify_number">
+                    	<img src="/styles/images/rs.png" />
+                    	<div>
+                    		<strong>${countInfo.likes + countInfo.dislikes + countInfo.leaveWords}</strong><br />
+                    		<span>总次数</span>
+                    	</div>
+                    </div>
+                    <div class="mo_statistics">
+                    	<p>点赞：<strong>${countInfo.likes}</strong>次</p>
+                        <p>点LOW：<strong>${countInfo.dislikes}</strong>次</p>
+                    </div>
+                    <div class="mo_statistics">
+                    	<p>留言：<strong>${countInfo.leaveWords}</strong>次</p>
+                    </div>
+                </div>
+            </div>
+
+			<form class="modify_form">
+				<p>
+					<label><span>*</span>项目标题：</label>
+					<span class="mod_form_deatil">${art.title!''}</span>
+				</p>
+                <p>
+                    <label><span>*</span>项目简介：</label>
+                    <span class="mod_form_deatil">${art.intro!''}</span>
+                </p>
+				<p>
+					<label><span>*</span>项目类别：</label>
+					<span class="mod_form_deatil">${typeName!''}</span>
+				</p>
+				<p>
+					<label><span>*</span>项目分类：</label>
+					<span class="mod_form_deatil">${art.tag!''}</span>
+				</p>
+				<p>
+					<label><span>*</span>项目来源：</label>
+					<span class="mod_form_deatil">${art.source!''}</span>
+				</p>
+
+				<!--图片上传-->
+				<div class="permanently clear">
+					<label class="permanentlyOne" style="width:130px;"><span>*</span>项目缩略图：</label>
+					<div id="modity_img">
+						<#if art.image?? && art.image != ''>
+                            <img src="${art.image}" width="188" height="112"/>
+						</#if>
+					</div>
+				</div>
+				<!--起止时间-->
+                <p>
+                    <label><span>*</span>是否永久有效：</label>
+                    <span class="mod_form_deatil"><#if art.endTime??>否<#else>是</#if></span>
+                </p>
+				<p>
+					<label><#if art.endTime??><span>*</span>起止时间：<#else></#if></label></label>
+					<span class="mod_form_deatil"><#if art.beginTime?? && art.endTime??>${art.beginTime?string('yyyy-MM-dd HH:mm:ss')} - ${art.endTime?string('yyyy-MM-dd HH:mm:ss')}<#else></#if></span>
+				</p>
+				<p>
+					<label><span>*</span>项目内容：</label>
+					<textarea id="body" disabled class="project_content ue_ditor_style" name="body">${art.body} </textarea>
+				</p>
+				<p>
+					<label><span>*</span>是否生成推广任务：</label>
+					<span class="mod_form_deatil"><#if art.aIsTask == 0>否<#else>是</#if></span>
+					<span class="tousu_tishi">提示：推广按点击进行付费,单次点击费用不少于0.1元</span>
+				</p>
+
+				<#if art.aIsTask == 1>
+					<p class="total_investment">
+						<label><span>*</span>费用总投入：</label>
+						<span class="mod_form_deatil">${countInfo.allCost}元</span>
+						<span style="color: #fc6060; margin-left: 50px;">*</span>单次点击：
+						<span class="mod_form_deatil">${countInfo.onceCost}元</span>
+						<span style="color: #fc6060; margin-left: 50px;">*</span>一个用户单条任务最多可获得：
+						<span class="mod_form_deatil">${countInfo.mostCost}元</span>
+					</p>
+					<p class="total_clicked">
+						<label>总点击：</label>
+						<span class="mod_form_deatil">${allClickNum!0} 次</span>
+						<span style="margin-left: 60px;" class="mod_form_deatil">总消费：</span>
+						<span class="mod_form_deatil">${allUsedMoney!0.0} 元</span>
+						<#if art.status == 4>
+                            <span style="margin-left: 60px;" class="mod_form_deatil">退款金额：</span>
+                            <span class="mod_form_deatil">${refundMoney!0.0} 元</span>
+						</#if>
+					</p>
+				<#else >
+					<p class="total_clicked">
+						<label>总点击：</label>
+						<span class="mod_form_deatil">${allClickNum!0} 次</span>
+					</p>
+				</#if>
+			</form>
+
+			<div class="modify_submit">
+				<input type="button" value="返回" name="" onclick="window.history.go(-1);"/>
+			</div>
+		</div>
+
+        <script type="text/javascript">
+            //实例化编辑器
+            var editor;
+            KindEditor.ready(function(K) {
+                editor = K.create('textarea[name="body"]', {
+                    allowFileManager : false,	//不允许选择已经上传的图片
+                    allowImageRemote : false,	//不允许上传网络图片
+                    resizeType:1,	//不可改变编辑器大小
+                    themeType : 'simple',
+                    cssPath : '${contextpath}/js/framework/kindeditor/plugins/code/prettify.css',
+                    uploadJson :location.origin+'/upload/extImageKindEditor.action',
+                    afterCreate : function() {
+                        var self = this;
+                        K.ctrl(document, 13, function() {
+                            self.sync();
+                        });
+                        K.ctrl(self.edit.doc, 13, function() {
+                            self.sync();
+                        });
+                    },
+                    afterBlur: function () { this.sync(); },
+                    items : [
+                        '|', 'undo', 'redo', '|', 'preview','cut', 'copy', 'paste',
+                        'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
+                        'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent',
+                        'clearhtml', 'quickformat', 'selectall', '|', '/',
+                        'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+                        'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image', 'multiimage',
+                        'table', 'hr', 'emoticons', 'pagebreak',
+                        '|', 'fullscreen'
+                    ]
+                });
+
+            });
+        </script>
+	</body>
+</html>

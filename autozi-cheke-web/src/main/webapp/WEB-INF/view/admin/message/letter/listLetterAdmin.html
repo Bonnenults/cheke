@@ -1,0 +1,93 @@
+<script type="text/javascript" src="${contextpath}/js/party/letter.js" ></script>
+<#include "../../../common/context.html">
+
+<div class="lf_carCenter clear">
+    <div class="lf_carRight">
+        <div class="lf_carRight_center">
+            <div class="qy_center_main">
+
+                <form id="filter_form" action="/letter/admin/list/listLetterAdmin.action" method="post">
+                    <div class="qy_center_seach clear">
+                        <div class="qy_seach_wrap clear">
+                            <span>
+                                <label class="qy_left"> 车客名称：</label>
+                                <input class="qy_left" style="width:166px;" type="text" name="partyName">
+                            </span>
+                            <span>
+                                <label class="qy_left qy_left">属性：</label>
+                                <div class="project_category qy_left text_adjustment" style="width:178px;display: inline-block;float:none;margin:0;">
+                                    <input type="hidden" value="" name="partyClass" id="partyClass"/>
+                                    <input class="inves_all_money" type="text" placeholder="全部" value="" name="" />
+                                    <div class="border_lists" id="party_class">
+                                        <a href="javascript:;" value="">全部</a>
+                                        <a href="javascript:;" value="1">企业单位</a>
+                                        <a href="javascript:;" value="2">政府机构</a>
+                                        <a href="javascript:;" value="3">展览媒介</a>
+                                        <a href="javascript:;" value="4">个人</a>
+                                    </div>
+                                </div>
+                            </span>
+                        </div>
+                        <div class="qy_seach_right">
+                            <a class="qy_seach_cx" href="javascript:void(0)" onclick="App.commonFormSubmit('filter_form');">查询</a>
+                            <a class="qy_seach_cz" href="javascript:;">重置</a>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="qy_center_table" id="data_table_list">
+                    <table>
+                        <tbody>
+                        <tr>
+                            <th>#</th>
+                            <th>车客名称</th>
+                            <th style="width:130px;">属性</th>
+                            <th class="no_border" style="width:230px;">私信数</th>
+                        </tr>
+                        <#if (page??)&&(page.result??)&&(page.result?size>0)>
+                            <#list page.result as view>
+                            <tr>
+                                <td>${page.firstElementIndex + view_index }</td>
+                                <td><#if view.name??>${view.name?html}</#if></td>
+                                <td>
+                                    <#if view.partyClass??&&view.partyClass==1>
+                                        企业单位
+                                    <#elseif view.partyClass??&&view.partyClass==2>
+                                        机构单位
+                                    <#elseif view.partyClass??&&view.partyClass==3>
+                                        媒介单位
+                                    <#elseif view.partyClass??&&view.partyClass==4>
+                                        个人
+                                    </#if>
+                                </td>
+                                <td class="no_border">
+                                    <#if view.letterCount??>
+                                        <a class="qy_alink" href="javascript:Letter.viewPartyDetail('${view.id}')">${view.letterCount?html}</a>
+                                    </#if>
+                                </td>
+                            </tr>
+                            </#list>
+                        <#else>
+                        <tr>
+                            <td colspan='10'>没有符合条件的记录</td>
+                        </tr>
+                        </#if>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="clear qy_page_wrap">
+                    <div id="page_common_nav">
+                    <#include "../../../common/paging_common.html">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $("#party_class a").click(function(){
+        $("#partyClass").val($(this).attr("value"));
+    });
+</script>

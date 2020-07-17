@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge，chrome=1">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <meta content="telephone=no,email=no" name="format-detection">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <title>${article.title}</title>
+    <link rel="stylesheet" href="${contextpath}/css/mui.min.css" />
+    <link rel="stylesheet" href="${contextpath}/css/index.css"/>
+    <link rel="stylesheet" href="${contextpath}/css/animate.css"/>
+    <link rel="stylesheet" href="${contextpath}/css/video-css.css" >
+    <script type="text/javascript" src="${contextpath}/js/videojs.js"></script>
+    <script type="text/javascript" src="${contextpath}/js/jquery-1.12.0.min.js" ></script>
+    <!--<script type="text/javascript" src="${contextpath}/js/mui.min.js"></script>-->
+    <script type="text/javascript" src="${contextpath}/js/bq.js" ></script>
+
+    <script type="text/javascript" src="${contextpath}/js/function.js"></script>
+    <script type="text/javascript" src="${contextpath}/js/video.js"></script>
+    <script type="text/javascript" src="${contextpath}/js/openApp.js"></script>
+
+</head>
+<style>
+	html,body{-webkit-overflow-scrolling: touch;}
+    ol{margin-left: 17px;}
+</style>
+<body>
+<#if article.status == -3>
+    内容已删除
+<#else>
+<input type="hidden" id="articleId" value="${article.id}">
+<input type="hidden" id="userId" value="${userId!''}">
+<h1 class="video_title_bt" align="left" style="font-weight: bold;">${article.title}</h1>
+<div class="video_title">
+    <div class="text_logo" style="margin-right: 2%;">
+        <#if party?? && party.imageUrl??>
+            <img src="${party.imageUrl!''}" />
+        <#else >
+            <img src="${contextpath}/images/default_header.png" />
+        </#if>
+    </div>
+    <div class="text_info" style="width:80%;">
+        <h5>${party.name}</h5>
+        <p style="height:auto;word-break: break-all;">${article.source}</p>
+    </div>
+    <#--<a href="javascrpt:;">关注</a>-->
+</div>
+<div class="video_title video_title_two">
+    <div class="text_logo" style="margin-right: 2%;">
+        <#if party?? && party.imageUrl??>
+        <img src="${party.imageUrl!''}" />
+        <#else >
+        <img src="${contextpath}/images/default_header.png" />
+    </#if>
+</div>
+<div class="text_info" style="width:80%;">
+    <h5>${party.name}</h5>
+    <p style="height:auto;word-break: break-all;">${article.source}</p>
+</div>
+<#--<a href="javascrpt:;">关注</a>-->
+</div>
+<div class="add_video_title"></div>
+<div class="tex_center">
+    <#--<img src="${article.image!''}"/>-->
+${article.body}
+    <div class="detail_look" style="padding-left: 0;padding-right: 0;">
+        <div>
+            <span><img src="${contextpath}/images/look.png" /><i>${countInfo.pageView}</i></span>
+        </div>
+        <div>
+            <span><img src="${contextpath}/images/qiang.png" onclick="like(event)"  /><i id="click_like">${countInfo.likes}</i></span>
+            <span><img src="${contextpath}/images/ruo.png" onclick="dislike(event)" /><i id="click_disLike">${countInfo.dislikes}</i></span>
+        </div>
+    </div>
+    <div class="message_cen" style="display:none">
+        <h5 class="clear">给${party.name!'中驰车客'}留言:</h5>
+        <div>
+            <input type="text" id="userName" class="name_lf" placeholder="姓名" maxlength="20" />
+            <input type="text" id="userPhone" class="iphone_lf" placeholder="手机号" maxlength="11" />
+            <textarea id="leaveWords" class="message_lf" placeholder="留言信息仅限产品咨询 、渠道申请、售后服务等内容.." maxlength="100"></textarea>
+        </div>
+        <a id="ckSub" href="javascript:;" onclick="commitLeaveWords()">提交</a>
+    </div>
+    <div id="download-footer" style="height: 50px;width: 100%; position: fixed ! important;background-color: rgba(0,0,0,0.4); left: 0px;bottom: 0px;z-index: 9999;">
+        <div class="footer-cancle" style="display: table-cell;vertical-align: middle;padding-left: 10px" onclick="cancleTip(this)">
+            <img src="${contextpath}/images/close.png" style="width: 20px;height: 20px">
+            <!--<img src="../img/logo1.png" style="width: 40px;height: 40px">-->
+        </div>
+
+        <div class="" style="display: table-cell;vertical-align: middle;height: 50px;padding-left: 10px">
+            <img src="${contextpath}/images/ck-logo.jpg" style="width: 40px;height: 40px">
+        </div>
+        <p style="display: table-cell;vertical-align: middle;font-size: 14px;padding-left: 15px;color: #ffffff">新营销 共赢链</p>
+        <span style="display: table-cell;background-color: #5592FC;position: absolute; right: 10px;top: 20%;line-height: 27px; width: 67px; -webkit-border-radius: 3px; border-radius: 3px; font-size: 12px; text-align: center; color: #ffffff" onclick="openApp(this)">立即下载</span>
+    </div>
+</div>
+</#if>
+<!--mask s-->
+<div id="mask"></div>
+<!--mask e-->
+<div class="msgShow"></div>
+
+<script type="text/javascript" src="${contextpath}/js/newAlert.js" ></script>
+<script type="text/javascript">
+    var contextpath = '${contextpath}';
+</script>
+<script>
+
+    var timer;
+    var showmsg=function(msg){
+        $('.msgShow').html(msg).show();
+        $('.msgShow').addClass('animated tada');
+        timer=setTimeout(function(){
+            $('.msgShow').hide();
+            clearTimeout(timer);
+        },2000);
+    }
+function commitLeaveWords() {
+    var articleId = $("#articleId").val();
+    var userName = $("#userName").val();
+    var userPhone = $("#userPhone").val();
+    var leaveWords = $("#leaveWords").val();
+    var userId = $("#userId").val();
+
+    if(userName == ''||userName.length<2||leaveWords.length>20) {
+        showmsg("请输入姓名(2-20字)");
+        return;
+    }
+    if(userPhone == ''||!/^13[0-9]{9}$|14[0-9]{9}|15[0-9]{9}$|18[0-9]{9}$|17[0-9]{9}$/.test(userPhone)) {
+        showmsg("请输入联系方式");
+        return;
+    }
+    console.log(leaveWords.length<2&&leaveWords.length>100);
+    if(leaveWords == ''||leaveWords.length<2||leaveWords.length>100) {
+        showmsg("请输入留言内容(2-100字)");
+        return;
+    }
+
+    $.ajax({
+        type: "POST",
+        url:contextpath + '/article/tk/saveLeaveWord.action',
+        data: {articleId: articleId,userName :userName,userPhone:userPhone,leaveWords:leaveWords},
+        dataType: "json",
+        cache: false,
+        success: function (data) {
+            if (data.code == "ok") {
+                showmsg("感谢您的留言，我们会在第一时间处理您的留言！");
+                $("#userName").val("");
+                $("#userPhone").val("");
+                $("#leaveWords").val("");
+            }
+        }
+    });
+}
+
+
+function like(event) {
+    var likeNum = parseInt($("#click_like").text());
+    $("#click_like").text(likeNum + 1);
+
+    var articleId = $("#articleId").val();
+    var userId = $("#userId").val();
+    var ev = event.target;
+    $(ev).attr('src','${contextpath}/images/qiang_act.png');
+    $.ajax({
+        type: "POST",
+        url:contextpath + '/article/tk/clickLikeOrDisLike.action',
+        data: {articleId: articleId,action :11,userId:userId},
+        dataType: "json",
+        cache: false,
+        success: function (data) {
+            if (data.code == "ok") {
+
+            }
+        }
+    });
+}
+function dislike(event) {
+
+    var disLikeNum = parseInt($("#click_disLike").text());
+    $("#click_disLike").text(disLikeNum + 1);
+
+    var articleId = $("#articleId").val();
+    var userId = $("#userId").val();
+    var ev = event.target;
+    $(ev).attr('src','${contextpath}/images/ruo_act.png');
+    $.ajax({
+        type: "POST",
+        url:contextpath + '/article/tk/clickLikeOrDisLike.action',
+        data: {articleId: articleId,action :12,userId:userId},
+        dataType: "json",
+        cache: false,
+        success: function (data) {
+            if (data.code == "ok") {
+            }
+        }
+    });
+}
+    $(function(){
+        $('.tex_center a').attr('href','javascript:;')
+    })
+</script>
+</body>
+</html>

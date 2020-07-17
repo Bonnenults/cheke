@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.autozi.cheke.settle.mapper.ChanpayOrderBackMapper">
+<cache eviction="LRU" type="org.mybatis.caches.memcached.MemcachedCache"/>
+<resultMap id="ChanpayOrderBackMap" type="ChanpayOrderBack">
+	<result column="ID" jdbcType="DECIMAL" property="id"/>
+	<result column="VERSION" jdbcType="DECIMAL" property="version"/>
+	<result column="CHANPAY_ORDER_ID" jdbcType="DECIMAL" property="chanpayOrderId"/>
+	<result column="INNER_TRADE_NO" jdbcType="VARCHAR" property="innerTradeNo"/>
+	<result column="TRADE_STATUS" jdbcType="VARCHAR" property="tradeStatus"/>
+	<result column="TRADE_AMOUNT" jdbcType="VARCHAR" property="tradeAmount"/>
+	<result column="GMT_CREATE" jdbcType="VARCHAR" property="gmtCreate"/>
+	<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+</resultMap>
+<sql id="Base_Column_List">
+	ID,VERSION,CHANPAY_ORDER_ID,INNER_TRADE_NO,TRADE_STATUS,TRADE_AMOUNT,GMT_CREATE,CREATE_TIME
+</sql>
+<sql id="pcob_Base_Column_List">
+	pcob.ID,pcob.VERSION,pcob.CHANPAY_ORDER_ID,pcob.INNER_TRADE_NO,pcob.TRADE_STATUS,pcob.TRADE_AMOUNT,pcob.GMT_CREATE,pcob.CREATE_TIME
+</sql>
+<select id="get" parameterType="long" resultMap="ChanpayOrderBackMap">
+	select
+		<include refid="Base_Column_List"/>
+	from pay_chanpay_order_back pcob
+	where ID = #{id,jdbcType=DECIMAL}
+</select>
+<delete id="delete" parameterType="long">
+	delete
+	from pay_chanpay_order_back
+	where ID = #{id,jdbcType=DECIMAL}
+</delete>
+<insert id="insert" parameterType="ChanpayOrderBack">
+	insert into pay_chanpay_order_back(
+		<include refid="Base_Column_List"/>
+	) values (
+	#{id,jdbcType=DECIMAL},
+	#{version,jdbcType=DECIMAL},
+	#{chanpayOrderId,jdbcType=DECIMAL},
+	#{innerTradeNo,jdbcType=VARCHAR},
+	#{tradeStatus,jdbcType=VARCHAR},
+	#{tradeAmount,jdbcType=VARCHAR},
+	#{gmtCreate,jdbcType=VARCHAR},
+	#{createTime,jdbcType=TIMESTAMP}
+	)
+</insert>
+<update id="update" parameterType="ChanpayOrderBack">
+	update pay_chanpay_order_back pcob
+	<set>
+		VERSION = VERSION + 1
+		<if test="chanpayOrderId != null">
+		,CHANPAY_ORDER_ID = #{chanpayOrderId,jdbcType=DECIMAL}
+		</if>
+		<if test="innerTradeNo != null">
+		,INNER_TRADE_NO = #{innerTradeNo,jdbcType=VARCHAR}
+		</if>
+		<if test="tradeStatus != null">
+		,TRADE_STATUS = #{tradeStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="tradeAmount != null">
+		,TRADE_AMOUNT = #{tradeAmount,jdbcType=VARCHAR}
+		</if>
+		<if test="gmtCreate != null">
+		,GMT_CREATE = #{gmtCreate,jdbcType=VARCHAR}
+		</if>
+		<if test="createTime != null">
+		,CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+		</if>
+	</set>
+	where ID = #{id,jdbcType=DECIMAL}
+</update>
+<select id="findListForExample" parameterType="ChanpayOrderBack" resultMap="ChanpayOrderBackMap">
+	select
+	<include refid="pcob_Base_Column_List"/>
+	from pay_chanpay_order_back pcob
+	<include refid="common_query_condition"/>
+</select>
+<select id="findListForMap" parameterType="map" resultMap="ChanpayOrderBackMap">
+	select
+	<include refid="pcob_Base_Column_List"/>
+	from pay_chanpay_order_back pcob
+	<include refid="common_query_condition"/>
+</select>
+<sql id="common_query_condition">
+	<where>
+		<if test="id != null">
+			pcob.id = #{id,jdbcType=DECIMAL}
+		</if>
+		<if test="chanpayOrderId != null">
+			pcob.chanpay_order_id = #{chanpayOrderId,jdbcType=DECIMAL}
+		</if>
+	</where>
+</sql>
+</mapper>

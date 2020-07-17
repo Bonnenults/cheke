@@ -1,0 +1,115 @@
+<div class="qy_center_table" id="data_table_list">
+    <table>
+        <tbody>
+        <tr>
+
+            <th width="6%">
+                <label class="lf_label_checkBox" for="06">
+                    <input class="clarity" id="06" type="checkbox"/>
+                    <div></div>
+                </label>
+            </th>
+            <th width="4%">#</th>
+
+            <th width="14%">标题</th>
+            <#if status == '0'>
+                <th width="14%">简介</th>
+            </#if>
+            <#if status == '1' || status == '-100'>
+                <th width="14%">上线时间</th>
+            </#if>
+
+            <#if status == '2'>
+                <th width="14%">上线时间</th>
+                <th width="14%">下线时间</th>
+            </#if>
+
+            <#if status != '0' && status != '1' && status != '2'>
+                <th width="8%">状态</th>
+                <#if status != '-100'>
+                    <th width="8%">原因</th>
+                </#if>
+            </#if>
+
+            <#if status == '1' || status == '2' || status == '-100'>
+                <th width="10%">学习中</th>
+                <th width="10%">结业</th>
+            </#if>
+
+            <#if status != '-1'>
+                <#if status == '-100'>
+                    <th width="14%" class="no_border">操作/原因</th>
+                    <#else >
+                        <th width="14%" class="no_border">操作</th>
+                </#if>
+            </#if>
+
+        </tr>
+        <#if (page??)&&(page.result??)&&(page.result?size>0)>
+            <#list page.result as view>
+                <tr>
+
+                    <td>
+                        <label class="lf_label_checkBox">
+                            <input class="clarity individual" type="checkbox" value="${view.id}" name="article_ids">
+                            <div></div>
+                        </label>
+                    </td>
+                    <td>${page.firstElementIndex + view_index }</td>
+
+                    <td><#if view.courseName??>${view.courseName?html}</#if></td>
+
+                    <#if view.status == 0>
+                        <td><#if view.intro??>${view.intro}</#if></td>
+                    </#if>
+
+                    <#if view.status == 1 || view.status == 2>
+                        <td><#if view.publishTime??>${view.publishTime?string("yyyy-MM-dd HH:mm")}</#if></td>
+                    </#if>
+
+                    <#if view.status == 2>
+                        <td><#if view.offlineTime??>${view.offlineTime?string("yyyy-MM-dd HH:mm")}</#if></td>
+                    </#if>
+
+
+                    <#if (view.status != 1 && view.status != 2 && view.status != 0) || status == '-100'>
+                        <td><#if view.statusName??>${view.statusName?html}</#if></td>
+                        <#if status != '-100'>
+                            <td><#if view.refuseReason??>${view.refuseReason?html}</#if></td>
+                        </#if>
+                    </#if>
+
+                    <#if view.status == 1 || view.status == 2>
+                        <td><#if view.stuNum??>${view.stuNum?html}</#if></td>
+                        <td><#if view.completedNum??>${view.completedNum?html}</#if></td>
+                    </#if>
+
+                    <#if status != '-1'>
+                        <td class="no_border">
+                            <#if view.status == 0>
+                                <a class="qy_alink" href="javascript:;" onclick="CourseAdmin.publish(${view.id})">上线</a>
+                                <a class="qy_alink" href="${contextpath}/course/admin/create/createCourse.action?id=${view.id}">修改</a>
+                                <a class="qy_alink" href="${contextpath}/course/admin/update/manageCourse.action?id=${view.id}">管理章节</a>
+                            </#if>
+                            <#if view.status == 1>
+                                <a class="qy_alink" href="javascript:;" onclick="CourseAdmin.offline(${view.id})">下线</a>
+                                <a class="qy_alink" href="${contextpath}/course/admin/update/manageCourse.action?id=${view.id}">管理章节</a>
+                            </#if>
+                            <#if view.status == 2>
+                                <a class="qy_alink" href="javascript:;" onclick="CourseAdmin.online(${view.id})">重新上线</a>
+                            </#if>
+                        </td>
+                    </#if>
+                </tr>
+
+            </#list>
+            <#else>
+                <tr>
+                    <td colspan='10'>没有符合条件的记录</td>
+                </tr>
+        </#if>
+        </tbody>
+    </table>
+</div>
+$JXC
+<#include "../../common/paging_common.html">

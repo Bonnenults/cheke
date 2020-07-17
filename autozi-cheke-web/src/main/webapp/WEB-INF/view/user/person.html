@@ -1,0 +1,145 @@
+<script type="text/javascript" src="${contextpath}/js/framework/upload/ajaxfileupload.js" ></script>
+<script type="text/javascript" src="${contextpath}/js/party/party.js"></script>
+<script>
+    $(function () {
+        Party.initPersonValidator();
+        Party.initOneLevelArea();
+    });
+</script>
+<div class="lf_carRight_center">
+<#include "common-userinfo.html">
+    <div class="nb_userInfo_main" id="nb_userInfo_main_view">
+        <p class="ng_comments">
+            <a class="nb_edit" href="javascript:Party.editParty();"><span class="nb_editIcon"></span>编辑</a>
+        </p>
+        <h4 class="nb_userInfo_main_title"><span></span>个人信息</h4>
+        <!--所在地-->
+    <#include "common-area-view.html">
+
+        <div class="nb_userInfo_main_form">
+            <label for="">公司全称：</label>
+            <p><#if (party??&&party.companyName??)>${party.companyName}</#if></p>
+        </div>
+        <div class="nb_userInfo_main_form">
+            <label for="">公司类别：</label>
+            <p><#if (companyTypeName??)>${companyTypeName}</#if></p>
+        </div>
+        <div class="nb_userInfo_main_form">
+            <label for="">职位类别：</label>
+            <p><#if (mediaTypeName??)>${mediaTypeName}</#if></p>
+        </div>
+
+    <#include "common-person-view.html">
+        <h4 class="nb_userInfo_main_title"><span></span>发票信息</h4>
+    <#include "common-invoice-view.html">
+    </div>
+
+    <div class="nb_userInfo_main" id="nb_userInfo_main_edit" style="display: none">
+        <form id="editForm" action="" method="post">
+            <input type="hidden" id="partyClass" name="partyClass" value="4">
+            <input type="hidden" id="userId" name="userId" value="<#if (user.id??)>${user.id}</#if>">
+            <input type="hidden" id="partyId" name="id" value="<#if (party??&&party.id??)>${party.id}</#if>">
+            <p class="ng_comments">
+                <a class="nb_edit" href="javascript:Party.cancelEdit();"><span class="nb_editIcon"></span>撤消</a>
+            </p>
+            <p class="ng_comments">注：＊为必填</p>
+            <h4 class="nb_userInfo_main_title"><span></span>个人信息</h4>
+            <!--所在地-->
+            <div class="permanently clear">
+                <label style="width: 207px; margin-right: 5px;" class="permanentlyOne">所在地：</label>
+                <div style="width: 147px;" class="project_category">
+                    <input style="width: 147px;" readonly="readonly" type="text" placeholder="请选择" value="<#if (areaNameOne??)>${areaNameOne}</#if>" id="areaOne" name="areaOne" />
+                    <div style="width: 147px;" class="border_lists" id="areaOneOption">
+
+                    </div>
+                </div>
+                <div style="width: 147px;" class="project_category">
+                    <input style="width: 147px;" readonly="readonly" type="text" placeholder="请选择" value="<#if (areaNameTwo??)>${areaNameTwo}</#if>" id="areaTwo" name="areaTwo" />
+                    <div style="width: 147px;" class="border_lists" id="areaTwoOption">
+
+                    </div>
+                </div>
+                <div  style="width: 147px;" class="project_category">
+                    <input type="hidden" value="<#if (party??&&party.areaId??)>${party.areaId}</#if>" id="areaId" name="areaId" />
+                    <input style="width: 147px;" readonly="readonly" type="text" placeholder="请选择" value="<#if (areaName??)>${areaName}</#if>" id="areaThree" name="areaThree" />
+                    <div style="width: 147px;" class="border_lists" id="areaIdOption">
+
+                    </div>
+                </div>
+            </div>
+            <div class="permanently clear">
+                <div class="nb_userInfo_main_form" style="margin-bottom:0;">
+                    <label for="" style="margin-right: 5px;width: 166px; line-height:28px; ">公司全称：</label>
+                    <input type="text" name="companyName" id="companyName"
+                           value="<#if (party??&&party.companyName??)>${party.companyName}</#if>" placeholder="请输入公司全称">
+                </div>
+            </div>
+
+            <div class="permanently clear">
+                <label style="width: 207px; margin-right: 5px;" class="permanentlyOne">公司类别：</label>
+            <#include "common-company-type.html">
+            </div>
+            <div class="permanently clear">
+                <label style="width: 207px; margin-right: 5px;  margin-bottom: 10px;" class="permanentlyOne">职位类别：</label>
+                <div class="project_category">
+                    <input type="hidden" id="mediaType" value="" name="mediaType" id="mediaType"/>
+                    <input type="text" placeholder="请选择" value="<#if (mediaTypeName??)>${mediaTypeName}</#if>"
+                           id="mediaTypeName"/>
+                    <div class="border_lists">
+                    <#if (mediaType??)>
+                        <#list mediaType?keys as key>
+                            <a href="javascript:Party.selectMediaType(${key});">${mediaType[key]}</a>
+                        </#list>
+                    </#if>
+                    </div>
+                </div>
+            </div>
+            <div class="nb_userInfo_main_form">
+                <label for="" style="margin-right: 5px;width: 166px;  line-height:28px;"><span>＊</span>真实姓名：</label>
+                <input class="nb_smallInput" value="<#if (party.connectorName??)>${party.connectorName}</#if>" id="connectorName"
+                       name="connectorName" type="text" placeholder="请输入真实姓名">
+            </div>
+            <div class="nb_userInfo_main_form">
+                <label for="" style="margin-right: 5px;width: 166px;  line-height:28px;"><span>＊</span>身份证号：</label>
+                <input class="nb_smallInput" value="<#if (party.idNumber??)>${party.idNumber}</#if>" name="idNumber" id="idNumber"
+                       type="text" placeholder="请输入身份证号码">
+            </div>
+        <#include "common-identify.html">
+
+            <div class="nb_userInfo_main_form nb_blueBtn">
+                <label for="" style="margin-right: 5px;width: 166px;  line-height:28px;"><span>＊</span>手机号码：</label>
+                <input class="nb_smallInput" value="<#if (party.mobile??)>${party.mobile}</#if>" id="mobile"
+                       name="mobile" type="text" placeholder="请输入手机号码">
+                <input id="get_code" style="width: 100px; padding: 0; text-align: center;height:28px;border-radius:15px;" type="button" onclick="Party.getPhoneValidateCode(this)" value="获取验证码">
+                <p><input class="nb_smallInput" name="validateCode" style="margin-left: 94px !important;" id="validateCode" type="text" placeholder="请输入验证码"></p>
+            </div>
+            <h4 class="nb_userInfo_main_title"><span></span>发票信息</h4>
+            <div class="nb_userInfo_main_form nb_userInfo_none">
+                <label class="nb_user_style" for="">发票抬头：</label>
+                <input type="text" value="<#if (party.invoiceTitle??)>${party.invoiceTitle}</#if>" name="invoiceTitle" id="invoiceTitle"
+                       placeholder="公司名称自动填写保持一致">
+            </div>
+            <div class="nb_userInfo_main_form nb_userInfo_none">
+                <label class="nb_user_style" for="">纳税人识别号：</label>
+                <input type="text" value="<#if (party.invoiceNumber??)>${party.invoiceNumber}</#if>"
+                       name="invoiceNumber" id="invoiceNumber" placeholder="请输入纳税人识别号">
+            </div>
+            <div class="nb_userInfo_main_form nb_userInfo_none">
+                <label class="nb_user_style" for="">地址、电话：</label>
+                <input type="text" value="<#if (party.invoiceAddress??)>${party.invoiceAddress}</#if>"
+                       name="invoiceAddress" id="invoiceAddress" placeholder="填写注册地址、注册电话">
+            </div>
+            <div class="nb_userInfo_main_form nb_userInfo_none">
+                <label class="nb_user_style" for="">开户行及账号：</label>
+                <input type="text" value="<#if (party.invoiceBank??)>${party.invoiceBank}</#if>" id="invoiceBank" name="invoiceBank"
+                       placeholder="填写开户银行及银行账号">
+            </div>
+        </form>
+
+    </div>
+    <div class="nb_submit" id="submitButtonDiv" style="display: none;">
+        <a href="javascript:void(0)">
+            <button class="nb_submit_btn" onclick="Party.editPerson()">提交审核</button>
+        </a>
+    </div>
+</div>

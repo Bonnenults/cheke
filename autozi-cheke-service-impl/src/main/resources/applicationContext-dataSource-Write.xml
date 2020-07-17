@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:task="http://www.springframework.org/schema/task"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+	                    http://www.springframework.org/schema/tx 
+	                    http://www.springframework.org/schema/tx/spring-tx.xsd 
+	                    http://www.springframework.org/schema/jee 
+	                    http://www.springframework.org/schema/jee/spring-jee-3.0.xsd 
+	                    http://www.springframework.org/schema/context 
+	                    http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	                    http://www.springframework.org/schema/aop
+	                    http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+	                    http://www.springframework.org/schema/task 
+	                    http://www.springframework.org/schema/task/spring-task-3.0.xsd"
+	default-lazy-init="false">
+
+	<description>读写-数据源</description>
+
+	<bean id="writeDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<!-- Connection Info -->
+		<property name="driverClassName" value="${jdbc.driver}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+
+		<!-- Connection Pooling Info -->
+		<property name="initialSize" value="${dbcp.initialSize}" />
+		<property name="maxActive" value="${dbcp.maxActive}" />
+		<property name="maxIdle" value="${dbcp.maxIdle}" />
+		<property name="defaultAutoCommit" value="false" />
+		<property name="testOnBorrow">
+			<value>true</value>
+		</property>
+		<property name="testOnReturn">
+			<value>true</value>
+		</property>
+		<property name="testWhileIdle">
+			<value>true</value>
+		</property>
+		<property name="minEvictableIdleTimeMillis">
+			<value>180000</value>
+		</property>
+		<property name="timeBetweenEvictionRunsMillis">
+			<value>360000</value>
+		</property>
+		<property name="validationQuery">
+			<value>SELECT 1</value>
+		</property>
+	</bean>
+	
+	<context:annotation-config />
+	
+    <bean id="writeSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="writeDataSource" />
+        <property name="typeAliasesPackage" 
+			        value="com.autozi.cheke.basic.entity,
+			        		com.autozi.cheke.user.entity,
+			        	   com.autozi.cheke.party.entity,
+			        	   com.autozi.cheke.article.entity,
+			        	   com.autozi.cheke.course.entity,
+			        	   com.autozi.cheke.settle.entity,
+			        	   com.autozi.cheke.mobile.entity
+			        	   "/>
+        <property name="mapperLocations" value="classpath:mybatis/**/*Mapper.xml" />
+    </bean>
+	    
+     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+         <property name="dataSource"><ref local="writeDataSource"/></property>
+     </bean>
+  
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+       <tx:attributes>
+             <tx:method name="get*" propagation="SUPPORTS" read-only="true" />
+             <tx:method name="find*" propagation="SUPPORTS" read-only="true" />
+             <tx:method name="search*" propagation="SUPPORTS" read-only="true" />
+             <tx:method name="list*" propagation="SUPPORTS" read-only="true" />
+             <tx:method name="is*" propagation="SUPPORTS" read-only="true" />
+             <tx:method name="has*" propagation="SUPPORTS" read-only="true" />
+             <tx:method name="*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+		</tx:attributes>
+    </tx:advice>
+
+    <aop:config proxy-target-class="true">
+        <aop:pointcut id="interceptorPointCuts" expression="execution(* com.autozi.cheke.service.*.*Service.*(..))" />
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="interceptorPointCuts" />
+    </aop:config>
+</beans>

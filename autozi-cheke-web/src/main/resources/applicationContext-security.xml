@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:s="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.2.xsd"
+	default-lazy-init="true">
+
+	<description>基础数据平台-管理平台-权限控制</description>
+
+<!-- 	<s:debug/> -->
+	<!--<s:http pattern="/cheke/**" security="none"/>-->
+
+	<!-- http安全配置 -->
+	<s:http auto-config="true" use-expressions="true">
+		<s:intercept-url pattern="/security/captcha.png" access="permitAll"/>
+		<s:intercept-url pattern="/login.action" access="permitAll"/>
+		<s:intercept-url pattern="/cheke/register/*.action" access="permitAll"/>
+		<s:intercept-url pattern="/chanpay/*.action" access="permitAll"/>
+		<!--<s:intercept-url pattern="/*" access="isAuthenticated()"/>-->
+		<s:intercept-url pattern="/**/*.action" access="isAuthenticated()"/>
+		<!--会话管理配置-->
+        <s:session-management invalid-session-url="/login.action"/>
+		<!-- 登录-->
+		<s:form-login login-page="/login.action" login-processing-url="/login" authentication-failure-url="/login.action" authentication-success-handler-ref="loginSuccessHandler" />
+		<s:logout invalidate-session="false" logout-success-url="/login.action" />
+		<s:session-management invalid-session-url="/login.action"/>
+		<!-- 注销过滤器 -->
+        <s:custom-filter before="LOGOUT_FILTER" ref="logoutFilter"/>
+		<s:csrf disabled="true"/>
+		<s:headers>
+			<s:frame-options policy="SAMEORIGIN"></s:frame-options>
+		</s:headers>
+	</s:http>
+    <!-- 认证配置, 使用userDetailsService提供的用户信息 -->
+    <s:authentication-manager alias="authenticationManager" >
+        <s:authentication-provider user-service-ref="userDetailsService">
+            <s:password-encoder hash="md5">
+                <!-- 将每个用户的username作为盐值  -->
+                <s:salt-source user-property="username"/>
+            </s:password-encoder>
+        </s:authentication-provider>
+    </s:authentication-manager>
+	<!-- 项目实现的用户查询服务 -->
+	<bean id="userDetailsService" class="com.autozi.cheke.web.system.UserDetailsServiceImpl" />
+
+	<!-- 登录成功处理 -->
+	<bean id="loginSuccessHandler" class="com.autozi.cheke.web.system.LoginSuccessHandlerImpl" />
+
+	<!-- 注销过滤器，完成前台用户注销时的定向功能 -->
+	<bean id="logoutFilter"
+		class="org.springframework.security.web.authentication.logout.LogoutFilter">
+		<constructor-arg value="/login.action" />
+		<constructor-arg>
+			<list>
+				<bean class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler" />
+				<bean class="com.autozi.cheke.web.system.LogoutHandlerImpl" />
+			</list>
+		</constructor-arg>
+		<property name="filterProcessesUrl" value="/j_spring_security_logout" />
+	</bean>
+
+</beans>

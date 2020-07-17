@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:context="http://www.springframework.org/schema/context"
+             xmlns:aop="http://www.springframework.org/schema/aop"
+             xmlns:tx="http://www.springframework.org/schema/tx" xmlns:util="http://www.springframework.org/schema/util"
+             xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.2.xsd">
+
+    <!-- 文章统计消息推送定时器  -->
+    <beans:bean id="articleTrigger" class="com.autozi.cheke.trigger.article.ArticleCountInfoTrigger" />
+
+
+    <beans:bean id="articleCountInfoTrigger" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <beans:property name="targetObject" ref="articleTrigger" />
+        <beans:property name="targetMethod" value="syncCountInfoData" />
+        <beans:property name="concurrent" value="false" />
+    </beans:bean>
+    <beans:bean id="articleCountInfoTriggerConfig" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <beans:property name="jobDetail" ref="articleCountInfoTrigger"  />
+         <!--<beans:property name="cronExpression" value="0 0 09 * * ?" />-->
+        <beans:property name="cronExpression" value=" 0 0/1 * * * ?" /> <!-- 一分钟执行一次 -->
+        <!--<beans:property name="cronExpression" value="0/15 * * * * ?" />-->
+    </beans:bean>
+
+
+    <beans:bean id="articleOrderTrigger" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <beans:property name="targetObject" ref="articleTrigger" />
+        <beans:property name="targetMethod" value="syncOrderData" />
+        <beans:property name="concurrent" value="false" />
+    </beans:bean>
+    <beans:bean id="articleOrderTriggerConfig" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <beans:property name="jobDetail" ref="articleOrderTrigger"  />
+        <!--<beans:property name="cronExpression" value="0 0 09 * * ?" />-->
+        <beans:property name="cronExpression" value=" 0 0/1 * * * ?" /> <!-- 一分钟执行一次 -->
+        <!--<beans:property name="cronExpression" value="0/15 * * * * ?" />-->
+    </beans:bean>
+
+
+    <beans:bean id="articleShareTrigger" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <beans:property name="targetObject" ref="articleTrigger" />
+        <beans:property name="targetMethod" value="syncShareData" />
+        <beans:property name="concurrent" value="false" />
+    </beans:bean>
+    <beans:bean id="articleShareTriggerConfig" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <beans:property name="jobDetail" ref="articleShareTrigger"  />
+        <!--<beans:property name="cronExpression" value="0 0 09 * * ?" />-->
+        <beans:property name="cronExpression" value=" 0 0/1 * * * ?" /> <!-- 一分钟执行一次 -->
+        <!--<beans:property name="cronExpression" value="0/15 * * * * ?" />-->
+    </beans:bean>
+
+
+    <beans:bean id="articleAutoOfflineTrigger" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <beans:property name="targetObject" ref="articleTrigger" />
+        <beans:property name="targetMethod" value="autoOfflineArticle" />
+        <beans:property name="concurrent" value="false" />
+    </beans:bean>
+    <beans:bean id="articleAutoOfflineTriggerConfig" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <beans:property name="jobDetail" ref="articleAutoOfflineTrigger"  />
+        <!--<beans:property name="cronExpression" value="0 0 09 * * ?" />-->
+        <beans:property name="cronExpression" value=" 0 0/1 * * * ?" /> <!-- 一分钟执行一次 -->
+        <!--<beans:property name="cronExpression" value="0/15 * * * * ?" />-->
+    </beans:bean>
+
+
+    <!-- 账户消息推送定时器  -->
+    <beans:bean id="accountTrigger" class="com.autozi.cheke.trigger.account.AccountTrigger" />
+
+
+    <beans:bean id="accountOrderTrigger" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <beans:property name="targetObject" ref="accountTrigger" />
+        <beans:property name="targetMethod" value="syncAccountOrder" />
+        <beans:property name="concurrent" value="false" />
+    </beans:bean>
+    <beans:bean id="accountOrderTriggerConfig" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <beans:property name="jobDetail" ref="accountOrderTrigger"  />
+        <beans:property name="cronExpression" value=" 0 0/10 * * * ?" /> <!-- 10分钟执行一次 -->
+    </beans:bean>
+
+    <beans:bean id="courseTrigger" class="com.autozi.cheke.trigger.course.CourseCountInfoTrigger" />
+
+
+    <beans:bean id="courseCountInfoTrigger" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <beans:property name="targetObject" ref="courseTrigger" />
+        <beans:property name="targetMethod" value="syncCourseCountInfoData" />
+        <beans:property name="concurrent" value="false" />
+    </beans:bean>
+    <beans:bean id="courseCountTriggerConfig" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <beans:property name="jobDetail" ref="courseCountInfoTrigger"  />
+        <beans:property name="cronExpression" value=" 0 0/1 * * * ?" /> <!-- 1分钟执行一次 -->
+    </beans:bean>
+
+    <beans:bean id="courseShareTrigger" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <beans:property name="targetObject" ref="courseTrigger" />
+        <beans:property name="targetMethod" value="syncCourseShareData" />
+        <beans:property name="concurrent" value="false" />
+    </beans:bean>
+    <beans:bean id="courseShareTriggerConfig" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <beans:property name="jobDetail" ref="courseShareTrigger"  />
+        <!--<beans:property name="cronExpression" value="0 0 09 * * ?" />-->
+        <beans:property name="cronExpression" value=" 0 0/1 * * * ?" /> <!-- 一分钟执行一次 -->
+        <!--<beans:property name="cronExpression" value="0/15 * * * * ?" />-->
+    </beans:bean>
+
+
+    <beans:bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <beans:property name="triggers">
+            <beans:list>
+                <beans:ref bean="articleCountInfoTriggerConfig"></beans:ref>
+                <beans:ref bean="articleOrderTriggerConfig"></beans:ref>
+                <beans:ref bean="articleShareTriggerConfig"></beans:ref>
+                <beans:ref bean="accountOrderTriggerConfig"></beans:ref>
+                <beans:ref bean="articleAutoOfflineTriggerConfig"></beans:ref>
+                <beans:ref bean="courseCountTriggerConfig"></beans:ref>
+                <beans:ref bean="courseShareTriggerConfig"></beans:ref>
+            </beans:list>
+        </beans:property>
+    </beans:bean>
+
+</beans:beans>

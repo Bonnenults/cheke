@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.autozi.cheke.basic.mapper.AreaMapper">
+<cache eviction="LRU" type="org.mybatis.caches.memcached.MemcachedCache"/>
+<resultMap id="AreaMap" type="Area">
+	<result column="ID" jdbcType="DECIMAL" property="id"/>
+	<result column="VERSION" jdbcType="DECIMAL" property="version"/>
+	<result column="NAME" jdbcType="VARCHAR" property="name"/>
+	<result column="AREA_CODE" jdbcType="VARCHAR" property="areaCode"/>
+	<result column="STATUS" jdbcType="DECIMAL" property="status"/>
+	<result column="PARENT_ID" jdbcType="DECIMAL" property="parentId"/>
+	<result column="AREA_LEVEL" jdbcType="DECIMAL" property="areaLevel"/>
+	<result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+</resultMap>
+<sql id="Base_Column_List">
+	ID,VERSION,NAME,AREA_CODE,STATUS,PARENT_ID,AREA_LEVEL,UPDATE_TIME
+</sql>
+<sql id="ba_Base_Column_List">
+	ba.ID,ba.VERSION,ba.NAME,ba.AREA_CODE,ba.STATUS,ba.PARENT_ID,ba.AREA_LEVEL,ba.UPDATE_TIME
+</sql>
+<select id="get" parameterType="long" resultMap="AreaMap">
+	select
+		<include refid="Base_Column_List"/>
+	from bas_area ba
+	where ID = #{id,jdbcType=DECIMAL}
+</select>
+<delete id="delete" parameterType="long">
+	delete
+	from bas_area
+	where ID = #{id,jdbcType=DECIMAL}
+</delete>
+<insert id="insert" parameterType="Area">
+	insert into bas_area(
+		<include refid="Base_Column_List"/>
+	) values (
+	#{id,jdbcType=DECIMAL},
+	#{version,jdbcType=DECIMAL},
+	#{name,jdbcType=VARCHAR},
+	#{areaCode,jdbcType=VARCHAR},
+	#{status,jdbcType=DECIMAL},
+	#{parentId,jdbcType=DECIMAL},
+	#{areaLevel,jdbcType=DECIMAL},
+	#{updateTime,jdbcType=TIMESTAMP}
+	)
+</insert>
+<update id="update" parameterType="Area">
+	update bas_area ba
+	<set>
+		VERSION = VERSION + 1
+		<if test="name != null">
+		,NAME = #{name,jdbcType=VARCHAR}
+		</if>
+		<if test="areaCode != null">
+		,AREA_CODE = #{areaCode,jdbcType=VARCHAR}
+		</if>
+		<if test="status != null">
+		,STATUS = #{status,jdbcType=DECIMAL}
+		</if>
+		<if test="parentId != null">
+		,PARENT_ID = #{parentId,jdbcType=DECIMAL}
+		</if>
+		<if test="areaLevel != null">
+		,AREA_LEVEL = #{areaLevel,jdbcType=DECIMAL}
+		</if>
+		<if test="updateTime != null">
+		,UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+		</if>
+	</set>
+	where ID = #{id,jdbcType=DECIMAL} and version = #{version,jdbcType=DECIMAL}
+</update>
+<select id="findListForExample" parameterType="Area" resultMap="AreaMap">
+	select
+	<include refid="ba_Base_Column_List"/>
+	from bas_area ba
+	<include refid="common_query_condition"/>
+</select>
+<select id="findListForMap" parameterType="map" resultMap="AreaMap">
+	select
+	<include refid="ba_Base_Column_List"/>
+	from bas_area ba
+	<include refid="common_query_condition"/>
+</select>
+<sql id="common_query_condition">
+	<where>
+		<if test="id != null">
+			ba.id = #{id,jdbcType=DECIMAL}
+		</if>
+		<if test="name != null">
+			and ba.name like concat('%',#{name,jdbcType=VARCHAR},'%')
+		</if>
+		<if test="areaCode != null">
+			and ba.area_code = #{areaCode,jdbcType=VARCHAR}
+		</if>
+		<if test="parentId != null">
+			and ba.parent_id = #{parentId,jdbcType=DECIMAL}
+		</if>
+	</where>
+</sql>
+	<select id="listAll" parameterType="Area" resultMap="AreaMap">
+		select id,name,parent_id,area_level from bas_area ba order by id asc
+	</select>
+</mapper>

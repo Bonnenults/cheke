@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.autozi.cheke.user.mapper.ChekeCollectionMapper">
+<cache eviction="LRU" type="org.mybatis.caches.memcached.MemcachedCache"/>
+<resultMap id="ChekeCollectionMap" type="ChekeCollection">
+	<result column="ID" jdbcType="DECIMAL" property="id"/>
+	<result column="VERSION" jdbcType="DECIMAL" property="version"/>
+	<result column="COLLECTION_ID" jdbcType="DECIMAL" property="collectionId"/>
+	<result column="USER_ID" jdbcType="DECIMAL" property="userId"/>
+	<result column="IS_COURSE" jdbcType="DECIMAL" property="isCourse"/>
+	<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+</resultMap>
+<sql id="Base_Column_List">
+	ID,VERSION,COLLECTION_ID,USER_ID,IS_COURSE,CREATE_TIME,UPDATE_TIME
+</sql>
+<sql id="cc_Base_Column_List">
+	cc.ID,cc.VERSION,cc.COLLECTION_ID,cc.USER_ID,cc.IS_COURSE,cc.CREATE_TIME,cc.UPDATE_TIME
+</sql>
+<select id="get" parameterType="long" resultMap="ChekeCollectionMap">
+	select
+		<include refid="Base_Column_List"/>
+	from cheke_collection cc
+	where ID = #{id,jdbcType=DECIMAL}
+</select>
+<delete id="delete" parameterType="long">
+	delete
+	from cheke_collection
+	where ID = #{id,jdbcType=DECIMAL}
+</delete>
+<delete id="cancelCollect" parameterType="ChekeCollection">
+	delete
+	from cheke_collection
+	where user_id = #{userId,jdbcType=DECIMAL} and collection_id = #{collectionId,jdbcType=DECIMAL}
+</delete>
+<insert id="insert" parameterType="ChekeCollection">
+	insert into cheke_collection(
+		<include refid="Base_Column_List"/>
+	) values (
+	#{id,jdbcType=DECIMAL},
+	#{version,jdbcType=DECIMAL},
+	#{collectionId,jdbcType=DECIMAL},
+    #{userId,jdbcType=DECIMAL},
+	#{isCourse,jdbcType=DECIMAL},
+	#{createTime,jdbcType=TIMESTAMP},
+	#{updateTime,jdbcType=TIMESTAMP}
+	)
+</insert>
+<update id="update" parameterType="ChekeCollection">
+	update cheke_collection cc
+	<set>
+		VERSION = VERSION + 1
+		<if test="collectionId != null">
+		    ,COLLECTION_ID = #{collectionId,jdbcType=DECIMAL}
+		</if>
+        <if test="userId != null">
+            ,USER_ID = #{userId,jdbcType=DECIMAL}
+        </if>
+		<if test="isCourse != null">
+			,IS_COURSE = #{isCourse,jdbcType=DECIMAL}
+		</if>
+		<if test="createTime != null">
+			,CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="updateTime != null">
+			,UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+		</if>
+	</set>
+	where ID = #{id,jdbcType=DECIMAL}
+</update>
+<select id="findListForExample" parameterType="ChekeCollection" resultMap="ChekeCollectionMap">
+	select
+	<include refid="cc_Base_Column_List"/>
+	from cheke_collection cc
+    <include refid="common_query_condition"/>
+	order by create_time asc
+</select>
+<select id="findListForMap" parameterType="map" resultMap="ChekeCollectionMap">
+	select
+	<include refid="cc_Base_Column_List"/>
+	from cheke_collection cc
+	<include refid="common_query_condition"/>
+    order by create_time asc
+</select>
+<sql id="common_query_condition">
+	<where>
+		<if test="id != null">
+			cc.id = #{id,jdbcType=DECIMAL}
+		</if>
+        <if test="collectionId != null">
+            and cc.collection_id = #{collectionId,jdbcType=DECIMAL}
+        </if>
+        <if test="userId != null">
+            and cc.user_id = #{userId,jdbcType=DECIMAL}
+        </if>
+        <if test="createTime != null">
+            AND cc.create_time &gt;= #{createTime,jdbcType=TIMESTAMP}
+        </if>
+	</where>
+</sql>
+</mapper>

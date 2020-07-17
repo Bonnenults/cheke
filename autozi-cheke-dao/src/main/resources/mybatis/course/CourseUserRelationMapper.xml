@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.autozi.cheke.course.mapper.CourseUserRelationMapper">
+<cache eviction="LRU" type="org.mybatis.caches.memcached.MemcachedCache"/>
+<resultMap id="CourseUserRelationMap" type="CourseUserRelation">
+	<result column="ID" jdbcType="DECIMAL" property="id"/>
+	<result column="VERSION" jdbcType="DECIMAL" property="version"/>
+	<result column="USER_ID" jdbcType="DECIMAL" property="userId"/>
+	<result column="COURSE_ID" jdbcType="DECIMAL" property="courseId"/>
+	<result column="ARTICLE_ID" jdbcType="DECIMAL" property="articleId"/>
+	<result column="BEGIN_TIME" jdbcType="TIMESTAMP" property="beginTime"/>
+	<result column="STATUS" jdbcType="DECIMAL" property="status"/>
+	<result column="CURRENT_PROGRESS" jdbcType="VARCHAR" property="currentProgress"/>
+	<result column="END_TIME" jdbcType="TIMESTAMP" property="endTime"/>
+	<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+	<result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+	<result column="RANKING" jdbcType="DECIMAL" property="ranking"/>
+</resultMap>
+<sql id="Base_Column_List">
+	ID,VERSION,USER_ID,COURSE_ID,ARTICLE_ID,BEGIN_TIME,STATUS,CURRENT_PROGRESS,END_TIME,CREATE_TIME,UPDATE_TIME,RANKING
+</sql>
+<sql id="cur_Base_Column_List">
+	cur.ID,cur.VERSION,cur.USER_ID,cur.COURSE_ID,cur.ARTICLE_ID,cur.BEGIN_TIME,cur.STATUS,cur.CURRENT_PROGRESS,cur.END_TIME,cur.CREATE_TIME,cur.UPDATE_TIME,cur.RANKING
+</sql>
+<select id="get" parameterType="long" resultMap="CourseUserRelationMap">
+	select
+		<include refid="Base_Column_List"/>
+	from course_user_relation cur
+	where ID = #{id,jdbcType=DECIMAL}
+</select>
+<delete id="delete" parameterType="long">
+	delete
+	from course_user_relation
+	where ID = #{id,jdbcType=DECIMAL}
+</delete>
+<insert id="insert" parameterType="CourseUserRelation">
+	insert into course_user_relation(
+		<include refid="Base_Column_List"/>
+	) values (
+	#{id,jdbcType=DECIMAL},
+	#{version,jdbcType=DECIMAL},
+    #{userId,jdbcType=DECIMAL},
+    #{courseId,jdbcType=DECIMAL},
+	#{articleId,jdbcType=DECIMAL},
+	#{beginTime,jdbcType=TIMESTAMP},
+    #{status,jdbcType=DECIMAL},
+    #{currentProgress,jdbcType=VARCHAR},
+    #{endTime,jdbcType=TIMESTAMP},
+    #{createTime,jdbcType=TIMESTAMP},
+    #{updateTime,jdbcType=TIMESTAMP},
+    #{ranking,jdbcType=DECIMAL}
+	)
+</insert>
+<update id="update" parameterType="CourseUserRelation">
+	update course_user_relation atr
+	<set>
+		VERSION = VERSION + 1
+		<if test="courseId != null">
+		,COURSE_ID = #{courseId,jdbcType=DECIMAL}
+		</if>
+		<if test="articleId != null">
+		,ARTICLE_ID = #{articleId,jdbcType=DECIMAL}
+		</if>
+        <if test="status != null">
+            ,STATUS = #{status,jdbcType=DECIMAL}
+        </if>
+		<if test="currentProgress != null">
+			,CURRENT_PROGRESS = #{currentProgress,jdbcType=VARCHAR}
+		</if>
+        <if test="updateTime != null">
+            ,UPDATE_TIME = #{updateTime,jdbcType=DECIMAL}
+        </if>
+		<if test="endTime != null">
+			,END_TIME = #{endTime,jdbcType=DECIMAL}
+		</if>
+        <if test="ranking != null">
+            ,RANKING = #{ranking,jdbcType=DECIMAL}
+        </if>
+	</set>
+	where ID = #{id,jdbcType=DECIMAL} and version = #{version,jdbcType=DECIMAL}
+</update>
+<select id="findListForExample" parameterType="CourseUserRelation" resultMap="CourseUserRelationMap">
+	select
+	<include refid="cur_Base_Column_List"/>
+	from course_user_relation cur
+	<include refid="common_query_condition"/>
+</select>
+<select id="findListForMap" parameterType="map" resultMap="CourseUserRelationMap">
+	select
+	<include refid="cur_Base_Column_List"/>
+	from course_user_relation cur
+	<include refid="common_query_condition"/>
+	<if test=" orderBy != null ">
+		ORDER BY ${orderBy}
+	</if>
+</select>
+
+<!--<delete id="deleteRelationByCourseId" parameterType="java.lang.Long">-->
+	<!--DELETE FROM course_user_relation where COURSE_ID = #{courseId,jdbcType=DECIMAL}-->
+<!--</delete>-->
+
+<select id="countcompletedChapterNum" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+	SELECT COUNT(*) FROM course_user_relation
+	WHERE  USER_ID = #{userId,jdbcType=DECIMAL}
+	AND COURSE_ID = #{courseId,jdbcType=DECIMAL}
+	AND STATUS = #{status,jdbcType=DECIMAL}
+</select>
+
+<sql id="common_query_condition">
+	<where>
+		<if test="id != null">
+			cur.id = #{id,jdbcType=DECIMAL}
+		</if>
+		<if test="articleId != null">
+			AND cur.article_id = #{articleId,jdbcType=DECIMAL}
+		</if>
+        <if test="courseId != null">
+            AND cur.course_id = #{courseId,jdbcType=DECIMAL}
+        </if>
+        <if test="userId != null">
+            AND cur.user_id = #{userId,jdbcType=DECIMAL}
+        </if>
+        <if test="status != null">
+            AND cur.status = #{status,jdbcType=DECIMAL}
+        </if>
+		<if test="studyingIncludeRestudyFlag != null">
+			AND cur.status IN (1,3)
+		</if>
+		<if test="completedIncludeRestudyFlag != null">
+			AND cur.status IN (2,3)
+		</if>
+		<if test="courseStatus != null">
+			AND course_id in (SELECT co.id from course_info co where co.status = #{courseStatus,jdbcType=DECIMAL})
+		</if>
+	</where>
+</sql>
+</mapper>

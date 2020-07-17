@@ -1,0 +1,21 @@
+body {margin:0; padding:0; font-size:12px;font-family:"微软雅黑";background:#eff3f9; font-style:normal;}
+div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,blockquote,p{padding:0; margin:0; font-style:normal;}
+table,td,tr,th{font-size:12px;}
+ul li{list-style-type:none;}
+img{vertical-align:top;border:0;}
+ul {list-style:none;}
+h1,h2,h3,h4,h5,h6{font-size:12px; font-weight:normal;}
+address,cite,code,em,th,i{font-weight:normal; }
+table{border-collapse:collapse;}
+textarea{ resize:none;overflow:auto;}
+input[type='text']:hover{border: 1px solid #5a8bff;}
+.clear:after{
+	content:'';
+	display:block; 
+	clear:both;
+	}
+.clear{
+	zoom:1;
+	}
+a{ text-decoration:none; color: #333333;}
+a:hover{ text-decoration:underline; text-decoration:none;}

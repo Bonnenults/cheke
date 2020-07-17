@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>车客</title>
+    <script type="text/javascript" src="${contextpath}/js/framework/upload/jquery.uploadify.js" ></script>
+    <script type="text/javascript" src="${contextpath}/js/article/video/video.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+    $(function(){
+        Video.initVideo();
+    })
+</script>
+
+<div class="lf_carCenter clear">
+    <#--    左侧菜单栏      -->
+
+    <div class="lf_carRight">
+        <div class="lf_carRight_center">
+
+            <div class="qy_center_tab clear">
+                <ul class="clear">
+                    <li class="act" onclick="Video.changeStatus(0)">待发布</li>
+                    <li onclick="Video.changeStatus(1)">审核中</li>
+                    <li onclick="Video.changeStatus(2)">已上线</li>
+                    <li onclick="Video.changeStatus(4)">已下线</li>
+                </ul>
+            </div>
+
+            <div class="qy_center_main">
+
+                    <form id="filter_form" action="/video/yxpt/list/listArticle.action" method="get">
+                        <input type="hidden" name="channelType" value="2">
+
+                        <input type="hidden" name="status" id="status" value="0">
+                        <input type="hidden" name="type" id="type">
+                        <input type="hidden" name="aIsTask" id="aIsTask">
+
+                        <div class="qy_center_seach clear">
+                            <div class="qy_seach_wrap clear">
+                            <span>
+                                <label class="qy_left"> 培训标题：</label>
+                                <input class="qy_left text_adjustment" type="text" name="title">
+                            </span>
+                            <span id="create_time_span" style="display: block">
+                                <label class="qy_left">创建时间：</label>
+                                <input id="createTimeStart" name="createTimeStart" class="qy_calendar qy_left" type="text" placeholder="请选择"
+                                       onfocus="$('.border_lists').hide(); var my97EndDate=$dp.$('createTimeEnd');
+						 																		WdatePicker({onpicked:function(){my97EndDate.focus();},
+						 																		readOnly:true,maxDate:'#F{$dp.$D(\'createTimeEnd\');}',dateFmt:'yyyy-MM-dd 00:00:00'})">
+                                <em class="qy_left">&nbsp;- &nbsp;</em>
+                                <input id="createTimeEnd" name="createTimeEnd" class="qy_calendar qy_left" type="text" placeholder="请选择"
+                                       onfocus=" $('.border_lists').hide(); WdatePicker({readOnly:true,minDate:'#F{$dp.$D(\'createTimeStart\');}',dateFmt:'yyyy-MM-dd 23:59:59'})">
+                            </span>
+                            <span style="display: none" id="commit_time_span">
+                                <label class="qy_left">发布时间：</label>
+                                <input id="commitTimeStart" name="commitTimeStart" class="qy_calendar qy_left" type="text" placeholder="请选择"
+                                       onfocus="$('.border_lists').hide(); var my97EndDate=$dp.$('commitTimeEnd');
+                                                                                                WdatePicker({onpicked:function(){my97EndDate.focus();},
+                                                                                                readOnly:true,maxDate:'#F{$dp.$D(\'commitTimeEnd\');}',dateFmt:'yyyy-MM-dd 00:00:00'})">
+                                <em class="qy_left">&nbsp;- &nbsp;</em>
+                                <input id="commitTimeEnd" name="commitTimeEnd" class="qy_calendar qy_left" type="text" placeholder="请选择"
+                                       onfocus="$('.border_lists').hide(); WdatePicker({readOnly:true,minDate:'#F{$dp.$D(\'commitTimeStart\');}',dateFmt:'yyyy-MM-dd 23:59:59'})">
+                            </span>
+                            <span style="display: none" id="publish_time_span">
+                                <label class="qy_left">上线时间：</label>
+                                <input id="publishTimeStart" name="publishTimeStart" class="qy_calendar qy_left" type="text" placeholder="请选择"
+                                       onfocus="$('.border_lists').hide(); var my97EndDate=$dp.$('publishTimeEnd');
+						 																		WdatePicker({onpicked:function(){my97EndDate.focus();},
+						 																		readOnly:true,maxDate:'#F{$dp.$D(\'publishTimeEnd\');}',dateFmt:'yyyy-MM-dd 00:00:00'})">
+                                <em class="qy_left">&nbsp;- &nbsp;</em>
+                                <input id="publishTimeEnd" name="publishTimeEnd" class="qy_calendar qy_left" type="text" placeholder="请选择"
+                                       onfocus="$('.border_lists').hide(); WdatePicker({readOnly:true,minDate:'#F{$dp.$D(\'publishTimeStart\');}',dateFmt:'yyyy-MM-dd 23:59:59'})">
+                            </span>
+                            <span style="display: none" id="offline_time_span">
+                                    <label class="qy_left">下线时间：</label>
+                                    <input id="offlineTimeStart" name="offlineTimeStart" class="qy_calendar qy_left" type="text" placeholder="请选择"
+                                           onfocus="$('.border_lists').hide(); var my97EndDate=$dp.$('offlineTimeEnd');
+                                                                                                    WdatePicker({onpicked:function(){my97EndDate.focus();},
+                                                                                                    readOnly:true,maxDate:'#F{$dp.$D(\'offlineTimeEnd\');}',dateFmt:'yyyy-MM-dd 00:00:00'})">
+                                    <em class="qy_left">&nbsp;- &nbsp;</em>
+                                    <input id="offlineTimeEnd" name="offlineTimeEnd" class="qy_calendar qy_left" type="text" placeholder="请选择"
+                                           onfocus="$('.border_lists').hide(); WdatePicker({readOnly:true,minDate:'#F{$dp.$D(\'offlineTimeStart\');}',dateFmt:'yyyy-MM-dd 23:59:59'})">
+                            </span>
+                            <span>
+                                <label class="qy_left qy_left">培训类别：</label>
+                                <div class="project_category qy_left text_adjustment">
+                                    <!--文本框-->
+                                    <input class="inves_all_money" type="text" placeholder="全部" value="" name="" />
+                                    <div class="border_lists" id="project_type">
+                                        <#list articleTypeMap?keys as key>
+                                            <a href="javascript:;" data-title="${key}"> ${articleTypeMap[key]} </a>
+                                        </#list>
+                                    </div>
+                                </div>
+                            </span>
+                            <span>
+                                <label class="qy_left">付费推广：</label>
+                                <div class="project_category qy_left text_adjustment">
+                                    <!--文本框-->
+                                    <input class="inves_all_money" type="text" placeholder="全部" value="" name="" />
+                                    <div class="border_lists" id="is_task">
+                                        <a href="javascript:;" data-title="-1">全部</a>
+                                        <a href="javascript:;" data-title="0">否</a>
+                                        <a href="javascript:;" data-title="1">是</a>
+                                    </div>
+                                </div>
+                            </span>
+                            </div>
+                            <div class="qy_seach_right">
+                                <a class="qy_seach_cx" href="javascript:void(0)" onclick="App.commonFormSubmit('filter_form');">查询</a>
+                                <a class="qy_seach_cz" href="javascript:;" onclick="queryChongZhi()">重置</a>
+                            </div>
+                        </div>
+                    </form>
+
+
+                    <div class="qy_center_table" id="data_table_list">
+                        <table>
+                            <tbody>
+                            <tr>
+                                <th width="6%">
+                                    <label class="lf_label_checkBox" for="06">
+                                        <input class="clarity" id="06" type="checkbox"/>
+                                        <div></div>
+                                    </label>
+                                </th>
+                                <th width="4%">#</th>
+                                <th width="14%">培训标题</th>
+                                <th width="10%">培训类别</th>
+                                <#if status == '0'>
+                                    <th width="14%">创建时间</th>
+                                </#if>
+                                <#if status == '1'>
+                                    <th width="14%">发布时间</th>
+                                </#if>
+                                <#if status != '0' && status != '1'>
+                                    <th width="14%">上线时间</th>
+                                    <th width="14%">下线时间</th>
+                                </#if>
+                                <th width="6%">付费推广</th>
+                                <#if status == '0'>
+                                     <th width="8%">拒绝原因</th>
+                                </#if>
+                                <#if status == '2' || status == '4'>
+                                    <th width="14%">浏览</th>
+                                    <th width="14%">分享</th>
+                                </#if>
+
+                                <th width="10%" class="no_border">操作</th>
+                            </tr>
+                                    <#if (page??)&&(page.result??)&&(page.result?size>0)>
+                                        <#list page.result as view>
+                                        <tr>
+                                            <td>
+                                                <label class="lf_label_checkBox">
+                                                    <input class="clarity individual" type="checkbox" name="article_ids" value="${view.id}">
+                                                    <div></div>
+                                                </label>
+                                            </td>
+                                            <td>${page.firstElementIndex + view_index }</td>
+                                            <td><#if view.title??>${view.title?html}</#if></td>
+                                            <td><#if view.typeName??>${view.typeName?html}</#if></td>
+                                            <#if status == '0'>
+                                                <td><#if view.createTime??>${view.createTime?string("yyyy-MM-dd HH:mm")}</#if></td>
+                                            </#if>
+                                            <#if status == '1'>
+                                                <td><#if view.commitTime??>${view.commitTime?string("yyyy-MM-dd HH:mm")}</#if></td>
+                                            </#if>
+
+                                            <#if status != '0' && status != '1'>
+                                                <td><#if view.publishTime??>${view.publishTime?string("yyyy-MM-dd HH:mm")}</#if></td>
+                                                <td><#if view.offlineTime??>${view.offlineTime?string("yyyy-MM-dd HH:mm")}</#if></td>
+                                            </#if>
+
+                                            <td><#if view.aIsTask??><#if view.aIsTask == 1>是<#else>否</#if></#if></td>
+
+                                            <#if status == '0'>
+                                                <td><#if view.refuseReason??>${view.refuseReason?html}</#if></td>
+                                            </#if>
+
+                                            <#if status == '2' || status == '4'>
+                                                <td><#if view.pageView??>${view.pageView?html}</#if></td>
+                                                <td><#if view.shareAmount??>${view.shareAmount?html}</#if></td>
+                                            </#if>
+
+                                            <td class="no_border">
+                                                <#if status == '0'>
+                                                    <a class="qy_alink" href="javascript:;" onclick="Video.publish(${view.id})">发布</a>
+                                                    <a class="qy_alink" href="${contextpath}/video/yxpt/create/createArticle.action?id=${view.id}">修改</a>
+                                                </#if>
+                                                <#if status == '1'>
+                                                    <a class="qy_alink" href="javascript:;" onclick="Video.cancel(${view.id})">取消发布</a>
+                                                </#if>
+                                                <#if status == '2'>
+                                                    <a class="qy_alink" href="javascript:;" onclick="Video.offline(${view.id})">下线</a>
+                                                </#if>
+                                                <a class="qy_alink" href="${contextpath}/video/yxpt/list/getArticleDetail.action?id=${view.id}">预览</a>
+                                                <#if status == '4'>
+                                                    <a class="qy_alink" href="javascript:;" onclick="Video.copyArticle(${view.id})">导入待发布</a>
+                                                </#if>
+                                            </td>
+                                        </tr>
+                                        </#list>
+                                    <#else>
+                                        <tr>
+                                            <td colspan='10'>没有符合条件的记录</td>
+                                        </tr>
+                                    </#if>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                <div class="clear qy_page_wrap">
+                    <div class="qy_left clear">
+                        <a class="qy_but" onclick="Video.jumpCreatePage()" href="javascript:;"><img src="${contextpath}/styles/images/xzzx.png" alt="">新增培训</a>
+
+
+                        <a id="batch_publish" class="qy_but" href="javascript:;" onclick="Video.batchPublish()" style="display: block"><img src="${contextpath}/styles/images/plfb.png" alt="">批量发布</a>
+                        <a id="batch_cannel" class="qy_but" href="javascript:;" onclick="Video.batchCancel()" style="display: none"><img src="${contextpath}/styles/images/plfb.png" alt="">批量取消发布</a>
+                        <a id="batch_offline" class="qy_but" href="javascript:;" onclick="Video.batchOffline()" style="display: none"><img src="${contextpath}/styles/images/plfb.png" alt="">批量下线</a>
+
+                        <a id="batch_copy" class="qy_but" href="javascript:;" onclick="Video.batchCopy()" style="display: none"><img src="${contextpath}/styles/images/plfb.png" alt="">批量导入待发布</a>
+
+                    </div>
+
+                    <div id="page_common_nav">
+                        <#include "../../common/paging_common.html">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function queryChongZhi() {
+//        $("#channelType").val("");
+//        $("#status").val("");
+        $("#type").val("");
+        $("#aIsTask").val("");
+    }
+</script>
+</body>
+</html>

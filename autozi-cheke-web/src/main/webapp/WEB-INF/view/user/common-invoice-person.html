@@ -1,0 +1,37 @@
+<div class="nb_userInfo_main">
+    <h4 class="nb_userInfo_main_title"><span></span>发票信息</h4>
+    <div class="nb_userInfo_main_form nb_userInfo_none">
+        <label class="nb_user_style" for=""><span>＊</span>发票抬头：</label>
+        <input type="text" value="<#if (party.invoiceTitle??)>${party.invoiceTitle}</#if>" id="invoiceTitle" disabled name="invoiceTitle" placeholder="公司名称自动填写保持一致">
+    </div>
+    <div class="nb_userInfo_main_form nb_userInfo_none">
+        <label class="nb_user_style" for=""><span>＊</span>纳税人识别号：</label>
+        <input type="text" value="<#if (party.invoiceNumber??)>${party.invoiceNumber}</#if>" id="invoiceNumber" name="invoiceNumber" placeholder="请输入纳税人识别号">
+    </div>
+    <div class="nb_userInfo_main_form nb_userInfo_none">
+        <label class="nb_user_style" for="">地址、电话：</label>
+        <input type="text" value="<#if (party.invoiceAddress??)>${party.invoiceAddress}</#if>" id="invoiceAddress" name="invoiceAddress" placeholder="填写注册地址、注册电话">
+    </div>
+    <div class="nb_userInfo_main_form nb_userInfo_none">
+        <label class="nb_user_style" for="">开户行及账号：</label>
+        <input type="text" value="<#if (party.invoiceBank??)>${party.invoiceBank}</#if>" id="invoiceBank" name="invoiceBank" placeholder="填写开户银行及银行账号">
+    </div>
+</div>
+<div class="nb_userInfo_main">
+    <h4 class="nb_userInfo_main_title"><span></span>运营负责人</h4>
+    <div class="nb_userInfo_main_form nb_smallLeft">
+        <label for=""><span>＊</span>真实姓名：</label>
+        <input class="nb_smallInput" value="<#if (party.connectorName??)>${party.connectorName}</#if>" id="connectorName" name="connectorName" type="text" placeholder="请输入真实姓名">
+    </div>
+    <div class="nb_userInfo_main_form nb_smallLeft">
+        <label for=""><span>＊</span>身份证号：</label>
+        <input class="nb_smallInput" value="<#if (party.idNumber??)>${party.idNumber}</#if>" id="idNumber" name="idNumber" type="text" placeholder="请输入身份证号码">
+    </div>
+<#include "common-identify.html">
+    <div class="nb_userInfo_main_form nb_smallLeft">
+        <label for=""><span>＊</span>手机号码：</label>
+        <input class="nb_smallInput" value="<#if (party.mobile??)>${party.mobile}</#if>" id="mobile" name="mobile" type="text" placeholder="请输入手机号码">
+        <input id="get_code" style="width: 100px; padding: 0; text-align: center;height:28px;border-radius:15px;" type="button" onclick="Party.getPhoneValidateCode(this)"  value="获取验证码" >
+        <p><input class="nb_smallInput" name="validateCode" style="margin-left: 94px !important;"  id="validateCode" type="text" placeholder="请输入验证码"></p>
+    </div>
+</div>

@@ -1,0 +1,114 @@
+    <style>
+        .upload_headimage{
+            margin: 40px 40px 0 40px;
+            min-width: 900px;
+            background: #FFFFFF;
+        }
+        .upload_headimage{
+            padding: 40px;
+        }
+        .upload_headimage .modify_perman {
+            float: left;
+            width: 230px;
+            height: 230px;
+            border: 1px solid #e3e6f2;
+        }
+        .my_header_image{
+            margin-top: 24px;
+        }
+        .upload_headimage .modify_box_up {
+            position: relative;
+            display: inline-block;
+            width: 230px;
+            height: 230px;
+            background:#FFFFFF url(${contextpath}/styles/images/up_headerimg.png) no-repeat center center;
+            color: #FFFFFF;
+            cursor: pointer;
+            overflow: hidden;
+            z-index: 1;
+        }
+        .upload_headimage .modify_box_up input {
+            position: absolute;
+            left: 0;
+            top: 0;
+            cursor: pointer;
+            z-index: 2;
+            width: 230px;
+            height: 230px;
+            font-size: 12px;
+            opacity: 0;
+            filter: "alpha(opacity=0)";
+            filter: alpha(opacity=0);
+            -moz-opacity: 0;
+        }
+        .upload_headimage .gary_tishi {
+            margin-left: 20px;
+            float: left;
+            display: block;
+            line-height: 24px;
+            color: #969696;
+            font-size: 12px;
+            padding-top: 205px;
+        }
+        .upload_headimage .up_headerimg_text{
+            font-size:14px;
+            width: 230px;
+            text-align:  center;
+            line-height: 66px;
+        }
+        .upload_headimage .headerimg_buton{
+            width: 230px;
+            text-align: center;
+        }
+        .upload_headimage .headerimg_buton a{
+            display: inline-block;
+            width: 100px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            font-size: 14px;
+            border-radius: 15px;
+            color: #FFFFFF;
+            background: #96a2be;
+        }
+        #up_headerimg_back{
+            display:block;
+            width: 110px;
+            height: 30px;
+            margin: 30px auto;
+            line-height: 30px;
+            text-align: center;
+            font-size: 14px;
+            border-radius: 15px;
+            color: #FFFFFF;
+            background: #5a8bff;
+        }
+         .author_left object {
+             left: 0
+         }
+    </style>
+    <script type="text/javascript" src="${contextpath}/js/framework/upload/ajaxfileupload.js" ></script>
+    <script type="text/javascript" src="${contextpath}/js/party/party.js"></script>
+
+<div class="upload_headimage">
+    <div class="my_header_image clear">
+        <div class="modify_perman">
+            <div class="modify_box_up author_left">
+                <span id="imageUrlSpan">
+                    <#--<#if (party.imageUrl??)>-->
+                        <#--<img src="${party.imageUrl}" width="230px" height="230px"/>-->
+                    <#--</#if>-->
+                </span>
+                <input type="hidden" name="imageUrl" id="imageUrl">
+                <input type="file" name="file6" id="file6" onchange="Party.upload(6)" />
+            </div>
+        </div>
+        <span class="gary_tishi"><b style="color: #f51414;">*</b> 仅支持JPG、JPEG、PNG、GIF 格式文件不能大于2MB</span>
+    </div>
+    <p class="up_headerimg_text">请上传您的头像</p>
+    <p class="headerimg_buton">
+        <a style="background: #5a8bff; margin-right: 15px;" href="javascript:Party.uploadImgUrl();">提交</a>
+        <a href="javascript:Party.cancelImageUrl();">取消</a>
+    </p>
+</div>
+<a id="up_headerimg_back" href="${contextpath}/cheke/party/edit/userInfo.action">返回</a>

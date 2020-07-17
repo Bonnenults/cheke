@@ -1,0 +1,55 @@
+<script type="text/javascript" src="${contextpath}/js/settle/account.js"></script>
+<script>
+    $(function(){
+        Account.bindRechargeMoney();
+    })
+</script>
+<div class="lf_carRight">
+    <div class="lf_carRight_center">
+        <h3 class="lf_h3">充值</h3>
+        <input type="hidden" id="rateFee" value="${rateFee}">
+        <input type="hidden" id="slottingFee" value="${slottingFee}">
+        <input type="hidden" id="allFee" value="${allFee}">
+        <div class="lf_fund_center">
+            <div class="lf_fund_form">
+                <label style=" width: 75px;">车客用户名：</label>
+                <span>${partyLoginName!''}</span>
+            </div>
+            <div class="lf_fund_form">
+                <label  style=" width: 75px;">公司名称：</label>
+                <span>${account.companyName!''}</span>
+            </div>
+            <div class="lf_fund_form clear">
+                <div class="lf_fund_form_l">
+                    <label  style=" width: 75px;">充值金额：</label>
+                    <input type="text" name="realMoney" id="realMoney" onblur="Account.countRealMoney()"/>
+                    <span>元</span>
+                </div>
+                <div class="lf_fund_form_r">
+                    <label>可用金额：</label>
+                    <input class="input_bg" type="text" id="accountMoney" readonly="readonly" name="accountMoney"/>
+                    <span>元<i>只可充，不可退</i></span>
+                </div>
+            </div>
+            <p class="lf_fund_form_attention">请注意： 至少充500元，对应扣除8%平台服务费</p>
+            <p>
+                <a href="javascript:Account.submitRechargeMoney()" class="lf_btn_next">下一步</a>
+            </p>
+            <div class="lf_fund_warm clear">
+                <div class="lf_fund_warm_l">
+                    <span></span>温馨提示：
+                </div>
+                <div class="lf_fund_warm_r">
+                    <ul>
+                        <li>1. 本平台收取8%服务费；</li>
+                        <li>2. <span>只可充，不可退；</span></li>
+                        <li>3. 充值成功后，余额可能存在延迟现象，一般1到5分钟内到账，如有问题请拨打：400-008-8122；</li>
+                        <li>4. 充值金额输入值必须是不小于<span>500的正整数；</span></li>
+                        <li>5. 充值完成后，您可以进入资金管理页面进行查看余额；</li>
+                        <li>6. 充值成功后，您可以进入发票申请页面进行发票申请。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

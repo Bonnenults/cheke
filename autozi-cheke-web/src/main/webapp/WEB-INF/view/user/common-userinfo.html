@@ -1,0 +1,48 @@
+<style>
+    .nb_userInfo_detail dt img{
+        border-radius: 10px;
+    }
+</style>
+<div class="nb_userInfo_main nb_userInfo_main_minHeight clear">
+    <dl class="nb_userInfo_detail">
+        <dt>
+            <#if party.imageUrl??>
+                <img src="${party.imageUrl}" width="100px" height="100px">
+            <#else>
+                <img src="${contextpath}/styles/images/index_top.png" width="100px" height="100px">
+            </#if>
+            <!--上传头像按钮-->
+            <a href="javascript:Party.toUploadImage()" class="user_up_headImg">上传头像</a>
+        </dt>
+        <dd>
+            <p class="nb_userInfo_detail_email">
+            <#if user.loginName??>${user.loginName}</#if>
+            <#if party.status??&&party.status==1>
+                <span class="nb_certification">已认证</span>
+            <#elseif party.status??&&party.status==2>
+                <span class="nb_approvalStatus1">审核中...</span>
+            <#elseif party.status??&&party.status==3>
+                <span class="nb_approvalStatus2">审核中...</span>
+            <#elseif party.status??&&party.status==5>
+                <span class="nb_approvalStatus2">未认证</span>
+            <#elseif party.status??&&party.status==6>
+                <span class="nb_approvalStatus2">已拒绝</span>
+            </#if>
+            </p>
+            <p class="nb_userInfo_detail_companyName"><#if party.name??>${party.name}</#if></p>
+            <p class="nb_userInfo_detail_prompt">
+            <#if party.status??&&(party.status==2||party.status==3)>
+                提交成功，我们会在1-2个工作日进行审核，请查收短信通知或登录后台查看。
+            <#elseif party.status??&&party.status==6&&party.refuseReason??>
+                拒绝原因：${party.refuseReason}
+            </#if>
+            </p>
+        </dd>
+    </dl>
+    <div class="nb_userInfo_detail_rightMain">
+        <p class="nb_attention">关注：${fansCount}人</p>
+        <a id="edit_password" class="nb_editPassword" href="javascript:Party.openModifyDialog()">修改密码</a>
+    </div>
+</div>
+<div class="nb_userInfo_main_margin"></div>
+<#include "common-modify_password.html">

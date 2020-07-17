@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.autozi.cheke.settle.mapper.ChanpayOrderMapper">
+<cache eviction="LRU" type="org.mybatis.caches.memcached.MemcachedCache"/>
+<resultMap id="ChanpayOrderMap" type="ChanpayOrder">
+	<result column="ID" jdbcType="DECIMAL" property="id"/>
+	<result column="VERSION" jdbcType="DECIMAL" property="version"/>
+	<result column="ORDER_ID" jdbcType="DECIMAL" property="orderId"/>
+	<result column="BANK_COMMON_NAME" jdbcType="VARCHAR" property="bankCommonName"/>
+	<result column="ACCT_NO" jdbcType="VARCHAR" property="acctNo"/>
+	<result column="ACCT_NAME" jdbcType="VARCHAR" property="acctName"/>
+	<result column="TRANS_AMT" jdbcType="VARCHAR" property="transAmt"/>
+	<result column="CODE_URL" jdbcType="VARCHAR" property="codeUrl"/>
+	<result column="RE_FLOW_NO" jdbcType="VARCHAR" property="reFlowNo"/>
+	<result column="STATUS" jdbcType="DECIMAL" property="status"/>
+	<result column="PAY_TYPE" jdbcType="DECIMAL" property="payType"/>
+	<result column="ORDER_TYPE" jdbcType="DECIMAL" property="orderType"/>
+	<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+	<result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+</resultMap>
+<sql id="Base_Column_List">
+	ID,VERSION,ORDER_ID,BANK_COMMON_NAME,ACCT_NO,ACCT_NAME,TRANS_AMT,CODE_URL,RE_FLOW_NO,STATUS,PAY_TYPE,ORDER_TYPE,CREATE_TIME,UPDATE_TIME
+</sql>
+<sql id="pco_Base_Column_List">
+	pco.ID,pco.VERSION,pco.ORDER_ID,pco.BANK_COMMON_NAME,pco.ACCT_NO,pco.ACCT_NAME,pco.TRANS_AMT,pco.CODE_URL,pco.RE_FLOW_NO,pco.STATUS,pco.PAY_TYPE,pco.ORDER_TYPE,pco.CREATE_TIME,pco.UPDATE_TIME
+</sql>
+<select id="get" parameterType="long" resultMap="ChanpayOrderMap">
+	select
+		<include refid="Base_Column_List"/>
+	from pay_chanpay_order pco
+	where ID = #{id,jdbcType=DECIMAL}
+</select>
+<delete id="delete" parameterType="long">
+	delete
+	from pay_chanpay_order
+	where ID = #{id,jdbcType=DECIMAL}
+</delete>
+<insert id="insert" parameterType="ChanpayOrder">
+	insert into pay_chanpay_order(
+		<include refid="Base_Column_List"/>
+	) values (
+	#{id,jdbcType=DECIMAL},
+	#{version,jdbcType=DECIMAL},
+	#{orderId,jdbcType=DECIMAL},
+	#{bankCommonName,jdbcType=VARCHAR},
+	#{acctNo,jdbcType=VARCHAR},
+	#{acctName,jdbcType=VARCHAR},
+	#{transAmt,jdbcType=VARCHAR},
+	#{codeUrl,jdbcType=VARCHAR},
+	#{reFlowNo,jdbcType=VARCHAR},
+	#{status,jdbcType=DECIMAL},
+	#{payType,jdbcType=DECIMAL},
+	#{orderType,jdbcType=DECIMAL},
+	#{createTime,jdbcType=TIMESTAMP},
+	#{updateTime,jdbcType=TIMESTAMP}
+	)
+</insert>
+<update id="update" parameterType="ChanpayOrder">
+	update pay_chanpay_order pco
+	<set>
+		VERSION = VERSION + 1
+		<if test="orderId != null">
+		,ORDER_ID = #{orderId,jdbcType=DECIMAL}
+		</if>
+		<if test="bankCommonName != null">
+		,BANK_COMMON_NAME = #{bankCommonName,jdbcType=VARCHAR}
+		</if>
+		<if test="acctNo != null">
+		,ACCT_NO = #{acctNo,jdbcType=VARCHAR}
+		</if>
+		<if test="acctName != null">
+		,ACCT_NAME = #{acctName,jdbcType=VARCHAR}
+		</if>
+		<if test="transAmt != null">
+		,TRANS_AMT = #{transAmt,jdbcType=VARCHAR}
+		</if>
+		<if test="codeUrl != null">
+		,CODE_URL = #{codeUrl,jdbcType=VARCHAR}
+		</if>
+		<if test="reFlowNo != null">
+		,RE_FLOW_NO = #{reFlowNo,jdbcType=VARCHAR}
+		</if>
+		<if test="status != null">
+		,STATUS = #{status,jdbcType=DECIMAL}
+		</if>
+		<if test="payType != null">
+		,PAY_TYPE = #{payType,jdbcType=DECIMAL}
+		</if>
+		<if test="orderType != null">
+		,ORDER_TYPE = #{orderType,jdbcType=DECIMAL}
+		</if>
+		<if test="createTime != null">
+		,CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="updateTime != null">
+		,UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+		</if>
+	</set>
+	where ID = #{id,jdbcType=DECIMAL}
+</update>
+<select id="findListForExample" parameterType="ChanpayOrder" resultMap="ChanpayOrderMap">
+	select
+	<include refid="pco_Base_Column_List"/>
+	from pay_chanpay_order pco
+	<include refid="common_query_condition"/>
+</select>
+<select id="findListForMap" parameterType="map" resultMap="ChanpayOrderMap">
+	select
+	<include refid="pco_Base_Column_List"/>
+	from pay_chanpay_order pco
+	<include refid="common_query_condition"/>
+	order by create_time desc
+</select>
+<sql id="common_query_condition">
+	<where>
+		<if test="id != null">
+			pco.id = #{id,jdbcType=DECIMAL}
+		</if>
+		<if test="orderId != null">
+			pco.order_id = #{orderId,jdbcType=DECIMAL}
+		</if>
+	</where>
+</sql>
+</mapper>

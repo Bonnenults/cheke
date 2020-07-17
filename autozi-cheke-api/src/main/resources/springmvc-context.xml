@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	<context:component-scan base-package="com.autozi.cheke.mobile.**" >
+		 <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"></context:include-filter>
+	</context:component-scan>
+    <mvc:annotation-driven conversion-service="applicationConversionService"/>
+    <mvc:interceptors>
+    	<!-- <mvc:interceptor>
+    		<mvc:mapping path="/*.action"/>
+    		<mvc:mapping path="/**/*.action"/>
+    		<mvc:mapping path="/*.api"/>
+    		<mvc:mapping path="/**/*.api"/>
+    		<beans:bean id="b2bAccessFilter" class=" com.autozi.o2c.system.B2bAccessFilter"/>
+    	</mvc:interceptor> -->
+    	<mvc:interceptor>
+    		<mvc:mapping path="/*.action"/>
+    		<mvc:mapping path="/**/*.action"/>
+		    <beans:bean id="frontViewInterceptor" class="com.autozi.cheke.mobile.util.mvc.FrontViewInterceptor">
+		    	<beans:property name="view_suffix_name" value="_ajax"/>
+		    	<beans:property name="url_pre">
+		    		<beans:list>
+		    			<beans:value>stock</beans:value>
+		    		</beans:list>
+		    	</beans:property>
+		    	<beans:property name="ext_view_list">
+		    		<beans:list>
+		    		</beans:list>
+		    	</beans:property>
+		    	<beans:property name="allow_url_list">
+		    		<beans:list>
+		    			<beans:value>login.action</beans:value>
+		    			<beans:value>toRegister.action</beans:value>
+		    			<beans:value>logout.action</beans:value>
+		    			<beans:value>index.action</beans:value>
+		    			<beans:value>top.action</beans:value>
+		    			<beans:value>menus.action</beans:value>
+		    			<beans:value>test.action</beans:value>
+		    			<beans:value>frontPage.action</beans:value>
+		    		</beans:list>
+		    	</beans:property>
+		    </beans:bean>
+    	</mvc:interceptor>
+    </mvc:interceptors>
+
+    <beans:bean class="org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter" />
+
+	<beans:bean class="com.autozi.common.web.springmvc.ExtFreeMarkerViewResolver">
+		<beans:property name="order" value="1" />
+		<beans:property name="suffix" value=".html" />
+		<beans:property name="contentType" value="text/html;charset=utf-8" />
+	</beans:bean>
+
+	<beans:bean id="freemarkerConfig"
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+		<beans:property name="templateLoaderPath" value="/WEB-INF/view/" />
+		<beans:property name="freemarkerSettings"><!-- 设置FreeMarker环境属性 -->
+			<beans:props>
+				<beans:prop key="template_update_delay">5</beans:prop><!--刷新模板的周期，单位为秒 -->
+				<beans:prop key="default_encoding">UTF-8</beans:prop><!--模板的编码格式 -->
+				<beans:prop key="locale">zh_CN</beans:prop><!-- 本地化设置 -->
+				<beans:prop key="datetime_format">yyyy-MM-dd HH:mm:ss</beans:prop>
+				<beans:prop key="time_format">HH:mm:ss</beans:prop>
+				<beans:prop key="number_format">0.######</beans:prop>
+				<beans:prop key="boolean_format">true,false</beans:prop>
+				<beans:prop key="whitespace_stripping">true</beans:prop>
+				<beans:prop key="tag_syntax">auto_detect</beans:prop>
+				<beans:prop key="url_escaping_charset">UTF-8</beans:prop>
+			</beans:props>
+		</beans:property>
+	</beans:bean>
+
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+    <beans:bean class="com.autozi.common.utils.o2o.ApplicationConversionServiceFactoryBean" id="applicationConversionService"/>
+
+    <mvc:default-servlet-handler/>
+</beans:beans>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.autozi.cheke.user.mapper.PersonalMedalMapper">
+<cache eviction="LRU" type="org.mybatis.caches.memcached.MemcachedCache"/>
+<resultMap id="PersonalMedalMap" type="PersonalMedal">
+	<result column="ID" jdbcType="DECIMAL" property="id"/>
+	<result column="VERSION" jdbcType="DECIMAL" property="version"/>
+	<result column="USER_ID" jdbcType="DECIMAL" property="userId"/>
+	<result column="MEDAL_ID" jdbcType="DECIMAL" property="medalId"/>
+	<result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+	<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+	<result column="STATUS" jdbcType="DECIMAL" property="status"/>
+	<result column="NUM" jdbcType="DECIMAL" property="num"/>
+</resultMap>
+<sql id="Base_Column_List">
+	ID,VERSION,USER_ID,MEDAL_ID,UPDATE_TIME,CREATE_TIME,STATUS,NUM
+</sql>
+<sql id="pm_Base_Column_List">
+	pm.ID,pm.VERSION,pm.USER_ID,pm.MEDAL_ID,pm.UPDATE_TIME,pm.CREATE_TIME,pm.STATUS,pm.NUM
+</sql>
+<select id="get" parameterType="long" resultMap="PersonalMedalMap">
+	select
+		<include refid="Base_Column_List"/>
+	from medal_personal pm
+	where ID = #{id,jdbcType=DECIMAL}
+</select>
+
+<delete id="delete" parameterType="long">
+	delete
+	from medal_personal
+	where ID = #{id,jdbcType=DECIMAL}
+</delete>
+<insert id="insert" parameterType="PersonalMedal">
+	insert into medal_personal(
+		<include refid="Base_Column_List"/>
+	) values (
+	#{id,jdbcType=DECIMAL},
+	#{version,jdbcType=DECIMAL},
+    #{userId,jdbcType=DECIMAL},
+    #{medalId,jdbcType=DECIMAL},
+    #{updateTime,jdbcType=TIMESTAMP},
+    #{createTime,jdbcType=TIMESTAMP},
+	#{status,jdbcType=DECIMAL},
+	#{num,jdbcType=DECIMAL}
+	)
+</insert>
+<update id="update" parameterType="PersonalMedal">
+	update medal_personal pm
+	<set>
+		VERSION = VERSION + 1
+
+		<if test="userId != null">
+		    ,USER_ID = #{userId,jdbcType=DECIMAL}
+		</if>
+		<if test="medalId != null">
+			,MEDAL_ID = #{medalId,jdbcType=DECIMAL}
+		</if>
+		<if test="updateTime != null">
+		    ,UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="createTime != null">
+		    ,CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="status != null">
+			,STATUS = #{status,jdbcType=DECIMAL}
+		</if>
+		<if test="num != null">
+			,NUM = #{num,jdbcType=DECIMAL}
+		</if>
+	</set>
+	where ID = #{id,jdbcType=DECIMAL}
+</update>
+<select id="findListForExample" parameterType="PersonalMedal" resultMap="PersonalMedalMap">
+	select
+	<include refid="pm_Base_Column_List"/>
+	from medal_personal pm
+	<include refid="common_query_condition"/>
+</select>
+<select id="findListForMap" parameterType="map" resultMap="PersonalMedalMap">
+	select
+	<include refid="pm_Base_Column_List"/>
+	from medal_personal pm
+	<include refid="common_query_condition"/>
+</select>
+<sql id="common_query_condition">
+	<where>
+		<if test="id != null">
+            pm.id = #{id,jdbcType=DECIMAL}
+		</if>
+		<if test="userId != null">
+			and pm.USER_ID = #{userId,jdbcType=DECIMAL}
+		</if>
+		<if test="medalId != null">
+			and pm.MEDAL_ID = #{medalId,jdbcType=DECIMAL}
+		</if>
+		<if test="status != null">
+			and pm.STATUS = #{status,jdbcType=DECIMAL}
+		</if>
+		<if test="notWaitingFlag != null">
+			AND pm.STATUS != 0
+		</if>
+		<if test="createTimeStart != null">
+			<![CDATA[ AND pm.create_time >= DATE_FORMAT(#{createTimeStart},'%Y-%m-%d %H:%i:%s')]]>
+		</if>
+		<if test="createTimeEnd != null">
+			<![CDATA[ AND pm.create_time <= DATE_FORMAT(#{createTimeEnd},'%Y-%m-%d %H:%i:%s')]]>
+		</if>
+	</where>
+</sql>
+
+</mapper>

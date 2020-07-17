@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <link rel="stylesheet" href="${contextpath}/styles/css/public.css" />
+    <link rel="stylesheet" href="${contextpath}/styles/css/index.css" />
+    <!--[if IE 8]>
+    <link rel="stylesheet" href="${contextpath}/styles/css/compatibilityIE8.css" />
+    <![endif]-->
+    <script type="text/javascript" src="${contextpath}/js/framework/jquery-1.12.0.min.js" ></script>
+    <script type="text/javascript" src="${contextpath}/js/framework/index.js" ></script>
+    <script>
+        var contextpath = '${contextpath}';
+        if (parent != window) {
+            parent.location.href = contextpath + "/login.action";
+        }
+    </script>
+</head>
+<body>
+    <div class="lf_logo_header">
+        <div class="lf_logo_header_center clear">
+            <div class="lf_logo_header_l">
+                <img src="${contextpath}/styles/images/logo_logo.png">
+                <span>车客营销平台</span>
+            </div>
+            <!--<a href="javascript:;" class="lf_logo_header_r">返回首页<i></i></a>-->
+        </div>
+    </div>
+    <div class="lf_logo_center">
+        <div class="lf_logo_center_cen clear">
+            <div class="lf_logo_center_submit clear">
+                <h5 class="clear">登录<span><a href="${contextpath}/cheke/register/toRegister.action">注册</a> </span></h5>
+                <div class="lf_logo_center_in">
+                    <form id="loginForm" action="${contextpath}/login"  method="post" class="form-submit">
+                    <p class="lf_logo_error"><#if errorMessage??>${errorMessage}</#if></p>
+                    <input type="text" id='username' name='username' value="" placeholder="请输入用户名"/>
+                    <input type="password" id='password' name='password'  value="" placeholder="请输入密码"/>
+                        <div class="lf_register_form" style="width:250px; border:none;">
+                            <input name="captcha" id="captcha" type="text" style="width:110px;display: inline-block;" placeholder="请输入验证码"/>
+                            <img src="${contextpath}/security/captcha.png" class="code_img" onClick="changeValidateCode(this)"/>
+                            <span></span>
+                        </div>
+                        <input type="submit" value="登&nbsp;&nbsp;录" class="lf_logo_tj"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="lf_logo_bottom">
+        <p>北京市公安局海淀分局备案编号11010802012137号 | 京ICP备11020175号-4</p>
+        <p>Copyright © Autozi.com 2018 All Rights Reserved. Powered by Autozi</p>
+    </div>
+</body>
+<script type="text/javascript">
+    function changeValidateCode(obj) {
+           obj.src="${contextpath}/security/captcha.png?d="+new Date().getTime();
+       }
+</script>
+</html>

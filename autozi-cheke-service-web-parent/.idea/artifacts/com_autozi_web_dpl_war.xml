@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="com.autozi.web.dpl:war">
+    <output-path>$PROJECT_DIR$/../autozi-web-dpl/target</output-path>
+    <root id="archive" name="dpl.war">
+      <element id="artifact" artifact-name="com.autozi.web.dpl:war exploded" />
+    </root>
+  </artifact>
+</component>

@@ -1,0 +1,67 @@
+<script type="text/javascript" language="javascript" src="${contextpath}/js/framework/pageInfo.js"></script>
+
+<div class="qy_right">
+	<ul class="qy_page clear">
+		<#if (totalPages>0)>
+				<#--上一页-->
+					<#if (curPageNo>1)>
+						<#assign pre_pageNo=(curPageNo-1)>
+			            <li class="qy_pre" href="javascript:void(0);" onclick="jumpToPage('${pre_pageNo}');">
+							<<
+			            </li>
+					<#else>
+		                <li class="qy_pre" href="javascript: void(0);">
+							<<
+		                </li>
+					</#if>
+
+				<#--中间页-->
+	            <#assign loops=1..totalPages />
+	            <#list loops as pageNumber>
+	                <#if pageNumber == curPageNo>
+	                    <li href="javascript: void(0)" class="act">${pageNumber}</li>
+	                <#else>
+                        <#if pageNumber == 1>
+                        	<li class="fenye_1" href="javascript: void(0)" onclick="jumpToPage('${pageNumber}');">${pageNumber}</li>
+                            <#if (curPageNo > 5)>
+                                <li href="javascript: void(0)" class="more">...</li>
+                            </#if>
+                        <#else>
+                               <#if (pageNumber < curPageNo - 3)>
+                               <#else>
+                                   	<li href="javascript: void(0)" onclick="jumpToPage('${pageNumber}');">${pageNumber}</li>
+                              </#if>
+                        </#if>
+	                </#if>
+	            </#list>
+				
+				<#--下一页-->
+					<#if (curPageNo<totalPages)>
+						<#assign next_pageNo = curPageNo+1>
+			            <li class="qy_next" href="javascript:void(0);" onclick="jumpToPage('${next_pageNo}');">
+							>>
+			            </li>
+					<#else>
+			             <li class="qy_next" href="javascript: void(0);">
+							 >>
+			             </li>
+					</#if>
+
+		<#else>
+	             <li class="qy_prev" href="javascript: void(0);">
+				  <<
+	             </li>
+                <li href="javascript: void(0)" class="act">1</li>
+	            <li class="qy_prev" href="javascript: void(0);">
+					>>
+	            </li>
+		</#if>
+	</ul>
+</div>
+<input value="${search_condition!''}" name="search_condition" id="search_condition" type="hidden"/>
+<input value="${data_container!''}" name="data_container" id="data_container" type="hidden"/>
+<script type="text/javascript">
+function jumpToPage(pageNo){
+	PageInfo.jumpToPage(pageNo,'${url!''}');
+}
+</script>

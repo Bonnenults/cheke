@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.autozi.cheke.article.mapper.ArticleMapper">
+<cache eviction="LRU" type="org.mybatis.caches.memcached.MemcachedCache"/>
+<resultMap id="ArticleMap" type="Article">
+	<result column="ID" jdbcType="DECIMAL" property="id"/>
+	<result column="VERSION" jdbcType="DECIMAL" property="version"/>
+	<result column="TITLE" jdbcType="VARCHAR" property="title"/>
+	<result column="TYPE" jdbcType="DECIMAL" property="type"/>
+	<result column="TAG" jdbcType="VARCHAR" property="tag"/>
+	<result column="SOURCE" jdbcType="VARCHAR" property="source"/>
+	<result column="IMAGE" jdbcType="VARCHAR" property="image"/>
+	<result column="IMAGE2" jdbcType="VARCHAR" property="image2"/>
+	<result column="IMAGE3" jdbcType="VARCHAR" property="image3"/>
+	<result column="VIDEO_URL" jdbcType="VARCHAR" property="video_url"/>
+	<result column="BODY" jdbcType="VARCHAR" property="body"/>
+	<result column="A_IS_TOP" jdbcType="DECIMAL" property="aIsTop"/>
+	<result column="A_IS_TASK" jdbcType="DECIMAL" property="aIsTask"/>
+	<result column="STATUS" jdbcType="DECIMAL" property="status"/>
+	<result column="CHANNEL_TYPE" jdbcType="DECIMAL" property="channelType"/>
+    <result column="DISPLAY_TYPE" jdbcType="DECIMAL" property="displayType"/>
+	<result column="BEGIN_TIME" jdbcType="TIMESTAMP" property="beginTime"/>
+	<result column="END_TIME" jdbcType="TIMESTAMP" property="endTime"/>
+	<result column="CREATE_USER_ID" jdbcType="DECIMAL" property="createUserId"/>
+	<result column="UPDATE_USER_ID" jdbcType="DECIMAL" property="updateUserId"/>
+	<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+	<result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+	<result column="PUBLISH_TIME" jdbcType="TIMESTAMP" property="publishTime"/>
+	<result column="OFFLINE_TIME" jdbcType="TIMESTAMP" property="offlineTime"/>
+	<result column="COMMIT_TIME" jdbcType="TIMESTAMP" property="commitTime"/>
+	<result column="PASS_TIME" jdbcType="TIMESTAMP" property="passTime"/>
+	<result column="AUTO_END_TIME" jdbcType="TIMESTAMP" property="autoEndTime"/>
+	<result column="REFUSE_REASON" jdbcType="VARCHAR" property="refuseReason"/>
+	<result column="CREATE_PARTY_ID" jdbcType="DECIMAL" property="createPartyId"/>
+	<result column="UPDATE_PARTY_ID" jdbcType="DECIMAL" property="updatePartyId"/>
+	<result column="INTRO" jdbcType="VARCHAR" property="intro"/>
+	<result column="COURSE_ID" jdbcType="DECIMAL" property="courseId"/>
+	<result column="NUM" jdbcType="DECIMAL" property="num"/>
+</resultMap>
+<sql id="Base_Column_List">
+	ID,VERSION,TITLE,TYPE,TAG,SOURCE,IMAGE,IMAGE2,IMAGE3,VIDEO_URL,BODY,A_IS_TOP,A_IS_TASK,STATUS,CHANNEL_TYPE,DISPLAY_TYPE,BEGIN_TIME,END_TIME,CREATE_USER_ID,UPDATE_USER_ID,CREATE_TIME,UPDATE_TIME,PUBLISH_TIME,OFFLINE_TIME,COMMIT_TIME,PASS_TIME,AUTO_END_TIME,REFUSE_REASON,CREATE_PARTY_ID,UPDATE_PARTY_ID,INTRO,COURSE_ID,NUM
+</sql>
+<sql id="ar_Base_Column_List">
+	ar.ID,ar.VERSION,ar.TITLE,ar.TYPE,ar.TAG,ar.SOURCE,ar.IMAGE,ar.IMAGE2,ar.IMAGE3,ar.VIDEO_URL,ar.BODY,ar.A_IS_TOP,ar.A_IS_TASK,ar.STATUS,ar.CHANNEL_TYPE,ar.DISPLAY_TYPE,ar.BEGIN_TIME,ar.END_TIME,ar.CREATE_USER_ID,ar.UPDATE_USER_ID,ar.CREATE_TIME,ar.UPDATE_TIME,ar.PUBLISH_TIME,ar.OFFLINE_TIME,ar.COMMIT_TIME,ar.PASS_TIME,ar.AUTO_END_TIME,ar.REFUSE_REASON,ar.CREATE_PARTY_ID,ar.UPDATE_PARTY_ID,ar.INTRO,ar.COURSE_ID,ar.NUM
+</sql>
+<select id="get" parameterType="long" resultMap="ArticleMap">
+	select
+		<include refid="Base_Column_List"/>
+	from article ar
+	where ID = #{id,jdbcType=DECIMAL}
+</select>
+<delete id="delete" parameterType="long">
+	delete
+	from article
+	where ID = #{id,jdbcType=DECIMAL}
+</delete>
+<insert id="insert" parameterType="Article">
+	insert into article(
+		<include refid="Base_Column_List"/>
+	) values (
+	#{id,jdbcType=DECIMAL},
+	#{version,jdbcType=DECIMAL},
+	#{title,jdbcType=VARCHAR},
+	#{type,jdbcType=DECIMAL},
+	#{tag,jdbcType=VARCHAR},
+	#{source,jdbcType=VARCHAR},
+	#{image,jdbcType=VARCHAR},
+	#{image2,jdbcType=VARCHAR},
+	#{image3,jdbcType=VARCHAR},
+	#{video_url,jdbcType=VARCHAR},
+	#{body,jdbcType=VARCHAR},
+	#{aIsTop,jdbcType=DECIMAL},
+	#{aIsTask,jdbcType=DECIMAL},
+	#{status,jdbcType=DECIMAL},
+	#{channelType,jdbcType=DECIMAL},
+    #{displayType,jdbcType=DECIMAL},
+	#{beginTime,jdbcType=TIMESTAMP},
+	#{endTime,jdbcType=TIMESTAMP},
+	#{createUserId,jdbcType=DECIMAL},
+	#{updateUserId,jdbcType=DECIMAL},
+	#{createTime,jdbcType=TIMESTAMP},
+	#{updateTime,jdbcType=TIMESTAMP},
+	#{publishTime,jdbcType=TIMESTAMP},
+	#{offlineTime,jdbcType=TIMESTAMP},
+	#{commitTime,jdbcType=TIMESTAMP},
+	#{passTime,jdbcType=TIMESTAMP},
+	#{autoEndTime,jdbcType=TIMESTAMP},
+	#{refuseReason,jdbcType=VARCHAR},
+	#{createPartyId,jdbcType=DECIMAL},
+	#{updatePartyId,jdbcType=DECIMAL},
+	#{intro,jdbcType=VARCHAR},
+	#{courseId,jdbcType=DECIMAL},
+	#{num,jdbcType=DECIMAL}
+	)
+</insert>
+<update id="update" parameterType="Article">
+	update article ar
+	<set>
+		VERSION = VERSION + 1
+		<if test="title != null">
+			,TITLE = #{title,jdbcType=VARCHAR}
+		</if>
+		<if test="type != null">
+			,TYPE = #{type,jdbcType=DECIMAL}
+		</if>
+		<if test="tag != null">
+			,TAG = #{tag,jdbcType=VARCHAR}
+		</if>
+		<if test="source != null">
+			,SOURCE = #{source,jdbcType=VARCHAR}
+		</if>
+		<if test="image != null">
+			,IMAGE = #{image,jdbcType=VARCHAR}
+		</if>
+		<if test="image2 != null">
+			,IMAGE2 = #{image2,jdbcType=VARCHAR}
+		</if>
+		<if test="image3 != null">
+			,IMAGE3 = #{image3,jdbcType=VARCHAR}
+		</if>
+		<if test="video_url != null">
+			,VIDEO_URL = #{video_url,jdbcType=VARCHAR}
+		</if>
+		<if test="body != null">
+			,BODY = #{body,jdbcType=VARCHAR}
+		</if>
+		<if test="aIsTop != null">
+			,A_IS_TOP = #{aIsTop,jdbcType=DECIMAL}
+		</if>
+		<if test="aIsTask != null">
+			,A_IS_TASK = #{aIsTask,jdbcType=DECIMAL}
+		</if>
+		<if test="status != null">
+			,STATUS = #{status,jdbcType=DECIMAL}
+		</if>
+		<if test="channelType != null">
+			,CHANNEL_TYPE = #{channelType,jdbcType=DECIMAL}
+		</if>
+        <if test="displayType != null">
+            ,DISPLAY_TYPE = #{displayType,jdbcType=DECIMAL}
+        </if>
+		<if test="beginTime != null">
+			,BEGIN_TIME = #{beginTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="endTime != null">
+			,END_TIME = #{endTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="createUserId != null">
+			,CREATE_USER_ID = #{createUserId,jdbcType=DECIMAL}
+		</if>
+		<if test="updateUserId != null">
+			,UPDATE_USER_ID = #{updateUserId,jdbcType=DECIMAL}
+		</if>
+		<if test="createTime != null">
+			,CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="updateTime != null">
+			,UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="publishTime != null">
+			,PUBLISH_TIME = #{publishTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="offlineTime != null">
+			,OFFLINE_TIME = #{offlineTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="commitTime != null">
+			,COMMIT_TIME = #{commitTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="passTime != null">
+			,PASS_TIME = #{passTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="autoEndTime != null">
+			,AUTO_END_TIME = #{autoEndTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="refuseReason != null">
+			,REFUSE_REASON = #{refuseReason,jdbcType=VARCHAR}
+		</if>
+		<if test="createPartyId != null">
+			,CREATE_PARTY_ID = #{createPartyId,jdbcType=DECIMAL}
+		</if>
+		<if test="updatePartyId != null">
+			,UPDATE_PARTY_ID = #{updatePartyId,jdbcType=DECIMAL}
+		</if>
+		<if test="intro != null">
+			,INTRO = #{intro,jdbcType=VARCHAR}
+		</if>
+		<if test="courseId != ''">
+			,COURSE_ID = #{courseId,jdbcType=VARCHAR}
+		</if>
+		<if test="num != ''">
+			,NUM = #{num,jdbcType=VARCHAR}
+		</if>
+	</set>
+	where ID = #{id,jdbcType=DECIMAL}
+</update>
+<update id="updateNul" parameterType="Article">
+	update article ar
+	<set>
+		VERSION = VERSION + 1
+		<if test="title != null">
+			,TITLE = #{title,jdbcType=VARCHAR}
+		</if>
+		<if test="type != null">
+			,TYPE = #{type,jdbcType=DECIMAL}
+		</if>
+		<if test="tag != null">
+			,TAG = #{tag,jdbcType=VARCHAR}
+		</if>
+		<if test="source != null">
+			,SOURCE = #{source,jdbcType=VARCHAR}
+		</if>
+		<if test="image != null">
+			,IMAGE = #{image,jdbcType=VARCHAR}
+		</if>
+		<if test="image2 != null">
+			,IMAGE2 = #{image2,jdbcType=VARCHAR}
+		</if>
+		<if test="image3 != null">
+			,IMAGE3 = #{image3,jdbcType=VARCHAR}
+		</if>
+		<if test="video_url != null">
+			,VIDEO_URL = #{video_url,jdbcType=VARCHAR}
+		</if>
+		<if test="body != null">
+			,BODY = #{body,jdbcType=VARCHAR}
+		</if>
+		<if test="aIsTop != null">
+			,A_IS_TOP = #{aIsTop,jdbcType=DECIMAL}
+		</if>
+		<if test="aIsTask != null">
+			,A_IS_TASK = #{aIsTask,jdbcType=DECIMAL}
+		</if>
+		<if test="status != null">
+			,STATUS = #{status,jdbcType=DECIMAL}
+		</if>
+		<if test="channelType != null">
+			,CHANNEL_TYPE = #{channelType,jdbcType=DECIMAL}
+		</if>
+        <if test="displayType != null">
+            ,DISPLAY_TYPE = #{displayType,jdbcType=DECIMAL}
+        </if>
+			,BEGIN_TIME = #{beginTime,jdbcType=TIMESTAMP}
+			,END_TIME = #{endTime,jdbcType=TIMESTAMP}
+		<if test="createUserId != null">
+			,CREATE_USER_ID = #{createUserId,jdbcType=DECIMAL}
+		</if>
+		<if test="updateUserId != null">
+			,UPDATE_USER_ID = #{updateUserId,jdbcType=DECIMAL}
+		</if>
+		<if test="createTime != null">
+			,CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="updateTime != null">
+			,UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="publishTime != null">
+			,PUBLISH_TIME = #{publishTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="offlineTime != null">
+			,OFFLINE_TIME = #{offlineTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="commitTime != null">
+			,COMMIT_TIME = #{commitTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="passTime != null">
+			,PASS_TIME = #{passTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="autoEndTime != null">
+			,AUTO_END_TIME = #{autoEndTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="refuseReason != null">
+			,REFUSE_REASON = #{refuseReason,jdbcType=VARCHAR}
+		</if>
+		<if test="createPartyId != null">
+			,CREATE_PARTY_ID = #{createPartyId,jdbcType=DECIMAL}
+		</if>
+		<if test="updatePartyId != null">
+			,UPDATE_PARTY_ID = #{updatePartyId,jdbcType=DECIMAL}
+		</if>
+		<if test="intro != null">
+			,INTRO = #{intro,jdbcType=VARCHAR}
+		</if>
+		<if test="courseId != null">
+			,COURSE_ID = #{courseId,jdbcType=VARCHAR}
+		</if>
+		<if test="num != null">
+			,NUM = #{num,jdbcType=VARCHAR}
+		</if>
+	</set>
+	where ID = #{id,jdbcType=DECIMAL}
+</update>
+<select id="findListForExample" parameterType="Article" resultMap="ArticleMap">
+	select
+	<include refid="ar_Base_Column_List"/>
+	from article ar
+	<include refid="common_query_condition"/>
+</select>
+<select id="findListForMap" parameterType="map" resultMap="ArticleMap">
+	select
+	<include refid="ar_Base_Column_List"/>
+	from article ar
+	<if test="partyClass != null">
+		INNER JOIN bas_party bp ON (bp.id = ar.create_party_id)
+	</if>
+	<if test="tagId != null">
+		INNER JOIN article_tag_relation atr ON (ar.id = atr.article_id)
+	</if>
+	<include refid="common_query_condition"/>
+	/*ORDER by ar.commit_time DESC*/
+	<if test=" orderBy != null ">
+		ORDER BY ${orderBy}
+	</if>
+</select>
+<select id="countArticle" parameterType="map" resultType="java.lang.Integer">
+	SELECT count(id) FROM article ar
+	<include refid="common_query_condition"/>
+</select>
+<select id="countDayArticleNum" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+	SELECT COUNT(*) FROM article
+	 WHERE DATE_FORMAT(commit_time,'%Y-%m-%d') = DATE_FORMAT(NOW(),'%Y-%m-%d')
+	 AND channel_type = #{channelType,jdbcType=DECIMAL}
+	 AND create_user_id = #{createUserId,jdbcType=DECIMAL}
+	 AND id != #{id,jdbcType=DECIMAL}
+</select>
+<select id="countDayArticleId" parameterType="java.lang.Long" resultType="java.lang.Long">
+	SELECT id FROM article
+	WHERE DATE_FORMAT(commit_time,'%Y-%m-%d') = DATE_FORMAT(NOW(),'%Y-%m-%d')
+	AND channel_type = #{channelType,jdbcType=DECIMAL}
+	AND create_user_id = #{createUserId,jdbcType=DECIMAL}
+</select>
+<select id="findListForEndTimeTrigger" resultMap="ArticleMap">
+	select
+	<include refid="ar_Base_Column_List"/>
+	from article ar
+	WHERE NOW() >= ar.end_time
+	AND ar.status = 2
+</select>
+<sql id="common_query_condition">
+	<where>
+		<if test="id != null">
+			ar.id = #{id,jdbcType=DECIMAL}
+		</if>
+
+		<if test="title != null">
+			AND ar.title like concat('%',#{title},'%')
+		</if>
+
+		<if test="keyWord != null">
+			AND ar.title like concat('%',#{keyWord},'%')
+		</if>
+
+		<if test="channelType != null and channelType != 0">
+			AND ar.channel_type = #{channelType,jdbcType=DECIMAL}
+		</if>
+
+		<if test="status != null and status != -100">
+			AND ar.status = #{status,jdbcType=DECIMAL}
+		</if>
+
+		<if test="type != null and type != 0">
+			AND ar.type = #{type,jdbcType=DECIMAL}
+		</if>
+
+		<if test="aIsTask != null and aIsTask != -1">
+			AND ar.a_is_task = #{aIsTask,jdbcType=DECIMAL}
+		</if>
+
+		<if test="aIsTop != null and aIsTask != -1">
+			AND ar.a_is_top = #{aIsTop,jdbcType=DECIMAL}
+		</if>
+
+		<if test="notWaitingFlag != null">
+			AND ar.status != 0
+		</if>
+
+		<if test="notAdFlag != null">
+			AND ar.type not in (31,32,33)
+		</if>
+
+		<if test="notChapterFlag != null">
+			AND ar.course_id is null
+		</if>
+
+		<if test="removeChapterId != null">
+			AND ar.id != #{removeChapterId,jdbcType=DECIMAL}
+		</if>
+
+		<if test="cancelAndRefuseStatus != null">
+			AND ar.status in (-1,-2)
+		</if>
+
+		<if test="waitAndRefuseStatus != null">
+			AND ar.status IN (0,-1,-2)
+		</if>
+
+		<if test="onlineAndEndStatus != null">
+			AND ar.status IN (2,4)
+		</if>
+
+		<if test="publishTimeStart != null">
+			AND ar.publish_time &gt;= #{publishTimeStart,jdbcType=TIMESTAMP}
+		</if>
+
+		<if test="publishTimeEnd != null">
+			AND ar.publish_time &lt;= #{publishTimeEnd,jdbcType=TIMESTAMP}
+		</if>
+
+		<if test="commitTimeStart != null">
+			AND ar.commit_time &gt;= #{commitTimeStart,jdbcType=TIMESTAMP}
+		</if>
+
+		<if test="commitTimeEnd != null">
+			AND ar.commit_time &lt;= #{commitTimeEnd,jdbcType=TIMESTAMP}
+		</if>
+
+		<if test="beginTimeStart != null">
+			AND ar.BEGIN_TIME &gt;= #{beginTimeStart,jdbcType=TIMESTAMP}
+		</if>
+
+		<if test="beginTimeEnd != null">
+			AND ar.BEGIN_TIME &lt;= #{beginTimeEnd,jdbcType=TIMESTAMP}
+		</if>
+
+		<if test="endTimeStart != null">
+			AND ar.end_time &gt;= #{endTimeStart,jdbcType=TIMESTAMP}
+		</if>
+
+		<if test="endTimeEnd != null">
+			AND ar.end_time &lt;= #{endTimeEnd,jdbcType=TIMESTAMP}
+		</if>
+
+		<if test="createTimeStart != null">
+			AND ar.create_time &gt;= #{createTimeStart,jdbcType=TIMESTAMP}
+		</if>
+
+		<if test="createTimeEnd != null">
+			AND ar.create_time &lt;= #{createTimeEnd,jdbcType=TIMESTAMP}
+		</if>
+
+		<if test="offlineTimeStart != null">
+			AND ar.offline_time &gt;= #{offlineTimeStart,jdbcType=TIMESTAMP}
+		</if>
+
+		<if test="offlineTimeEnd != null">
+			AND ar.offline_time &lt;= #{offlineTimeEnd,jdbcType=TIMESTAMP}
+		</if>
+
+		<if test="createUserId != null">
+			AND ar.create_user_id = #{createUserId,jdbcType=DECIMAL}
+		</if>
+
+		<if test="partyClass != null">
+			AND bp.party_class = #{partyClass,jdbcType=DECIMAL}
+		</if>
+
+		<if test="tagId != null">
+			AND atr.article_tag_id = #{tagId,jdbcType=DECIMAL}
+		</if>
+
+		<if test="createUserId != null">
+			AND ar.create_user_id = #{createUserId,jdbcType=DECIMAL}
+		</if>
+		<if test="createPartyId != null">
+			AND ar.create_party_id = #{createPartyId,jdbcType=DECIMAL}
+		</if>
+
+		<if test="courseId != null">
+			AND ar.course_id = #{courseId,jdbcType=VARCHAR}
+		</if>
+	</where>
+</sql>
+</mapper>

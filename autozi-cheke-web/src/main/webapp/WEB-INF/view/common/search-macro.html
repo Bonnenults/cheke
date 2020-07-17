@@ -1,0 +1,231 @@
+<#include "/common/toolkit.html">
+<#macro addsearch filters,advance_filters,required_filters,add_filters>
+<div class="searchModel">
+<@searchForm1 filters advance_filters required_filters add_filters/>
+<@searchGrid />
+</div>
+</#macro>
+
+
+<#macro search filters,advance_filters,required_filters>
+<div class="searchModel">
+	    <@searchForm filters advance_filters required_filters/>
+		<@searchGrid />
+	</div>
+</#macro>
+<#macro searchGrid>
+    <div class="class_box plan">
+        <table class='grid'></table>
+        <div class="divline"></div>
+    </div>
+    <div class="main_paging_le">
+            <@gridCommand />
+    </div>
+</#macro>
+<#macro searchForm filters,advance_filters,required_filters>
+  <div class="filters">
+  <#if required_filters?size !=0>
+       <@requiredFilter required_filters/>
+  </#if>
+  <#if filters?size !=0>
+  <div class="suosou plan filters">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" >
+    <#list filters as rows>
+        <tr>
+	        <#list rows as filter>
+	        <#if filter.type=="hidden">
+		         <@paintFormField filter />
+		     <#else>
+		           <#if filter_index == rows?size-1>
+		               <td height='30px' colspan='${2-(filter_index)}'>
+		           <#else>
+		               <td  height='30px' width='33%'>
+		           </#if>
+		           <@paintFormField filter />
+		           </td>
+		      </#if>
+		        </#list>
+	        <#if !rows_has_next>
+	            <td height='30' align='right' style="padding-right:12px;">
+		            <#if advance_filters?size !=0>
+			            <a class="advance_search" href="javascript:App.UI.toggleAdvanceSearch(this);"><img src="${ctx}/img/shanxuan_top.gif" align="absmiddle"> 更多查询条件</a>
+			        </#if>
+		            <input class='btn_search app_search' type='button' value='查询' />
+		        </td>
+	        </#if>
+        </tr>
+    </#list>
+    </table>
+
+    <#if advance_filters?size !=0>
+        <div>
+            <@advanceFilter advance_filters/>
+        </div>
+    </#if>
+    </div>
+    </#if>
+    </div>
+</#macro>
+
+<#macro searchForm1 filters,advance_filters,required_filters,add_filters>
+  <div class="filters">
+  <#if required_filters?size !=0>
+       <@requiredFilter required_filters/>
+  </#if>
+  <#if filters?size !=0>
+  <div class="suosou plan filters">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" >
+    <#list filters as rows>
+        <tr>
+	        <#list rows as filter>
+	        <#if filter.type=="hidden">
+		         <@paintFormField filter />
+		     <#else>
+		           <#if filter_index == rows?size-1>
+		               <td height='30px' colspan='${3-(filter_index)}'>
+		           <#else>
+		               <td  height='30px' width='33%'>
+		           </#if>
+		           <@paintFormField filter />
+		           </td>
+		      </#if>
+		        </#list>
+	        <#if !rows_has_next>
+	            <td height='30' align='left'>
+		            <#if advance_filters?size !=0>
+			            <a class="advance_search" href="javascript:App.UI.toggleAdvanceSearch(this);"><img src="${ctx}/img/shanxuan_top.gif" align="absmiddle"> 更多查询条件</a>
+			        </#if>
+		            <input class='btn_search app_search' type='button' value='查询' />
+		        </td>
+	        </#if>
+        </tr>
+    </#list>
+    </table>
+
+    <#if advance_filters?size !=0>
+        <div>
+            <@advanceFilter advance_filters/>
+        </div>
+    </#if>
+    <#if add_filters?size !=0>
+        <div>
+            <@addFilter add_filters/>
+        </div>
+    </#if>
+    </div>
+    </#if>
+    </div>
+</#macro>
+
+
+<#macro advanceFilter filters>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="advanceFilter" style="display:none">
+<#list filters as rows>
+     <tr>
+	     <#list rows as filter>
+	      <#if filter_index == (rows?size-1)>
+	           <td height='30px' colspan='${3-(filter_index)}'>
+	      <#else>
+	           <td height='30px' width='33%'>
+	      </#if>
+	         <@paintFormField filter />
+	      </td>
+	     </#list>
+     </tr>
+</#list>
+</table>
+</#macro>
+
+<#macro requiredFilter filters>
+<div class="main_search">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" calss="requiredFilter">
+<#list filters as rows>
+     <tr>
+	     <#list rows as filter>
+			      <#if filter_index == rows?size-1>
+		               <td height='30px' colspan='${3-(filter_index)}'>
+		           <#else>
+		               <td  height='30px' width='33%'>
+		           </#if>
+		           <@paintFormField filter />
+		           </td>
+	     </#list>
+     </tr>
+</#list>
+</table>
+</div>
+</#macro>
+
+<#macro paintFormField field>
+<#if field.label??&&field.label!="">
+<div style='float:left;text-align:right;padding:2px 4px'>${field.label}</div>
+</#if>
+<div style='float:left;width:auto'>
+<#if field.type='text'>
+	<#if field.maxlength?? && field.maxlength !='' && field.id?? && field.id!='' >
+		<input style='width:<#if field.width??>${field.width!''}<#else>170px</#if>' type='text' name='${field.name}' maxlength='${field.maxlength}' id='${field.id}'/>
+	<#elseif field.maxlength?? && field.maxlength !=''>
+		<input style='width:<#if field.width??>${field.width!''}<#else>170px</#if>' type='text' name='${field.name}' maxlength='${field.maxlength}'/>
+	<#else>
+		<input style='width:<#if field.width??>${field.width!''}<#else>170px</#if>' type='text' name='${field.name}'/>
+	</#if>
+<#elseif field.type='select'>
+     <select name='${field.name}' style="width:170px;font-size:12px;height:22px;">
+     <#list field.value?keys as key>
+        <option value='${key}' <#if field.defaultValue?? && field.defaultValue == '${key}'>selected</#if>>${field.value[key]}</option>
+     </#list>
+     </select>
+<#elseif field.type='dateRange'>
+        <input name='${field.name.begin}' style='width:<#if field.width??>${field.width!''}<#else>72px</#if>' id="my97BeginDate" onFocus="var my97EndDate=$dp.$('my97EndDate'); WdatePicker({onpicked:function(){my97EndDate.focus();},readOnly:true,maxDate:'#F{$dp.$D(\'my97EndDate\');}'})" value="<#if field.value??>${field.value.begin!''}</#if>"/> - <input style='width:<#if field.width??>${field.width!''}<#else>72px</#if>' name='${field.name.end}' id="my97EndDate" onFocus="WdatePicker({readOnly:true,minDate:'#F{$dp.$D(\'my97BeginDate\');}'})" value="<#if field.value??>${field.value.end!''}</#if>"/>
+<#elseif field.type='dateBeforeNow'>
+        <input name='${field.name}' style='width:120px'  onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm', minDate:'%y-%M-%d %H:%mm',readOnly:true})"/>
+<#elseif field.type='date'>
+        <input name='${field.name}' style='width:120px'  onFocus="WdatePicker({readOnly:true})"/>
+<#elseif field.type='radio'>
+        <#list field.value as radio>
+			<input type='radio' name='${field.name}' value='${radio[1]}' checked='${radio[2]}'/>${radio[0]}
+        </#list>
+<#elseif field.type='checkbox'>
+         <#list field.value as checkbox>
+             <input type='checkbox' name='${field.name}' value='${checkbox[1]}' />${checkbox[0]}
+         </#list>
+<#elseif field.type='hidden'>
+         <input type='hidden' name='${field.name}' value='${field.value}' />
+<#elseif field.type='macro'>
+ 		<@toolkit field.value/>
+<#elseif field.type='autocomplete'>
+	<#if field.maxlength?? && field.maxlength !=''>
+		<input class='autoComplete' style='width:120px' name='${field.name}' url='${field.value}' maxlength='${field.maxlength}'/>
+	<#else>
+		<input class='autoComplete' style='width:120px' name='${field.name}' url='${field.value}'/>
+	</#if>
+<#elseif field.type='label'>
+         <input name='${field.name}' value='${field.value}' />
+<#elseif field.type='terminalTypeSelect'>
+        <@s.select id="level1PartySubType" name="filter_partySubType" list="partySubTypeMap" listKey="key" listValue="value" style="width:100px" value="%{entity.partySubType/10*10}" onChange="changePartySubType(this)" />
+        <select id="level2PartySubType" name="filter_terminalType">
+            <option value="">请选择</option>
+        </select>
+</#if>
+</div>
+</#macro>
+
+
+<#macro addFilter filters>
+<span></br></span>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="addFilter">
+<#list filters as rows>
+     <tr>
+	     <#list rows as filter>
+	      <#if filter_index == (rows?size-1)>
+	           <td height='30px' colspan='${3-(filter_index)}'>
+	      <#else>
+	           <td height='30px' width='33%'>
+	      </#if>
+	         <@paintFormField filter />
+	      </td>
+	     </#list>
+     </tr>
+</#list>
+</table>
+</#macro>

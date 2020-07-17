@@ -1,0 +1,45 @@
+<script type="text/javascript" src="${contextpath}/js/party/partyAdmin.js" ></script>
+<script>
+    $(function () {
+        $("#certificateName").html("组织机构代码证/营业执照扫描件");
+    });
+</script>
+<div class="lf_carRight_center">
+    <div class="nb_userInfo_main">
+    <#include "common-refuse.html">
+        <h4 class="nb_userInfo_main_title"><span></span>媒介信息</h4>
+        <div class="nb_userInfo_main_form">
+            <label for="">媒介全称：</label>
+            <p><#if (partyLog??&&partyLog.companyName??)>${partyLog.companyName}</#if></p>
+        </div>
+        <div class="nb_userInfo_main_form">
+            <label for="">媒介属性：</label>
+                <#if (partyLog??&&partyLog.mediaType??&&partyLog.mediaType==2)>
+                    <span>新闻媒体</span>
+                <#else>
+                    <span>群媒体</span>
+                </#if>
+        </div>
+        <div class="nb_userInfo_main_form">
+            <label for="">媒介简介：</label>
+            <p><#if (partyLog??&&partyLog.description??)>${partyLog.description}</#if></p>
+        </div>
+        <!--所在地-->
+        <#include "common-area.html">
+
+        <div class="nb_userInfo_main_form">
+            <label for="">媒介类别：</label>
+            <p>${companyTypeName}</p>
+        </div>
+        <!--资质证明-->
+        <#include "common-certificate.html">
+        <h4 class="nb_userInfo_main_title"><span></span>发票信息</h4>
+        <#include "common-invoice.html">
+
+        <h4 class="nb_userInfo_main_title"><span></span>运营负责人</h4>
+        <#include "common-person.html">
+
+    </div>
+<#include "common-button.html">
+</div>
+<#include "common-dialog.html">

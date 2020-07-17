@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+ <head>
+     <meta charset="UTF-8">
+        <title>车客</title>
+        <link rel="stylesheet" href="${contextpath}/styles/css/public.css" />
+        <link rel="stylesheet" href="${contextpath}/styles/css/index.css" />
+        <script type="text/javascript" src="${contextpath}/js/framework/jquery-1.12.0.min.js" ></script>
+        <script type="text/javascript" src="${contextpath}/js/framework/index.js" ></script>
+         <script type="text/javascript">
+              var context = '${contextpath!""}';
+         </script>
+ </head>
+<body>
+<div class="lf_carLeft">
+    <#list mainMenus as menu1>
+    <div class="lf_carList lf_left_icon_${menu1.id}">
+        <#if menu1.id==10>
+            <a id="home" class="active" href="javascript:toShowIndex()"><span class="lf_icon_${menu1.id}"></span>${menu1.text}<i></i></a>
+        <#else>
+            <a <#if menu1_index==0>id="home"</#if> class="active" href="javascript:;"><span class="lf_icon_${menu1.id}"></span>${menu1.text}<i></i></a>
+            <ul>
+                <#if menu1.items?? && menu1.items?size!=0>
+                    <#list menu1.items as menu2>
+                        <li data-id="${menu2.id}" name="menuUrl" url="${contextpath}${menu2.url}">${menu2.text}</li>
+                    </#list>
+                </#if>
+            </ul>
+        </#if>
+    </div>
+    </#list>
+</div>
+</body>
+
+ <script type="text/javascript">
+  function toShowIndex(){
+      top.frames[2].location.href ="/frontPage.action";
+  }
+
+
+  function showCKLetter() {
+     $(".lf_icon_13").click();
+     $("[data-id='132']").click();
+  }
+ </script>
+
+
+</html>

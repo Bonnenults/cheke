@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.autozi.cheke.user.mapper.FeedBackMapper">
+  <cache eviction="LRU" type="org.mybatis.caches.memcached.MemcachedCache"/>
+
+  <resultMap id="FeedBackMap" type="FeedBack" >
+
+    <id column="ID" property="id" jdbcType="DECIMAL" />
+    <result column="VERSION" property="version" jdbcType="DECIMAL" />
+    <result column="TITLE" property="title" jdbcType="VARCHAR" />
+    <result column="CONTENT" property="content" jdbcType="VARCHAR" />
+    <result column="CONTACT_INFO" property="contactInfo" jdbcType="VARCHAR" />
+    <result column="CREATE_USER_ID" property="createUserId" jdbcType="DECIMAL"/>
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, VERSION, TITLE, CONTENT,CONTACT_INFO, CREATE_USER_ID, CREATE_TIME
+  </sql>
+  <select id="get" resultMap="FeedBackMap" parameterType="long" >
+    select
+    <include refid="Base_Column_List" />
+    from feedback
+    where ID = #{id,jdbcType=DECIMAL}
+  </select>
+  <delete id="delete" parameterType="long" >
+    delete from feedback
+    where ID = #{id,jdbcType=DECIMAL}
+  </delete>
+  <insert id="insert" parameterType="FeedBack">
+    insert into feedback (
+      <include refid="Base_Column_List"/>
+      )
+    values (
+      #{id,jdbcType=DECIMAL},
+      #{version,jdbcType=DECIMAL},
+      #{title,jdbcType=VARCHAR},
+      #{content,jdbcType=VARCHAR},
+      #{contactInfo,jdbcType=DECIMAL},
+      #{createUserId,jdbcType=DECIMAL},
+      #{createTime,jdbcType=TIMESTAMP})
+    
+  </insert>
+
+  <select id="findListForMap" parameterType="map" resultMap="FeedBackMap" >
+  	select * from feedback
+      <where>
+          <if test="createTimeStart != null">
+              AND create_time &gt;= #{createTimeStart,jdbcType=TIMESTAMP}
+          </if>
+          <if test="createTimeEnd != null">
+              and create_time &lt;= #{createTimeEnd,jdbcType=TIMESTAMP}
+          </if>
+          <if test="createUserId != null">
+              AND create_user_id = #{createUserId,jdbcType=DECIMAL}
+          </if>
+          <if test="contactInfo != null">
+              AND CONTACT_INFO = #{contactInfo,jdbcType=DECIMAL}
+          </if>
+      </where>
+  </select>
+
+</mapper>

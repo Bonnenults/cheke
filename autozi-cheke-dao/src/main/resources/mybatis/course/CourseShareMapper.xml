@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.autozi.cheke.course.mapper.CourseShareMapper">
+<cache eviction="LRU" type="org.mybatis.caches.memcached.MemcachedCache"/>
+<resultMap id="CourseShareMap" type="CourseShare">
+	<result column="ID" jdbcType="DECIMAL" property="id"/>
+	<result column="VERSION" jdbcType="DECIMAL" property="version"/>
+	<result column="Course_ID" jdbcType="DECIMAL" property="courseId"/>
+	<result column="USER_ID" jdbcType="DECIMAL" property="userId"/>
+	<result column="SHARE_TIME" jdbcType="TIMESTAMP" property="shareTime"/>
+	<result column="TYPE" jdbcType="DECIMAL" property="type"/>
+	<result column="CLICK_NUM" jdbcType="DECIMAL" property="clickNum"/>
+	<result column="SHARE_IP" jdbcType="VARCHAR" property="shareIp"/>
+</resultMap>
+<sql id="Base_Column_List">
+	ID,VERSION,Course_ID,USER_ID,SHARE_TIME,TYPE,CLICK_NUM,SHARE_IP
+</sql>
+<sql id="cs_Base_Column_List">
+	cs.ID,cs.VERSION,cs.Course_ID,cs.USER_ID,cs.SHARE_TIME,cs.TYPE,cs.CLICK_NUM,cs.SHARE_IP
+</sql>
+<select id="get" parameterType="long" resultMap="CourseShareMap">
+	select
+		<include refid="Base_Column_List"/>
+	from course_share cs
+	where ID = #{id,jdbcType=DECIMAL}
+</select>
+<delete id="delete" parameterType="long">
+	delete
+	from course_share
+	where ID = #{id,jdbcType=DECIMAL}
+</delete>
+<insert id="insert" parameterType="CourseShare">
+	insert into course_share(
+		<include refid="Base_Column_List"/>
+	) values (
+	#{id,jdbcType=DECIMAL},
+	#{version,jdbcType=DECIMAL},
+	#{courseId,jdbcType=DECIMAL},
+	#{userId,jdbcType=DECIMAL},
+	#{shareTime,jdbcType=TIMESTAMP},
+	#{type,jdbcType=DECIMAL},
+	#{clickNum,jdbcType=DECIMAL},
+	#{shareIp,jdbcType=VARCHAR}
+	)
+</insert>
+<update id="update" parameterType="CourseShare">
+	update course_share cs
+	<set>
+		VERSION = VERSION + 1
+		<if test="courseId != null">
+		,Course_ID = #{courseId,jdbcType=DECIMAL}
+		</if>
+		<if test="userId != null">
+		,USER_ID = #{userId,jdbcType=DECIMAL}
+		</if>
+		<if test="shareTime != null">
+		,SHARE_TIME = #{shareTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="type != null">
+		,TYPE = #{type,jdbcType=DECIMAL}
+		</if>
+		<if test="clickNum != null">
+		,CLICK_NUM = #{clickNum,jdbcType=DECIMAL}
+		</if>
+		<if test="shareIp != null">
+		,SHARE_IP = #{shareIp,jdbcType=DECIMAL}
+		</if>
+	</set>
+	where ID = #{id,jdbcType=DECIMAL}
+</update>
+<select id="findListForExample" parameterType="CourseShare" resultMap="CourseShareMap">
+	select
+	<include refid="cs_Base_Column_List"/>
+	from course_share cs
+	<include refid="common_query_condition"/>
+</select>
+<select id="findListForMap" parameterType="map" resultMap="CourseShareMap">
+	select
+	<include refid="cs_Base_Column_List"/>
+	from course_share cs
+	<include refid="common_query_condition"/>
+</select>
+<select id="countAllShareClickNum" parameterType="java.lang.Long" resultType="java.lang.Integer">
+	SELECT SUM(click_num) FROM course_share WHERE course_id = #{courseId,jdbcType=DECIMAL}
+</select>
+<sql id="common_query_condition">
+	<where>
+		<if test="id != null">
+			cs.id = #{id,jdbcType=DECIMAL}
+		</if>
+		<if test="courseId != null">
+			AND cs.course_id = #{courseId,jdbcType=DECIMAL}
+		</if>
+		<if test="shareType != null">
+			AND cs.type = #{shareType,jdbcType=DECIMAL}
+		</if>
+		<if test="userId != null">
+			AND cs.user_id = #{userId,jdbcType=DECIMAL}
+		</if>
+	</where>
+</sql>
+</mapper>

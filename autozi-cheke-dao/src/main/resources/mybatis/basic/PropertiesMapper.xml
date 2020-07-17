@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.autozi.cheke.basic.mapper.PropertiesMapper">
+<cache eviction="LRU" type="org.mybatis.caches.memcached.MemcachedCache"/>
+<resultMap id="PropertiesMap" type="Properties">
+	<result column="ID" jdbcType="DECIMAL" property="id"/>
+	<result column="VERSION" jdbcType="DECIMAL" property="version"/>
+	<result column="POP_KEY" jdbcType="VARCHAR" property="popKey"/>
+	<result column="VALUE" jdbcType="VARCHAR" property="value"/>
+	<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+	<result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+	<result column="CREATE_USER_ID" jdbcType="DECIMAL" property="createUserId"/>
+	<result column="UPDATE_USER_ID" jdbcType="DECIMAL" property="updateUserId"/>
+</resultMap>
+<sql id="Base_Column_List">
+	ID,VERSION,POP_KEY,VALUE,CREATE_TIME,UPDATE_TIME,CREATE_USER_ID,UPDATE_USER_ID
+</sql>
+<sql id="pop_Base_Column_List">
+	pop.ID,pop.VERSION,pop.POP_KEY,pop.VALUE,pop.CREATE_TIME,pop.UPDATE_TIME,pop.CREATE_USER_ID,pop.UPDATE_USER_ID
+</sql>
+<select id="get" parameterType="long" resultMap="PropertiesMap">
+	select
+		<include refid="Base_Column_List"/>
+	from bas_properties pop
+	where ID = #{id,jdbcType=DECIMAL}
+</select>
+<delete id="delete" parameterType="long">
+	delete
+	from bas_properties
+	where ID = #{id,jdbcType=DECIMAL}
+</delete>
+<insert id="insert" parameterType="Properties">
+	insert into bas_properties(
+		<include refid="Base_Column_List"/>
+	) values (
+	#{id,jdbcType=DECIMAL},
+	#{version,jdbcType=DECIMAL},
+	#{popKey,jdbcType=VARCHAR},
+	#{value,jdbcType=VARCHAR},
+	#{createTime,jdbcType=TIMESTAMP},
+	#{updateTime,jdbcType=TIMESTAMP},
+	#{createUserId,jdbcType=DECIMAL},
+	#{updateUserId,jdbcType=DECIMAL}
+	)
+</insert>
+<update id="update" parameterType="Properties">
+	update bas_properties pop
+	<set>
+		VERSION = VERSION + 1
+		<if test="popKey != null">
+		,POP_KEY = #{popKey,jdbcType=VARCHAR}
+		</if>
+		<if test="value != null">
+		,VALUE = #{value,jdbcType=VARCHAR}
+		</if>
+		<if test="createTime != null">
+		,CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="updateTime != null">
+		,UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="createUserId != null">
+		,CREATE_USER_ID = #{createUserId,jdbcType=DECIMAL}
+		</if>
+		<if test="updateUserId != null">
+		,UPDATE_USER_ID = #{updateUserId,jdbcType=DECIMAL}
+		</if>
+	</set>
+	where ID = #{id,jdbcType=DECIMAL}
+</update>
+<select id="findListForExample" parameterType="Properties" resultMap="PropertiesMap">
+	select
+	<include refid="pop_Base_Column_List"/>
+	from bas_properties pop
+	<include refid="common_query_condition"/>
+</select>
+<select id="findListForMap" parameterType="map" resultMap="PropertiesMap">
+	select
+	<include refid="pop_Base_Column_List"/>
+	from bas_properties pop
+	<include refid="common_query_condition"/>
+</select>
+<sql id="common_query_condition">
+	<where>
+		<if test="id != null">
+			pop.id = #{id,jdbcType=DECIMAL}
+		</if>
+		<if test="popKey != null">
+			pop.POP_KEY = #{popKey,jdbcType=DECIMAL}
+		</if>
+
+	</where>
+</sql>
+</mapper>

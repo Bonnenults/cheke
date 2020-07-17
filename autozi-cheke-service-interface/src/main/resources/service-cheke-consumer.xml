@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd        
+    http://code.alibabatech.com/schema/dubbo        
+    http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <!-- 消费方应用名，用于计算依赖关系，不是匹配条件，不要与提供方一样 -->
+    <dubbo:application name="consumer-of-sps"  />
+
+ 	<!-- 使用zookeeper注册中心暴露服务地址 -->
+	<dubbo:registry  protocol="zookeeper"  address="${zookeeper.server}" />
+
+    <!-- 生成远程服务代理，可以和本地bean一样使用demoService -->
+
+    <dubbo:reference id="areaService" interface="com.autozi.cheke.service.basic.IAreaService"  timeout="20000"/>
+    <dubbo:reference id="noticeService" interface="com.autozi.cheke.service.basic.INoticeService"  timeout="20000"/>
+    <dubbo:reference id="propertisService" interface="com.autozi.cheke.service.basic.IPropertiesService" timeout="20000"/>
+
+    <dubbo:reference id="userService" interface="com.autozi.cheke.service.user.IUserService" timeout="20000" />
+    <dubbo:reference id="userLoginStautsService" interface="com.autozi.cheke.service.user.IUserLoginStatusService" timeout="20000" />
+    <dubbo:reference id="partyService" interface="com.autozi.cheke.service.party.IPartyService"  timeout="20000"/>
+    <dubbo:reference id="roleService" interface="com.autozi.cheke.service.user.IRoleService"  timeout="20000"/>
+    <dubbo:reference id="chekeFansService" interface="com.autozi.cheke.service.party.IChekeFansService"  timeout="20000"/>
+    <dubbo:reference id="mobilePhoneCodeService" interface="com.autozi.cheke.service.mobile.IMobilePhoneCodeService"  timeout="20000"/>
+    <dubbo:reference id="feedBackService" interface="com.autozi.cheke.service.user.IFeedBackService"  timeout="20000"/>
+    <dubbo:reference id="userCountInfoService" interface="com.autozi.cheke.service.user.IUserCountInfoService"  timeout="20000"/>
+    <dubbo:reference id="medalService" interface="com.autozi.cheke.service.user.IMedalService"  timeout="20000"/>
+    <dubbo:reference id="medalRuleService" interface="com.autozi.cheke.service.user.IMedalRuleService"  timeout="20000"/>
+    <dubbo:reference id="personalMedalService" interface="com.autozi.cheke.service.user.IPersonalMedalService"  timeout="20000"/>
+
+    <dubbo:reference id="chekeCommentService" interface="com.autozi.cheke.service.user.IChekeCommentService"  timeout="20000"/>
+    <dubbo:reference id="chekeCollectionService" interface="com.autozi.cheke.service.user.IChekeCollectionService"  timeout="20000"/>
+
+    <dubbo:reference id="articleService" interface="com.autozi.cheke.service.article.IArticleService"  timeout="20000"/>
+    <dubbo:reference id="articleCountInfoService" interface="com.autozi.cheke.service.article.IArticleCountInfoService"  timeout="20000"/>
+    <dubbo:reference id="articleOrderService" interface="com.autozi.cheke.service.article.IArticleOrderService"  timeout="20000"/>
+    <dubbo:reference id="articleTagService" interface="com.autozi.cheke.service.article.IArticleTagService"  timeout="20000"/>
+    <dubbo:reference id="articleTagRelationService" interface="com.autozi.cheke.service.article.IArticleTagRelationService"  timeout="20000"/>
+    <dubbo:reference id="articleLeaveWordService" interface="com.autozi.cheke.service.article.IArticleLeaveWordService"  timeout="20000"/>
+    <dubbo:reference id="articleShareService" interface="com.autozi.cheke.service.article.IArticleShareService"  timeout="20000"/>
+
+    <dubbo:reference id="courseService" interface="com.autozi.cheke.service.course.ICourseService"  timeout="20000"/>
+    <dubbo:reference id="courseUserRealtionService" interface="com.autozi.cheke.service.course.ICourseUserRelationService" timeout="20000"/>
+    <dubbo:reference id="courseCountInfoService" interface="com.autozi.cheke.service.course.ICourseCountInfoService" timeout="20000"/>
+    <dubbo:reference id="courseShareService" interface="com.autozi.cheke.service.course.ICourseShareService" timeout="20000"/>
+
+    <dubbo:reference id="leaveWordService" interface="com.autozi.cheke.service.message.ILeaveWordService"  timeout="20000"/>
+    <dubbo:reference id="articleClickService" interface="com.autozi.cheke.service.article.IArticleClickService"  timeout="20000"/>
+    <dubbo:reference id="chekeLetterService" interface="com.autozi.cheke.service.party.IChekeLetterService"  timeout="20000"/>
+
+    <dubbo:reference id="accountService" interface="com.autozi.cheke.service.settle.IAccountService" timeout="20000"/>
+    <dubbo:reference id="accountOrderService" interface="com.autozi.cheke.service.settle.IAccountOrderService"  timeout="20000"/>
+    <dubbo:reference id="invoiceService" interface="com.autozi.cheke.service.settle.IInvoiceService"  timeout="20000"/>
+    <dubbo:reference id="drawCashOrderService" interface="com.autozi.cheke.service.settle.IDrawCashOrderService"  timeout="20000"/>
+    <dubbo:reference id="chanpayOrderService" interface="com.autozi.cheke.service.settle.IChanpayOrderService"  timeout="20000"/>
+    <dubbo:reference id="chanpayService" interface="com.autozi.cheke.service.settle.IChanpayService"  timeout="20000"/>
+
+    <!--ES服务-->
+    <dubbo:reference id="articleSearchService" interface="com.autozi.cheke.service.search.IArticleSearchService"  timeout="20000"/>
+</beans>

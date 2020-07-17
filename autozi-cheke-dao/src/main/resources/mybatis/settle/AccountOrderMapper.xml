@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.autozi.cheke.settle.mapper.AccountOrderMapper">
+<cache eviction="LRU" type="org.mybatis.caches.memcached.MemcachedCache"/>
+<resultMap id="AccountOrderMap" type="AccountOrder">
+	<result column="ID" jdbcType="DECIMAL" property="id"/>
+	<result column="VERSION" jdbcType="DECIMAL" property="version"/>
+	<result column="CODE" jdbcType="VARCHAR" property="code"/>
+	<result column="PARTY_ID" jdbcType="DECIMAL" property="partyId"/>
+	<result column="USER_ID" jdbcType="DECIMAL" property="userId"/>
+	<result column="ACCOUNT_MONEY" jdbcType="DECIMAL" property="accountMoney"/>
+	<result column="RATE_FEE" jdbcType="DECIMAL" property="rateFee"/>
+	<result column="SLOTTING_FEE" jdbcType="DECIMAL" property="slottingFee"/>
+	<result column="REAL_MONEY" jdbcType="DECIMAL" property="realMoney"/>
+	<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+	<result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+	<result column="PAY_TIME" jdbcType="TIMESTAMP" property="payTime"/>
+	<result column="TYPE" jdbcType="DECIMAL" property="type"/>
+	<result column="STATUS" jdbcType="DECIMAL" property="status"/>
+	<result column="NOTE" jdbcType="VARCHAR" property="note"/>
+	<result column="INVOICE_STATUS" jdbcType="DECIMAL" property="invoiceStatus"/>
+	<result column="INVOICE_TIME" jdbcType="TIMESTAMP" property="invoiceTime"/>
+</resultMap>
+<sql id="Base_Column_List">
+	ID,VERSION,CODE,PARTY_ID,USER_ID,ACCOUNT_MONEY,RATE_FEE,SLOTTING_FEE,REAL_MONEY,CREATE_TIME,UPDATE_TIME,PAY_TIME,TYPE,STATUS,NOTE,INVOICE_STATUS,INVOICE_TIME
+</sql>
+<sql id="pao_Base_Column_List">
+	pao.ID,pao.VERSION,pao.CODE,pao.PARTY_ID,pao.USER_ID,pao.ACCOUNT_MONEY,pao.RATE_FEE,pao.SLOTTING_FEE,pao.REAL_MONEY,pao.CREATE_TIME,pao.UPDATE_TIME,pao.PAY_TIME,pao.TYPE,pao.STATUS,pao.NOTE,pao.INVOICE_STATUS,pao.INVOICE_TIME
+</sql>
+<select id="get" parameterType="long" resultMap="AccountOrderMap" useCache="false">
+	select
+		<include refid="Base_Column_List"/>
+	from pay_account_order pao
+	where ID = #{id,jdbcType=DECIMAL}
+</select>
+<delete id="delete" parameterType="long">
+	delete
+	from pay_account_order
+	where ID = #{id,jdbcType=DECIMAL}
+</delete>
+<insert id="insert" parameterType="AccountOrder">
+	insert into pay_account_order(
+		<include refid="Base_Column_List"/>
+	) values (
+	#{id,jdbcType=DECIMAL},
+	#{version,jdbcType=DECIMAL},
+	#{code,jdbcType=VARCHAR},
+	#{partyId,jdbcType=DECIMAL},
+	#{userId,jdbcType=DECIMAL},
+	#{accountMoney,jdbcType=DECIMAL},
+	#{rateFee,jdbcType=DECIMAL},
+	#{slottingFee,jdbcType=DECIMAL},
+	#{realMoney,jdbcType=DECIMAL},
+	#{createTime,jdbcType=TIMESTAMP},
+	#{updateTime,jdbcType=TIMESTAMP},
+	#{payTime,jdbcType=TIMESTAMP},
+	#{type,jdbcType=DECIMAL},
+	#{status,jdbcType=DECIMAL},
+	#{note,jdbcType=VARCHAR},
+	#{invoiceStatus,jdbcType=DECIMAL},
+	#{invoiceTime,jdbcType=TIMESTAMP}
+	)
+</insert>
+<update id="update" parameterType="AccountOrder">
+	update pay_account_order pao
+	<set>
+		VERSION = VERSION + 1
+		<if test="code != null">
+		,CODE = #{code,jdbcType=VARCHAR}
+		</if>
+		<if test="partyId != null">
+		,PARTY_ID = #{partyId,jdbcType=DECIMAL}
+		</if>
+		<if test="userId != null">
+		,USER_ID = #{userId,jdbcType=DECIMAL}
+		</if>
+		<if test="accountMoney != null">
+		,ACCOUNT_MONEY = #{accountMoney,jdbcType=DECIMAL}
+		</if>
+		<if test="rateFee != null">
+		,RATE_FEE = #{rateFee,jdbcType=DECIMAL}
+		</if>
+		<if test="slottingFee != null">
+		,SLOTTING_FEE = #{slottingFee,jdbcType=DECIMAL}
+		</if>
+		<if test="realMoney != null">
+		,REAL_MONEY = #{realMoney,jdbcType=DECIMAL}
+		</if>
+		<if test="createTime != null">
+		,CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="updateTime != null">
+		,UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="payTime != null">
+		,PAY_TIME = #{payTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="type != null">
+		,TYPE = #{type,jdbcType=DECIMAL}
+		</if>
+		<if test="status != null">
+		,STATUS = #{status,jdbcType=DECIMAL}
+		</if>
+		<if test="note != null">
+		,NOTE = #{note,jdbcType=VARCHAR}
+		</if>
+		<if test="invoiceStatus != null">
+		,INVOICE_STATUS = #{invoiceStatus,jdbcType=DECIMAL}
+		</if>
+		<if test="invoiceTime != null">
+			,INVOICE_TIME = #{invoiceTime,jdbcType=TIMESTAMP}
+		</if>
+	</set>
+	where ID = #{id,jdbcType=DECIMAL}
+</update>
+
+<update id="syncAccountOrder" parameterType="AccountOrder">
+	update pay_account_order pao set VERSION = VERSION + 1,pao.status=-10,pao.note='已超时',pao.UPDATE_TIME=now()
+	where pao.create_time &lt;= #{createTime,jdbcType=TIMESTAMP} and pao.status=10
+</update>
+<select id="findListForExample" parameterType="AccountOrder" resultMap="AccountOrderMap">
+	select
+	<include refid="pao_Base_Column_List"/>
+	from pay_account_order pao
+	<include refid="common_query_condition"/>
+</select>
+<select id="findListForMap" parameterType="map" resultMap="AccountOrderMap">
+	select
+	<include refid="pao_Base_Column_List"/>
+	from pay_account_order pao
+	<if test="partyName !=null || partyClass !=null">
+		LEFT JOIN bas_party bp on bp.id = pao.PARTY_ID
+	</if>
+	<include refid="common_query_condition"/>
+	order by pao.update_time desc,pao.create_time desc
+</select>
+<sql id="common_query_condition">
+	<where>
+		<if test="id != null">
+			pao.id = #{id,jdbcType=DECIMAL}
+		</if>
+		<if test="code != null">
+			and pao.code = #{code,jdbcType=DECIMAL}
+		</if>
+		<if test="partyId != null">
+			and pao.party_id = #{partyId,jdbcType=DECIMAL}
+		</if>
+		<if test="createTimeStart != null">
+			AND pao.create_time &gt;= #{createTimeStart,jdbcType=TIMESTAMP}
+		</if>
+		<if test="createTimeEnd != null">
+			AND pao.create_time &lt;= #{createTimeEnd,jdbcType=TIMESTAMP}
+		</if>
+		<if test="payTimeStart != null">
+			AND pao.pay_time &gt;= #{payTimeStart,jdbcType=TIMESTAMP}
+		</if>
+		<if test="payTimeEnd != null">
+			AND pao.pay_time &lt;= #{payTimeEnd,jdbcType=TIMESTAMP}
+		</if>
+		<if test="invoiceTimeStart != null">
+			AND pao.invoice_time &gt;= #{invoiceTimeStart,jdbcType=TIMESTAMP}
+		</if>
+		<if test="invoiceTimeEnd != null">
+			AND pao.invoice_time &lt;= #{invoiceTimeEnd,jdbcType=TIMESTAMP}
+		</if>
+		<if test="status !=null">
+			and pao.status = #{status}
+		</if>
+		<if test="invoiceStatus !=null">
+			and pao.invoice_status = #{invoiceStatus}
+		</if>
+		<if test="partyName !=null">
+			and bp.NAME like concat('%',#{partyName},'%')
+		</if>
+		<if test="partyClass !=null">
+			and bp.PARTY_CLASS  = #{partyClass}
+		</if>
+	</where>
+</sql>
+	<select id="getTotalMoney" parameterType="map" resultType="java.util.Map" useCache="false">
+		select IFNULL(sum(account_money),0) as accountMoney,
+		IFNULL(sum(real_money),0) as totalMoney,
+		IFNULL(sum(rate_fee),0) as rateFee,
+		IFNULL(sum(slotting_fee),0) as slottingFee,
+		count(1) as orderCount
+		from pay_account_order
+		<where>
+			<if test="userId != null">
+				user_id=#{userId,jdbcType=DECIMAL}
+			</if>
+			<if test="partyId != null">
+				and party_id=#{partyId,jdbcType=DECIMAL}
+			</if>
+			<if test="status != null">
+				and status=#{status,jdbcType=DECIMAL}
+			</if>
+		</where>
+	</select>
+</mapper>

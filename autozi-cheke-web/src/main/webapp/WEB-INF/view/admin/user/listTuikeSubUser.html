@@ -1,0 +1,39 @@
+<div class="lf_carCenter clear">
+    <div class="lf_carRight">
+        <div class="lf_carRight_center">
+            <div class="qy_center_main">
+                    <div class="qy_center_table" id="data_table_list">
+                        <table>
+                            <tbody>
+                            <tr>
+                                <th width="3%">#</th>
+                                <th width="10%">推客名称</th>
+                                <th>推客昵称</th>
+                                <th width="10%">推客手机号</th>
+                                <th width="10%">邀请码</th>
+                                <th width="10%">注册时间</th>
+                            </tr>
+                                    <#if (page??)&&(page.result??)&&(page.result?size>0)>
+                                        <#list page.result as view>
+                                        <tr>
+
+                                            <td>${page.firstElementIndex + view_index }</td>
+                                            <td><#if view.loginName??>${view.loginName?html}</#if></td>
+                                            <td><#if view.nickName??>${view.nickName?html}</#if></td>
+                                            <td><#if view.phone??>${view.phone?html}</#if></td>
+                                            <td><#if view.inviteCode??>${view.inviteCode?html}</#if></td>
+                                            <td><#if view.createTime??>${view.createTime?string("yyyy-MM-dd HH:mm")}</#if></td>
+                                        </tr>
+                                        </#list>
+                                    <#else>
+                                        <tr>
+                                            <td colspan='10'>没有符合条件的记录</td>
+                                        </tr>
+                                    </#if>
+                            </tbody>
+                        </table>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>

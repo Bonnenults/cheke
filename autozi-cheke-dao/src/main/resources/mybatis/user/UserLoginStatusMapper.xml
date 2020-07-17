@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.autozi.cheke.user.mapper.UserLoginStatusMapper">
+	<cache eviction="LRU" type="org.mybatis.caches.memcached.MemcachedCache"/>
+	<resultMap id="UserLoginStatusMap" type="UserLoginStatus">
+		<result column="ID" jdbcType="DECIMAL" property="id"/>
+		<result column="VERSION" jdbcType="DECIMAL" property="version"/>
+		<result column="TOKEN" jdbcType="VARCHAR" property="token"/>
+		<result column="LAST_LOGIN_TIME" jdbcType="TIMESTAMP" property="lastLoginTime"/>
+		<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+	</resultMap>
+	<sql id="Base_Column_List">
+		ID,VERSION,TOKEN,LAST_LOGIN_TIME,CREATE_TIME
+	</sql>
+	<sql id="MULS_Base_Column_List">
+		MULS.ID,MULS.VERSION,MULS.TOKEN,MULS.LAST_LOGIN_TIME,MULS.CREATE_TIME
+	</sql>
+	<select id="get" parameterType="long" resultMap="UserLoginStatusMap">
+		select
+			<include refid="Base_Column_List"/>
+		from MB_USER_LOGIN_STATUS MULS
+		where ID = #{id,jdbcType=DECIMAL}
+	</select>
+	<delete id="delete" parameterType="long">
+		delete
+		from MB_USER_LOGIN_STATUS
+		where ID = #{id,jdbcType=DECIMAL}
+	</delete>
+	<insert id="insert" parameterType="UserLoginStatus">
+		insert into MB_USER_LOGIN_STATUS(
+			<include refid="Base_Column_List"/>
+		) values (
+		#{id,jdbcType=DECIMAL},
+		#{version,jdbcType=DECIMAL},
+		#{token,jdbcType=VARCHAR},
+		#{lastLoginTime,jdbcType=TIMESTAMP},
+		#{createTime,jdbcType=TIMESTAMP}
+		)
+	</insert>
+	<update id="update" parameterType="UserLoginStatus">
+		update MB_USER_LOGIN_STATUS MULS
+		<set>
+			VERSION = VERSION + 1
+			<if test="token != null">
+			,TOKEN = #{token,jdbcType=VARCHAR}
+			</if>
+			<if test="lastLoginTime != null">
+			,LAST_LOGIN_TIME = #{lastLoginTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="createTime != null">
+			,CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+		</set>
+		where ID = #{id,jdbcType=DECIMAL}
+	</update>
+	<select id="findListForExample" parameterType="UserLoginStatus" resultMap="UserLoginStatusMap">
+		select
+		<include refid="MULS_Base_Column_List"/>
+		from MB_USER_LOGIN_STATUS MULS
+		<include refid="common_query_condition"/>
+	</select>
+	<select id="findListForMap" parameterType="map" resultMap="UserLoginStatusMap" useCache="false">
+		select
+		<include refid="MULS_Base_Column_List"/>
+		from MB_USER_LOGIN_STATUS MULS
+		<include refid="common_query_condition"/>
+	</select>
+	<sql id="common_query_condition">
+		<where>
+			<if test="id != null">
+				MULS.id = #{id,jdbcType=DECIMAL}
+			</if>
+			<if test="token !=null">
+    			and MULS.TOKEN = #{token,jdbcType=VARCHAR}
+    		</if>
+    		<if test="lastLoginTime !=null">
+    			and MULS.LAST_LOGIN_TIME = #{lastLoginTime,jdbcType=TIMESTAMP}
+    		</if>
+    		<if test="createTime !=null">
+    			and MULS.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+    		</if>
+		</where>
+	</sql>
+	
+	<select id="getByToken" resultMap="UserLoginStatusMap" parameterType="string" useCache="false">
+        select
+        <include refid="Base_Column_List"/>
+        from MB_USER_LOGIN_STATUS
+        where TOKEN = #{token,jdbcType=DECIMAL}
+    </select>
+</mapper>

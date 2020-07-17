@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.autozi.cheke.settle.mapper.InvoiceMapper">
+<cache eviction="LRU" type="org.mybatis.caches.memcached.MemcachedCache"/>
+<resultMap id="InvoiceMap" type="Invoice">
+	<result column="ID" jdbcType="DECIMAL" property="id"/>
+	<result column="VERSION" jdbcType="DECIMAL" property="version"/>
+	<result column="PARTY_ID" jdbcType="DECIMAL" property="partyId"/>
+	<result column="ORDER_IDS" jdbcType="VARCHAR" property="orderIds"/>
+	<result column="INVOICE_TITLE" jdbcType="VARCHAR" property="invoiceTitle"/>
+	<result column="INVOICE_NUMBER" jdbcType="VARCHAR" property="invoiceNumber"/>
+	<result column="INVOICE_ADDRESS" jdbcType="VARCHAR" property="invoiceAddress"/>
+	<result column="INVOICE_BANK" jdbcType="VARCHAR" property="invoiceBank"/>
+	<result column="INVOICE_CONTENT" jdbcType="VARCHAR" property="invoiceContent"/>
+	<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+	<result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+	<result column="STATUS" jdbcType="DECIMAL" property="status"/>
+	<result column="MONEY" jdbcType="DECIMAL" property="money"/>
+	<result column="PARTY_NAME" jdbcType="DECIMAL" property="partyName"/>
+	<result column="PARTY_CLASS" jdbcType="DECIMAL" property="partyClass"/>
+</resultMap>
+<sql id="Base_Column_List">
+	ID,VERSION,PARTY_ID,ORDER_IDS,INVOICE_TITLE,INVOICE_NUMBER,INVOICE_ADDRESS,INVOICE_BANK,INVOICE_CONTENT,CREATE_TIME,UPDATE_TIME,STATUS,MONEY
+</sql>
+<sql id="pi_Base_Column_List">
+	pi.ID,pi.VERSION,pi.PARTY_ID,pi.ORDER_IDS,pi.INVOICE_TITLE,pi.INVOICE_NUMBER,pi.INVOICE_ADDRESS,pi.INVOICE_BANK,pi.INVOICE_CONTENT,pi.CREATE_TIME,pi.UPDATE_TIME,pi.STATUS,pi.MONEY
+</sql>
+<select id="get" parameterType="long" resultMap="InvoiceMap">
+	select
+		<include refid="Base_Column_List"/>
+	from pay_invoice pi
+	where ID = #{id,jdbcType=DECIMAL}
+</select>
+<delete id="delete" parameterType="long">
+	delete
+	from pay_invoice
+	where ID = #{id,jdbcType=DECIMAL}
+</delete>
+<insert id="insert" parameterType="Invoice">
+	insert into pay_invoice(
+		<include refid="Base_Column_List"/>
+	) values (
+	#{id,jdbcType=DECIMAL},
+	#{version,jdbcType=DECIMAL},
+	#{partyId,jdbcType=DECIMAL},
+	#{orderIds,jdbcType=VARCHAR},
+	#{invoiceTitle,jdbcType=VARCHAR},
+	#{invoiceNumber,jdbcType=VARCHAR},
+	#{invoiceAddress,jdbcType=VARCHAR},
+	#{invoiceBank,jdbcType=VARCHAR},
+	#{invoiceContent,jdbcType=VARCHAR},
+	#{createTime,jdbcType=TIMESTAMP},
+	#{updateTime,jdbcType=TIMESTAMP},
+	#{status,jdbcType=DECIMAL},
+	#{money,jdbcType=DECIMAL}
+	)
+</insert>
+<update id="update" parameterType="Invoice">
+	update pay_invoice pi
+	<set>
+		VERSION = VERSION + 1
+		<if test="partyId != null">
+		,PARTY_ID = #{partyId,jdbcType=DECIMAL}
+		</if>
+		<if test="orderIds != null">
+		,ORDER_IDS = #{orderIds,jdbcType=VARCHAR}
+		</if>
+		<if test="invoiceTitle != null">
+		,INVOICE_TITLE = #{invoiceTitle,jdbcType=VARCHAR}
+		</if>
+		<if test="invoiceNumber != null">
+		,INVOICE_NUMBER = #{invoiceNumber,jdbcType=VARCHAR}
+		</if>
+		<if test="invoiceAddress != null">
+		,INVOICE_ADDRESS = #{invoiceAddress,jdbcType=VARCHAR}
+		</if>
+		<if test="invoiceBank != null">
+		,INVOICE_BANK = #{invoiceBank,jdbcType=VARCHAR}
+		</if>
+		<if test="invoiceContent != null">
+		,INVOICE_CONTENT = #{invoiceContent,jdbcType=VARCHAR}
+		</if>
+		<if test="createTime != null">
+		,CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="updateTime != null">
+			,UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="status != null">
+		,STATUS = #{status,jdbcType=DECIMAL}
+		</if>
+		<if test="money != null">
+		,MONEY = #{money,jdbcType=DECIMAL}
+		</if>
+	</set>
+	where ID = #{id,jdbcType=DECIMAL}
+</update>
+<select id="findListForExample" parameterType="Invoice" resultMap="InvoiceMap">
+	select
+	<include refid="pi_Base_Column_List"/>
+	from pay_invoice pi
+	<include refid="common_query_condition"/>
+</select>
+<select id="findListForMap" parameterType="map" resultMap="InvoiceMap">
+	select pi.*,p.party_class as partyClass,p.name as partyName from pay_invoice pi LEFT JOIN bas_party p on pi.party_id=p.id
+	<include refid="common_query_condition"/>
+	order by pi.create_time desc
+</select>
+<sql id="common_query_condition">
+	<where>
+		<if test="id != null">
+			pi.id = #{id,jdbcType=DECIMAL}
+		</if>
+		<if test="status != null">
+			and pi.status = #{status,jdbcType=DECIMAL}
+		</if>
+		<if test="partyId != null">
+			pi.party_id = #{partyId,jdbcType=DECIMAL}
+		</if>
+		<if test="partyName != null">
+			and p.name like concat('%',#{partyName,jdbcType=DECIMAL},'%')
+		</if>
+		<if test="partyClass != null">
+			and p.party_class = #{partyClass,jdbcType=DECIMAL}
+		</if>
+		<if test="createTimeStart != null">
+			AND pi.create_time &gt;= #{createTimeStart,jdbcType=TIMESTAMP}
+		</if>
+		<if test="createTimeEnd != null">
+			AND pi.create_time &lt;= #{createTimeEnd,jdbcType=TIMESTAMP}
+		</if>
+	</where>
+</sql>
+</mapper>

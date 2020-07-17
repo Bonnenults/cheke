@@ -1,0 +1,122 @@
+<script type="text/javascript" src="${contextpath}/js/party/letter.js" ></script>
+<div class="lf_carCenter clear">
+    <div class="lf_carRight">
+        <div class="lf_carRight_center">
+            <div class="qy_center_main">
+
+                <form id="filter_form" action="/letter/cheke/list/listLetter.action" method="post">
+                    <div class="qy_center_seach clear">
+                        <div class="qy_seach_wrap clear">
+                            <span>
+                                <label class="qy_left"> 推客号：</label>
+                                <input class="qy_left" style="width:166px;" type="text" name="userName">
+                            </span>
+                            <span>
+                                <label class="qy_left qy_left">回复状态：</label>
+                                <div class="project_category qy_left text_adjustment" style="width:178px;display: inline-block;float:none;margin:0;">
+                                    <input type="hidden" value="" name="status" id="status"/>
+                                    <input class="inves_all_money" type="text" placeholder="全部" value="" name="" />
+                                    <div class="border_lists" id="letter_status">
+                                        <a href="javascript:;" value="">全部</a>
+                                        <a href="javascript:;" value="1">未回复</a>
+                                        <a href="javascript:;" value="2">已回复</a>
+                                    </div>
+                                </div>
+                            </span>
+                            <span>
+                                <label class="qy_left">私信时间：</label>
+                                <input id="createTimeStart" name="createTimeStart" class="qy_calendar qy_left" type="text" placeholder="请选择......"
+                                       onfocus="var my97EndDate=$dp.$('createTimeEnd');
+						 																		WdatePicker({onpicked:function(){my97EndDate.focus();},
+						 																		readOnly:true,maxDate:'#F{$dp.$D(\'createTimeEnd\');}',dateFmt:'yyyy-MM-dd 00:00:00'})">
+                                <em class="qy_left">&nbsp;&nbsp;- &nbsp;</em>
+                                <input id="createTimeEnd" name="createTimeEnd" class="qy_calendar qy_left" type="text" placeholder="请选择......"
+                                       onfocus="WdatePicker({readOnly:true,minDate:'#F{$dp.$D(\'createTimeStart\');}',dateFmt:'yyyy-MM-dd 23:59:59'})">
+                            </span>
+                        </div>
+                        <div class="qy_seach_right">
+                            <a class="qy_seach_cx" href="javascript:void(0)" onclick="App.commonFormSubmit('filter_form');">查询</a>
+                            <a class="qy_seach_cz" href="javascript:;">重置</a>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="qy_center_table" id="data_table_list">
+                    <table>
+                        <tbody>
+                        <tr>
+                            <th>#</th>
+                            <th>推客号</th>
+                            <th style="width:130px;">私信时间</th>
+                            <th style="width:130px;">私信内容</th>
+                            <th style="width:130px;">回复状态</th>
+                            <th class="no_border" style="width:230px;">操作</th>
+                        </tr>
+                        <#if (page??)&&(page.result??)&&(page.result?size>0)>
+                            <#list page.result as view>
+                            <tr>
+                                <td>${page.firstElementIndex + view_index }</td>
+                                <td><#if view.userName??>${view.userName?html}</#if></td>
+                                <td><#if view.updateTime??>${view.updateTime?string("yyyy-MM-dd HH:mm")}</#if></td>
+                                <td><#if view.content??>${view.content?html}</#if></td>
+                                <td>
+                                    <#if view.status??&&view.status==1>
+                                        未回复
+                                    <#elseif view.status??&&view.status==2>
+                                        已回复
+                                    </#if>
+                                </td>
+                                <td class="no_border">
+                                    <#if view.status??&&view.status==1>
+                                        <a class="qy_alink" href="javascript:Letter.viewDetail('${view.id}')">回复私信</a>
+                                    <#elseif view.status??&&view.status==2>
+                                        <a class="qy_alink" href="javascript:Letter.viewDetail('${view.id}')">查看详情</a>
+                                    </#if>
+                                </td>
+                            </tr>
+                            </#list>
+                        <#else>
+                        <tr>
+                            <td colspan='10'>没有符合条件的记录</td>
+                        </tr>
+                        </#if>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="clear qy_page_wrap">
+                    <div id="page_common_nav">
+                    <#include "../../common/paging_common.html">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $("#letter_status a").click(function(){
+        $("#status").val($(this).attr("value"));
+    });
+</script>
+<!--遮罩层-->
+<div class="mask_float"></div>
+<div class="bomb_box" id="returns_info" style="display: none">
+    <h2 class="bomb_title">回复私信<a class="bomb_close" href="javascript:;"></a></h2>
+    <div class="return_box clear" id="letterContent">
+
+    </div>
+    <!--回复框+提交-->
+    <div class="return_bottom">
+        <input type="hidden" id="ran"/>
+        <input type="hidden" id="userId"/>
+        <input type="hidden" id="userName"/>
+        <input type="hidden" id="userImg"/>
+        <input type="hidden" id="partyId"/>
+        <input type="hidden" id="partyName"/>
+        <input type="hidden" id="partyImg"/>
+        <input type="hidden" id="relationId"/>
+        <input class="return_answer" type="text" placeholder="回复......" value="" name="" id="content"/>
+        <a class="rebox_submit" href="javascript:Letter.returnLetter();">提交</a>
+    </div>
+</div>

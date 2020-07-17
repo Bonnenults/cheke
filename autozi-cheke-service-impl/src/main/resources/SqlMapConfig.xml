@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+
+<!--     <properties> -->
+<!--     	<property name="dialect" value="mysql"/> -->
+<!--     	<property name="pageSqlId" value=".*Page$" />   -->
+<!--     </properties> -->
+
+    <settings>
+        <!-- changes from the defaults -->
+        <setting name="lazyLoadingEnabled" value="false"/>
+        <setting name="cacheEnabled" value="true"/>
+    </settings>
+
+<!--     <plugins> -->
+<!--     	<plugin interceptor="com.lzjf.common.dal.mybatis.PageInterceptor"/> -->
+<!--     </plugins> -->
+
+
+    <typeAliases>
+        <!--基础数据-->
+        <typeAlias alias="Area" type="com.autozi.cheke.basic.entity.Area" />
+        <typeAlias alias="Properties" type="com.autozi.cheke.basic.entity.Properties" />
+        <!--文章-->
+        <typeAlias alias="Article" type="com.autozi.cheke.article.entity.Article" />
+        <typeAlias alias="ArticleClick" type="com.autozi.cheke.article.entity.ArticleClick" />
+        <typeAlias alias="ArticleCountInfo" type="com.autozi.cheke.article.entity.ArticleCountInfo" />
+        <typeAlias alias="ArticleLeaveWord" type="com.autozi.cheke.article.entity.ArticleLeaveWord" />
+        <typeAlias alias="ArticleOrder" type="com.autozi.cheke.article.entity.ArticleOrder" />
+        <typeAlias alias="ArticleShare" type="com.autozi.cheke.article.entity.ArticleShare" />
+        <!--课程-->
+        <typeAlias alias="Course" type="com.autozi.cheke.course.entity.Course" />
+        <typeAlias alias="CourseUserRelation" type="com.autozi.cheke.course.entity.CourseUserRelation" />
+        <typeAlias alias="CourseCountInfo" type="com.autozi.cheke.course.entity.CourseCountInfo" />
+        <typeAlias alias="CourseShare" type="com.autozi.cheke.course.entity.CourseShare" />
+
+        <!--用户-->
+        <typeAlias alias="User" type="com.autozi.cheke.user.entity.User" />
+        <typeAlias alias="Party" type="com.autozi.cheke.party.entity.Party" />
+        <typeAlias alias="PartyLog" type="com.autozi.cheke.party.entity.PartyLog" />
+        <typeAlias alias="FeedBack" type="com.autozi.cheke.user.entity.FeedBack" />
+        <typeAlias alias="UserCountInfo" type="com.autozi.cheke.user.entity.UserCountInfo" />
+        <typeAlias alias="Medal" type="com.autozi.cheke.user.entity.Medal" />
+        <typeAlias alias="MedalRule" type="com.autozi.cheke.user.entity.MedalRule" />
+        <typeAlias alias="PersonalMedal" type="com.autozi.cheke.user.entity.PersonalMedal" />
+        <typeAlias alias="ChekeComment" type="com.autozi.cheke.user.entity.ChekeComment" />
+        <typeAlias alias="ChekeCollection" type="com.autozi.cheke.user.entity.ChekeCollection" />
+    </typeAliases>
+
+    <mappers>
+        <!--基础数据-->
+        <mapper resource="mybatis/basic/AreaMapper.xml" />
+        <mapper resource="mybatis/basic/PropertiesMapper.xml" />
+        <!--文章-->
+        <mapper resource="mybatis/article/ArticleMapper.xml" />
+        <mapper resource="mybatis/article/ArticleClickMapper.xml" />
+        <mapper resource="mybatis/article/ArticleCountInfoMapper.xml" />
+        <mapper resource="mybatis/article/ArticleLeaveWordMapper.xml" />
+        <mapper resource="mybatis/article/ArticleOrderMapper.xml" />
+        <mapper resource="mybatis/article/ArticleShareMapper.xml" />
+
+        <!--课程-->
+        <mapper resource="mybatis/course/CourseMapper.xml" />
+        <mapper resource="mybatis/course/CourseUserRelationMapper.xml" />
+        <mapper resource="mybatis/course/CourseCountInfoMapper.xml" />
+        <mapper resource="mybatis/course/CourseShareMapper.xml" />
+
+        <!--用户-->
+        <mapper resource="mybatis/user/UserMapper.xml" />
+        <mapper resource="mybatis/user/FeedBackMapper.xml" />
+        <mapper resource="mybatis/user/UserCountInfoMapper.xml" />
+        <mapper resource="mybatis/user/MedalMapper.xml" />
+        <mapper resource="mybatis/user/MedalRuleMapper.xml" />
+        <mapper resource="mybatis/user/PersonalMedalMapper.xml" />
+        <mapper resource="mybatis/user/ChekeCommentMapper.xml" />
+        <mapper resource="mybatis/user/ChekeCollectionMapper.xml" />
+        <mapper resource="mybatis/party/PartyMapper.xml" />
+        <mapper resource="mybatis/party/PartyLogMapper.xml" />
+    </mappers>
+
+</configuration>

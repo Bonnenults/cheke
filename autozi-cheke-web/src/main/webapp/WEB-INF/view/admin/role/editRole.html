@@ -1,0 +1,61 @@
+    <script type="text/javascript" src="${contextpath}/js/user/role.js"></script>
+    <script type="text/javascript" src="${contextpath}/js/user/checkbox.js"></script>
+    <script  type="text/javascript" >
+       $(function(){
+           Role.initAddValidator();
+       })
+    </script>
+    <div class="lf_carRight">
+        <div class="lf_carRight_center">
+            <input type="hidden"<#if role??>value="${role.id!''}"</#if>  id="id" name="id"/>
+            <#if role??>
+                 <h3 class="lf_h3">修改角色</h3>
+            <#else>
+                 <h3 class="lf_h3">新增角色</h3>
+            </#if>
+            <form id="role_form" action="" method="get">
+                <div class="lf_set_center">
+                    <div class="lf_set_public">
+                        <label>＊角色名称 </label>
+                        <input type="text" id="name"  name="name" value="${(role.name)!''}" />　　　　　　
+                        <label>角色说明</label>
+                        <input type="text" id="description"  name="description" value="${(role.description)!''}" />
+                    </div>
+                </div>
+            </form>
+            <div class="lf_set_center">
+                <div class="lf_set_public">
+                    <#list authorities['0'] as menu>
+                        <div class="lf_set_management" data_num="${menu.id}">
+                            <h6>
+                                <label style="margin: 15px 0;" class="lf_label_checkBox all_checkbox" for="info${menu.id}">
+                                    <input class="clarity" id="info${menu.id}" name="systemRole"  data_id="${menu.id}"  <#if systemRoles?? && systemRoles?seq_contains(menu.systemRole?string)>checked="checked"</#if> type="checkbox" value="${menu.systemRole}"/>
+                                    <div></div>
+                                    <span style="font-size: 14px;">${menu.text}</span>
+                                </label>
+                            </h6>
+                            <ul class="checkbox_child clear">
+                                <#list authorities['${menu.id}'] as level2Menu>
+                                <li>
+                                    <label class="lf_label_checkBox" for="${level2Menu.id}">
+                                        <input class="clarity" name="systemRole" id="${level2Menu.id}" data_parent_id="${menu.id}"  <#if systemRoles?? && systemRoles?seq_contains(level2Menu.systemRole?string)>checked="checked"</#if> type="checkbox" value="${level2Menu.systemRole}"/>
+                                        <div></div>
+                                        <span>${level2Menu.text}</span>
+                                    </label>
+                                </li>
+                                </#list>
+                            </ul>
+                        </div>
+                    </#list>
+                </div>
+            </div>
+        	<div class="nb_submit" style="margin: 0 auto; padding: 30px 0; background: #fff;">
+	            <a href="javascript:;">
+	                <button style="background: #5a8bff; margin-right: 30px;" class="nb_btn_refuse" onclick="Role.submitForm()">保存</button>
+	            </a>
+	            <a href="javascript:;">
+	                <button class="nb_btn_back" onclick="App.jump('/role/admin/list/listRole.action')">返回</button>
+	            </a>
+	        </div>
+        </div>
+    </div>

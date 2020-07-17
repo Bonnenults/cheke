@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>车客</title>
+    <script type="text/javascript" src="${contextpath}/js/article/article/article.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+    $(function(){
+        Article.initArticle();
+    })
+</script>
+
+<div class="lf_carCenter clear">
+    <#--    左侧菜单栏      -->
+
+    <div class="lf_carRight">
+        <div class="lf_carRight_center">
+            <div class="qy_center_main">
+
+                    <form id="filter_form" action="/article/yxpt/query/queryArticle.action" method="get">
+                        <input type="hidden" name="channelType" id="channelType">
+                        <input type="hidden" name="status" id="status">
+                        <input type="hidden" name="type" id="type">
+                        <input type="hidden" name="aIsTask" id="aIsTask">
+
+                        <div class="qy_center_seach clear">
+                            <div class="qy_seach_wrap clear">
+                            <span>
+                                    <label class="qy_left">频道：</label>
+                                    <div class="project_category qy_left text_adjustment">
+                                        <!--文本框-->
+                                        <input class="inves_all_money" type="text" placeholder="全部" value="" name="" />
+                                        <div class="border_lists" id="channel_type">
+                                            <a href="javascript:;" data-title="0">全部</a>
+                                        <#list articleChannelMap?keys as key>
+                                            <a href="javascript:;" data-title="${key}"> ${articleChannelMap[key]} </a>
+                                        </#list>
+                                        </div>
+                                    </div>
+                            </span>
+                            <span>
+                                <label class="qy_left">类型：</label>
+                                <div class="project_category qy_left text_adjustment">
+                                    <!--文本框-->
+                                    <input class="inves_all_money" type="text" placeholder="全部" value="" name="" />
+                                    <div class="border_lists" id="project_type">
+                                    <#list articleTypeMap?keys as key>
+                                        <a href="javascript:;" data-title="${key}"> ${articleTypeMap[key]} </a>
+                                    </#list>
+                                    </div>
+                                </div>
+                            </span>
+                            <span>
+                                <label class="qy_left">创建时间：</label>
+                                <input id="createTimeStart" name="createTimeStart" class="qy_calendar qy_left" type="text" placeholder="请选择"
+                                                                                                onfocus="$('.border_lists').hide(); var my97EndDate=$dp.$('createTimeEnd');
+						 																		WdatePicker({onpicked:function(){my97EndDate.focus();},
+						 																		readOnly:true,maxDate:'#F{$dp.$D(\'createTimeEnd\');}',dateFmt:'yyyy-MM-dd 00:00:00'})">
+                                <em class="qy_left">&nbsp;- &nbsp;</em>
+                                <input id="createTimeEnd" name="createTimeEnd" class="qy_calendar qy_left" type="text" placeholder="请选择"
+                                                                                                onfocus="$('.border_lists').hide(); WdatePicker({readOnly:true,minDate:'#F{$dp.$D(\'createTimeStart\');}',dateFmt:'yyyy-MM-dd 23:59:59'})">
+                            </span>
+                            <span>
+                                <label class="qy_left">上线时间：</label>
+                                <input id="publishTimeStart" name="publishTimeStart" class="qy_calendar qy_left" type="text" placeholder="请选择"
+                                                                                                onfocus="$('.border_lists').hide(); var my97EndDate=$dp.$('publishTimeEnd');
+						 																		WdatePicker({onpicked:function(){my97EndDate.focus();},
+						 																		readOnly:true,maxDate:'#F{$dp.$D(\'publishTimeEnd\');}',dateFmt:'yyyy-MM-dd 00:00:00'})">
+                                <em class="qy_left">&nbsp;- &nbsp;</em>
+                                <input id="publishTimeEnd" name="publishTimeEnd" class="qy_calendar qy_left" type="text" placeholder="请选择"
+                                                                                                 onfocus="$('.border_lists').hide(); WdatePicker({readOnly:true,minDate:'#F{$dp.$D(\'publishTimeStart\');}',dateFmt:'yyyy-MM-dd 23:59:59'})">
+                            </span>
+                            <span>
+                                <label class="qy_left">付费推广：</label>
+                                <div class="project_category qy_left text_adjustment">
+                                    <!--文本框-->
+                                    <input class="inves_all_money" type="text" placeholder="全部" value="" name="" />
+                                    <div class="border_lists" id="is_task">
+                                        <a href="javascript:;" data-title="-1">全部</a>
+                                        <a href="javascript:;" data-title="0">否</a>
+                                        <a href="javascript:;" data-title="1">是</a>
+                                    </div>
+                                </div>
+                            </span>
+                            <span>
+                                <label class="qy_left qy_left">状态：</label>
+                                <div class="project_category qy_left text_adjustment">
+                                    <!--文本框-->
+                                    <input class="inves_all_money" type="text" placeholder="全部" value="" name="" />
+                                    <div class="border_lists" id="article_status">
+                                    <#list articleStatusMap?keys as key>
+                                        <a href="javascript:;" data-title="${key}"> ${articleStatusMap[key]} </a>
+                                    </#list>
+                                    </div>
+                                </div>
+                            </span>
+                            </div>
+                            <div class="qy_seach_right">
+                                <a class="qy_seach_cx" href="javascript:void(0)" onclick="App.commonFormSubmit('filter_form');">查询</a>
+                                <a class="qy_seach_cz" href="javascript:;" onclick="queryChongZhi()">重置</a>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="qy_center_table" id="data_table_list">
+                        <table>
+                            <tbody>
+                            <tr>
+                                <th width="4%">#</th>
+                                <th width="5%">频道</th>
+                                <th width="15%">标题</th>
+                                <th width="8%">类别</th>
+                                <th width="10%">创建时间</th>
+                                <th width="10%">上线时间</th>
+                                <th width="5%">状态</th>
+                                <th width="5%">付费推广</th>
+                                <th width="8%">总费用（元）</th>
+                                <th width="8%">余额（元）</th>
+                                <th width="5%">单次点击（元）</th>
+                                <th width="8%">留言</th>
+                                <th width="6%">推客</th>
+                            </tr>
+                                    <#if (page??)&&(page.result??)&&(page.result?size>0)>
+                                        <#list page.result as view>
+                                        <tr>
+                                            <td>${page.firstElementIndex + view_index }</td>
+                                            <td><#if view.channelName??>${view.channelName?html}</#if></td>
+
+                                            <#if view.channelType == 1>
+                                                <td><#if view.title??><a class="qy_alink" href="${contextpath}/article/yxpt/list/getArticleDetail.action?id=${view.id}">${view.title?html}</a></#if></td>
+                                            </#if>
+                                            <#if view.channelType == 2>
+                                                <td><#if view.title??><a class="qy_alink" href="${contextpath}/video/yxpt/list/getArticleDetail.action?id=${view.id}">${view.title?html}</a></#if></td>
+                                            </#if>
+                                            <#if view.channelType == 3>
+                                                <td><#if view.title??><a class="qy_alink" href="${contextpath}/project/yxpt/list/getArticleDetail.action?id=${view.id}">${view.title?html}</a></#if></td>
+                                            </#if>
+
+                                            <td><#if view.typeName??>${view.typeName?html}</#if></td>
+                                            <td><#if view.createTime??>${view.createTime?string("yyyy-MM-dd HH:mm")}</#if></td>
+                                            <td><#if view.publishTime??>${view.publishTime?string("yyyy-MM-dd HH:mm")}</#if></td>
+                                            <td><#if view.statusName??>${view.statusName?html}</#if></td>
+                                            <td><#if view.aIsTask??><#if view.aIsTask == 1>是<#else>否</#if></#if></td>
+
+                                            <td><#if view.allCost??>${view.allCost?html}</#if></td>
+                                            <td><#if view.usedCost??>${view.usedCost?html}</#if></td>
+                                            <td><#if view.onceCost??>${view.onceCost?html}</#if></td>
+                                            <td><#if view.leaveWords??><a class="qy_alink" href="${contextpath}/leaveWord/yxpt/list/listLeaveWord.action?articleId=${view.id}">${view.leaveWords?html}</a></#if></td>
+                                            <td><#if view.twitter??>${view.twitter?html}</#if></td>
+                                        </tr>
+                                        </#list>
+                                    <#else>
+                                        <tr>
+                                            <td colspan='13'>没有符合条件的记录</td>
+                                        </tr>
+                                    </#if>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                <div class="clear qy_page_wrap">
+                    <p style="width: 100%; color: #96a2be; font-size: 12px;line-height: 30px;">信息总数：<span style="color: #5a8bff;">${totalUser} 条</span></p>
+
+                    <div id="page_common_nav">
+                        <#include "../../common/paging_common.html">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function queryChongZhi() {
+        $("#channelType").val("");
+        $("#status").val("");
+        $("#type").val("");
+        $("#aIsTask").val("");
+    }
+</script>
+</body>
+</html>

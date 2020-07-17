@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.autozi.cheke.party.mapper.ChekeLetterMapper">
+<cache eviction="LRU" type="org.mybatis.caches.memcached.MemcachedCache"/>
+<resultMap id="ChekeLetterMap" type="ChekeLetter">
+	<result column="ID" jdbcType="DECIMAL" property="id"/>
+	<result column="VERSION" jdbcType="DECIMAL" property="version"/>
+	<result column="TO_USER_ID" jdbcType="DECIMAL" property="toUserId"/>
+	<result column="FROM_USER_ID" jdbcType="DECIMAL" property="fromUserId"/>
+	<result column="CONTENT" jdbcType="VARCHAR" property="content"/>
+	<result column="RELATION_ID" jdbcType="DECIMAL" property="relationId"/>
+	<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+	<result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+</resultMap>
+<sql id="Base_Column_List">
+	ID,VERSION,TO_USER_ID,FROM_USER_ID,CONTENT,RELATION_ID,CREATE_TIME,UPDATE_TIME
+</sql>
+<sql id="cl_Base_Column_List">
+	cl.ID,cl.VERSION,cl.TO_USER_ID,cl.FROM_USER_ID,cl.CONTENT,cl.RELATION_ID,cl.CREATE_TIME,cl.UPDATE_TIME
+</sql>
+<select id="get" parameterType="long" resultMap="ChekeLetterMap">
+	select
+		<include refid="Base_Column_List"/>
+	from cheke_letter cl
+	where ID = #{id,jdbcType=DECIMAL}
+</select>
+<delete id="delete" parameterType="long">
+	delete
+	from cheke_letter
+	where ID = #{id,jdbcType=DECIMAL}
+</delete>
+<insert id="insert" parameterType="ChekeLetter">
+	insert into cheke_letter(
+		<include refid="Base_Column_List"/>
+	) values (
+	#{id,jdbcType=DECIMAL},
+	#{version,jdbcType=DECIMAL},
+	#{toUserId,jdbcType=DECIMAL},
+	#{fromUserId,jdbcType=DECIMAL},
+	#{content,jdbcType=VARCHAR},
+	#{relationId,jdbcType=DECIMAL},
+	#{createTime,jdbcType=TIMESTAMP},
+	#{updateTime,jdbcType=TIMESTAMP}
+	)
+</insert>
+<update id="update" parameterType="ChekeLetter">
+	update cheke_letter cl
+	<set>
+		VERSION = VERSION + 1
+		<if test="toUserId != null">
+		,TO_USER_ID = #{toUserId,jdbcType=DECIMAL}
+		</if>
+		<if test="fromUserId != null">
+		,FROM_USER_ID = #{fromUserId,jdbcType=DECIMAL}
+		</if>
+		<if test="content != null">
+		,CONTENT = #{content,jdbcType=VARCHAR}
+		</if>
+		<if test="relationId != null">
+		,RELATION_ID = #{relationId,jdbcType=DECIMAL}
+		</if>
+		<if test="createTime != null">
+		,CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="updateTime != null">
+		,UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+		</if>
+	</set>
+	where ID = #{id,jdbcType=DECIMAL}
+</update>
+<select id="findListForExample" parameterType="ChekeLetter" resultMap="ChekeLetterMap">
+	select
+	<include refid="cl_Base_Column_List"/>
+	from cheke_letter cl
+	<where>
+		<if test="id != null">
+			cl.id = #{id,jdbcType=DECIMAL}
+		</if>
+		<if test="relationId != null">
+			and cl.relation_id = #{relationId,jdbcType=DECIMAL}
+		</if>
+		<if test="toUserId != null">
+			and cl.to_user_id = #{toUserId,jdbcType=DECIMAL}
+		</if>
+		<if test="createTime != null">
+			AND cl.create_time &gt;= #{createTime,jdbcType=TIMESTAMP}
+		</if>
+	</where>
+	order by create_time asc
+</select>
+<select id="findListForMap" parameterType="map" resultMap="ChekeLetterMap">
+	select
+	<include refid="cl_Base_Column_List"/>
+	from cheke_letter cl
+	<include refid="common_query_condition"/>
+</select>
+<sql id="common_query_condition">
+	<where>
+		<if test="id != null">
+			cl.id = #{id,jdbcType=DECIMAL}
+		</if>
+	</where>
+</sql>
+</mapper>

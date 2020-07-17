@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge，chrome=1">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <meta content="telephone=no,email=no" name="format-detection">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <title>${article.title}</title>
+    <link rel="stylesheet" href="${contextpath}/css/mui.min.css" />
+    <link rel="stylesheet" href="${contextpath}/css/index.css"/>
+    <link rel="stylesheet" href="${contextpath}/css/animate.css"/>
+    <link rel="stylesheet" href="${contextpath}/css/video-css.css" >
+    <script type="text/javascript" src="${contextpath}/js/videojs.js"></script>
+    <script type="text/javascript" src="${contextpath}/js/jquery-1.12.0.min.js" ></script>
+    <!--<script type="text/javascript" src="${contextpath}/js/mui.min.js"></script>-->
+    <script type="text/javascript" src="${contextpath}/js/bq.js" ></script>
+
+    <script src="${contextpath}/js/function.js"></script>
+    <script src="${contextpath}/js/video.js"></script>
+    <script src="${contextpath}/js/openApp.js"></script>
+
+</head>
+<style>
+    .msgShow{ top: auto; bottom: 255px;}
+	html,body{-webkit-overflow-scrolling: touch;}
+    ol{margin-left: 17px;}
+</style>
+<body>
+	<div class="tex_center">
+		<#if article.status == -3>
+			内容已删除
+		<#else>
+            <input type="hidden" id="articleId" value="${article.id}">
+			<input type="hidden" id="userId" value="<#if user??>${user.id!''}</#if>">
+            <#--<img src="${article.image!''}"/>-->
+			${article.body}
+            <div class="detail_look" style="padding-left: 0;padding-right: 0;">
+                <div>
+                    <span><img src="${contextpath}/images/look.png" /><i>${countInfo.pageView}</i></span>
+                </div>
+                <div>
+                    <span><img src="${contextpath}/images/qiang.png" onclick="like(event)" /><i id="click_like">${countInfo.likes}</i></span>
+                    <span><img src="${contextpath}/images/ruo.png" onclick="dislike(event)" /><i id="click_disLike">${countInfo.dislikes}</i></span>
+                </div>
+            </div>
+            <div class="message_cen" style="display:none">
+                <h5 class="clear">给${party.name!'中驰车客'}留言:</h5>
+                <div>
+                    <input type="text" id="userName" class="name_lf" placeholder="姓名" maxlength="20" value="<#if user?? && user.name?? && user.name != ' ' && user.name != ''>${user.name!''}</#if>"/>
+                    <input type="text" id="userPhone" class="iphone_lf" placeholder="手机号" maxlength="11" value="<#if user??>${user.phone!''}</#if>" />
+                    <textarea id="leaveWords" class="message_lf" placeholder="留言信息仅限产品咨询 、渠道申请、售后服务等内容.." maxlength="100"></textarea>
+                </div>
+                <a href="javascript:;" onclick="commitLeaveWords()">提交</a>
+            </div>
+		</#if>
+	</div>
+    <!--mask s-->
+    <div id="mask"></div>
+    <!--mask e-->
+    <div class="msgShow"></div>
+<script type="text/javascript" src="${contextpath}/js/jquery-1.12.0.min.js" ></script>
+<script type="text/javascript" src="${contextpath}/js/newAlert.js" ></script>
+<script>
+    var contextpath = '${contextpath}';
+</script>
+<script>
+$(function(){
+
+    //所有的p 下面带标签内带border属性的 宽度自适应
+    $("img").each(function(){
+        if($(this).attr("border") == 0){
+            $(this).attr("style","width: auto !important;display:inline-block;");
+        }
+    })
+
+//	//获取要定位元素距离浏览器顶部的距离
+//	var navH = $(".video_title").offset().top;
+//	var videoTitle = $(".video_title");
+//	//滚动条事件
+//	$(window).scroll(function(){
+//		//获取滚动条的滑动距离
+//		var scroH = $(this).scrollTop();
+//		//滚动条的滑动距离大于等于定位元素距离浏览器顶部的距离，就固定，反之就不固定
+//		if(scroH>=navH){
+//		videoTitle.css({"position":"fixed","top":0,"left":'0',"z-index":'99','-webkit-overflow-scroll':'touch'});
+//		}else if(scroH<navH){
+//		videoTitle.css({"position":"static"});
+//		}
+//	})
+    $('.tex_center a').attr('href','javascript:;')
+
+})
+
+
+var timer;
+var showmsg=function(msg){
+    $('.msgShow').html(msg).show();
+    $('.msgShow').addClass('animated tada');
+    timer=setTimeout(function(){
+        $('.msgShow').hide();
+        clearTimeout(timer);
+    },2000);
+}
+function commitLeaveWords() {
+    var articleId = $("#articleId").val();
+    var userName = $("#userName").val();
+    var userPhone = $("#userPhone").val();
+    var leaveWords = $("#leaveWords").val();
+    var userId = $("#userId").val();
+
+    if(userName == ''||userName.length<2||leaveWords.length>20) {
+        showmsg("请输入姓名(2-20字)");
+        return;
+    }
+    if(userPhone == ''||!/^13[0-9]{9}$|14[0-9]{9}|15[0-9]{9}$|18[0-9]{9}$|17[0-9]{9}$/.test(userPhone)) {
+        showmsg("请输入联系方式");
+        return;
+    }
+    if(leaveWords == ''||leaveWords.length<2||leaveWords.length>100) {
+        showmsg("请输入留言内容(2-100字)");
+        return;
+    }
+
+    $.ajax({
+        type: "POST",
+        url:contextpath + '/article/tk/saveLeaveWord.action',
+        data: {articleId: articleId,userName :userName,userPhone:userPhone,leaveWords:leaveWords,userId:userId},
+        dataType: "json",
+        cache: false,
+        success: function (data) {
+            if (data.code == "ok") {
+                showmsg("感谢您的留言，我们会在第一时间处理您的留言！");
+                $("#userName").val("");
+                $("#userPhone").val("");
+                $("#leaveWords").val("");
+            }
+        }
+    });
+}
+
+function like() {
+    var likeNum = parseInt($("#click_like").text());
+    $("#click_like").text(likeNum + 1);
+
+    var articleId = $("#articleId").val();
+    var userId = $("#userId").val();
+    var ev = event.target;
+    $(ev).attr('src','${contextpath}/images/qiang_act.png');
+    $.ajax({
+        type: "POST",
+        url:contextpath + '/article/tk/clickLikeOrDisLike.action',
+        data: {articleId: articleId,action :11,userId:userId},
+        dataType: "json",
+        cache: false,
+        success: function (data) {
+            if (data.code == "ok") {
+            }
+        }
+    });
+}
+function dislike() {
+    var disLikeNum = parseInt($("#click_disLike").text());
+    $("#click_disLike").text(disLikeNum + 1);
+
+    var articleId = $("#articleId").val();
+    var userId = $("#userId").val();
+    var ev = event.target;
+    $(ev).attr('src','${contextpath}/images/ruo_act.png');
+    $.ajax({
+        type: "POST",
+        url:contextpath + '/article/tk/clickLikeOrDisLike.action',
+        data: {articleId: articleId,action :12,userId:userId},
+        dataType: "json",
+        cache: false,
+        success: function (data) {
+            if (data.code == "ok") {
+            }
+        }
+    });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.autozi.cheke.article.mapper.ArticleClickMapper">
+<cache eviction="LRU" type="org.mybatis.caches.memcached.MemcachedCache"/>
+<resultMap id="ArticleClickMap" type="ArticleClick">
+	<result column="ID" jdbcType="DECIMAL" property="id"/>
+	<result column="VERSION" jdbcType="DECIMAL" property="version"/>
+	<result column="ARTICLE_ID" jdbcType="DECIMAL" property="articleId"/>
+	<result column="CLICK_TIME" jdbcType="TIMESTAMP" property="clickTime"/>
+	<result column="CLICK_IP" jdbcType="VARCHAR" property="clickIp"/>
+	<result column="USER_ID" jdbcType="DECIMAL" property="userId"/>
+	<result column="CLICK_TYPE" jdbcType="DECIMAL" property="clickType"/>
+</resultMap>
+<sql id="Base_Column_List">
+	ID,VERSION,ARTICLE_ID,CLICK_TIME,CLICK_IP,USER_ID,CLICK_TYPE
+</sql>
+<sql id="ac_Base_Column_List">
+	ac.ID,ac.VERSION,ac.ARTICLE_ID,ac.CLICK_TIME,ac.CLICK_IP,ac.USER_ID,ac.CLICK_TYPE
+</sql>
+<select id="get" parameterType="long" resultMap="ArticleClickMap">
+	select
+		<include refid="Base_Column_List"/>
+	from article_click ac
+	where ID = #{id,jdbcType=DECIMAL}
+</select>
+<delete id="delete" parameterType="long">
+	delete
+	from article_click
+	where ID = #{id,jdbcType=DECIMAL}
+</delete>
+<insert id="insert" parameterType="ArticleClick">
+	insert into article_click(
+		<include refid="Base_Column_List"/>
+	) values (
+	#{id,jdbcType=DECIMAL},
+	#{version,jdbcType=DECIMAL},
+	#{articleId,jdbcType=DECIMAL},
+	#{clickTime,jdbcType=TIMESTAMP},
+	#{clickIp,jdbcType=VARCHAR},
+	#{userId,jdbcType=DECIMAL},
+	#{clickType,jdbcType=DECIMAL}
+	)
+</insert>
+<update id="update" parameterType="ArticleClick">
+	update article_click ac
+	<set>
+		VERSION = VERSION + 1
+		<if test="articleId != null">
+		,ARTICLE_ID = #{articleId,jdbcType=DECIMAL}
+		</if>
+		<if test="clickTime != null">
+		,CLICK_TIME = #{clickTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="clickIp != null">
+		,CLICK_IP = #{clickIp,jdbcType=VARCHAR}
+		</if>
+		<if test="userId != null">
+		,USER_ID = #{userId,jdbcType=DECIMAL}
+		</if>
+		<if test="clickType != null">
+		,CLICK_TYPE = #{clickType,jdbcType=DECIMAL}
+		</if>
+	</set>
+	where ID = #{id,jdbcType=DECIMAL}
+</update>
+<select id="findListForExample" parameterType="ArticleClick" resultMap="ArticleClickMap">
+	select
+	<include refid="ac_Base_Column_List"/>
+	from article_click ac
+	<include refid="common_query_condition"/>
+</select>
+<select id="findListForMap" parameterType="map" resultMap="ArticleClickMap">
+	select
+	<include refid="ac_Base_Column_List"/>
+	from article_click ac
+	<include refid="common_query_condition"/>
+</select>
+<sql id="common_query_condition">
+	<where>
+		<if test="id != null">
+			ac.id = #{id,jdbcType=DECIMAL}
+		</if>
+		<if test="userId != null">
+			AND ac.user_id = #{userId,jdbcType=DECIMAL}
+		</if>
+		<if test="articleId != null">
+			AND ac.article_id = #{articleId,jdbcType=DECIMAL}
+		</if>
+
+	</where>
+</sql>
+</mapper>

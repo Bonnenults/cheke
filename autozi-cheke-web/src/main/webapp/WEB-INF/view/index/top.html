@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>车客</title>
+    <link rel="stylesheet" href="${contextpath}/styles/css/public.css" />
+    <link rel="stylesheet" href="${contextpath}/styles/css/index.css" />
+    <script type="text/javascript" src="${contextpath}/js/framework/jquery-1.12.0.min.js" ></script>
+    <script type="text/javascript" src="${contextpath}/js/framework/index.js" ></script>
+</head>
+<div class="lf_header clear">
+    <div class="headlogo">
+        <img src="${contextpath}/styles/images/logo.png"/>
+    </div>
+    <h5 class="headCenter">
+        <#if user??&&user.userType??&&user.userType==1>
+            车客管理平台
+        <#else>
+            车客营销平台
+        </#if>
+    </h5>
+    <div class="headr clear">
+        <div class="lf_email">
+            <#if user??&&user.userType??&&user.userType==2>
+                <a href="javascript:toLetterList()"><#if letterCount??><i id="letterCount">${letterCount}</i></#if></a>
+            </#if>
+        </div>
+        <a class="lf_john">
+            <div>
+            <#if user??&&user.userType??&&user.userType==2&&party.imageUrl??>
+                <img src="${party.imageUrl}" width="36px" height="36px">
+            <#else>
+                <img src="${contextpath}/styles/images/index_top.png"/>
+            </#if>
+
+            </div>
+            <span>${userName}</span></a>
+        <div class="lf_off"><a title="退出" href="${contextpath}/j_spring_security_logout"></a></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function toLetterList(){
+        top.frames[1].showCKLetter();
+    }
+    $(function(){
+        setInterval(function(){
+            $.ajax({
+                url:'${contextpath}/letter/cheke/list/letterCount.action',
+                dataType:"json",
+                success:function(data){
+                    $("#letterCount").html(data.count);
+                }
+            });
+        },5000);
+    });
+</script>

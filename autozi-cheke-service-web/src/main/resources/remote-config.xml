@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans        
+	http://www.springframework.org/schema/beans/spring-beans.xsd        
+	http://code.alibabatech.com/schema/dubbo        
+	http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="locations">
+			<list>
+				<value>classpath*:/dubbo-config.properties</value>
+				
+				<!-- o2c -->
+				<value>classpath*:/dataSourceRead.properties</value>
+				<value>classpath*:/memcached.properties</value>
+				<value>classpath*:/elasticsearch.properties</value>
+			</list>
+		</property>
+	</bean>
+	<import resource="classpath*:elasticsearch.xml"/>
+
+	<!-- 提供方应用信息，用于计算依赖关系 -->
+	<dubbo:application name="autozi-common-dubbo" />
+
+	<!-- 使用zookeeper注册中心暴露服务地址 -->
+	<dubbo:registry  protocol="zookeeper"  address="${zookeeper.server}" />
+
+	<!-- 用dubbo协议在20880端口暴露服务 -->
+	<!-- <dubbo:protocol/> threads 服务线程池大小(固定大小) accepts 服务提供方最大可接受连接数 executes 
+		服务提供者每服务每方法最大可并行执行请求数 actives 每服务消费者每服务每方法最大并发调用数 accepts 限制服务器端接受的连接不能超过10个 -->
+	<dubbo:protocol name="dubbo" port="20880" />
+
+</beans>

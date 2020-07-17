@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans        
+	http://www.springframework.org/schema/beans/spring-beans.xsd        
+	http://code.alibabatech.com/schema/dubbo        
+	http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+	
+	<import resource="classpath*:applicationContext-entity.xml"/>
+
+
+	<!-- 声明需要暴露的服务接口 -->
+	<!--基础类-->
+	<dubbo:service interface="com.autozi.cheke.service.basic.IAreaService" ref="areaService" />
+	<bean id="areaService" class="com.autozi.cheke.service.basic.AreaService" />
+	<dubbo:service interface="com.autozi.cheke.service.basic.INoticeService" ref="noticeService" />
+	<bean id="noticeService" class="com.autozi.cheke.service.basic.NoticeService" />
+	<dubbo:service interface="com.autozi.cheke.service.basic.IPropertiesService" ref="propertisService" />
+	<bean id="propertisService" class="com.autozi.cheke.service.basic.PropertiesService" />
+	<!--用户-->
+	<dubbo:service interface="com.autozi.cheke.service.user.IUserService" ref="userService" />
+	<bean id="userService" class="com.autozi.cheke.service.user.UserService" />
+	
+	<dubbo:service interface="com.autozi.cheke.service.user.IUserLoginStatusService" ref="userLoginStatusService" />
+	<bean id="userLoginStatusService" class="com.autozi.cheke.service.user.UserLoginStatusServiceImpl" />
+
+	<dubbo:service interface="com.autozi.cheke.service.user.IFeedBackService" ref="feedBackService" />
+	<bean id="feedBackService" class="com.autozi.cheke.service.user.FeedBackService" />
+    <dubbo:service interface="com.autozi.cheke.service.user.IUserCountInfoService" ref="userCountInfoService" />
+    <bean id="userCountInfoService" class="com.autozi.cheke.service.user.UserCountInfoService" />
+	<dubbo:service interface="com.autozi.cheke.service.user.IMedalService" ref="medalService" />
+	<bean id="medalService" class="com.autozi.cheke.service.user.MedalService" />
+	<dubbo:service interface="com.autozi.cheke.service.user.IMedalRuleService" ref="medalRuleService" />
+	<bean id="medalRuleService" class="com.autozi.cheke.service.user.MedalRuleService" />
+	<dubbo:service interface="com.autozi.cheke.service.user.IPersonalMedalService" ref="personalMedalService" />
+	<bean id="personalMedalService" class="com.autozi.cheke.service.user.PersonalMedalService" />
+
+	<dubbo:service interface="com.autozi.cheke.service.user.IChekeCommentService" ref="chekeCommentService" />
+	<bean id="chekeCommentService" class="com.autozi.cheke.service.user.ChekeCommentService" />
+	<dubbo:service interface="com.autozi.cheke.service.user.IChekeCollectionService" ref="chekeCollectionService" />
+	<bean id="chekeCollectionService" class="com.autozi.cheke.service.user.ChekeCollectionService" />
+
+	<dubbo:service interface="com.autozi.cheke.service.party.IPartyService" ref="partyService" />
+	<bean id="partyService" class="com.autozi.cheke.service.party.PartyService" />
+	<dubbo:service interface="com.autozi.cheke.service.user.IRoleService" ref="roleService" />
+	<bean id="roleService" class="com.autozi.cheke.service.user.RoleService" />
+	<dubbo:service interface="com.autozi.cheke.service.party.IChekeFansService" ref="chekeFansService" />
+	<bean id="chekeFansService" class="com.autozi.cheke.service.party.ChekeFansService" />
+
+	<!--手机验证码-->
+	<dubbo:service interface="com.autozi.cheke.service.mobile.IMobilePhoneCodeService" ref="mobilePhoneCodeService" />
+	<bean id="mobilePhoneCodeService" class="com.autozi.cheke.service.mobile.MobilePhoneCodeServiceImpl" />
+
+	<dubbo:service interface="com.autozi.common.core.service.DataRightsService" ref="dataRightService" />
+
+	<!--资讯、培训、项目-->
+	<dubbo:service interface="com.autozi.cheke.service.article.IArticleService" ref="articleService" />
+	<dubbo:service interface="com.autozi.cheke.service.article.IArticleCountInfoService" ref="articleCountInfoService" />
+	<dubbo:service interface="com.autozi.cheke.service.article.IArticleOrderService" ref="articleOrderService" />
+	<dubbo:service interface="com.autozi.cheke.service.article.IArticleTagService" ref="articleTagService" />
+	<dubbo:service interface="com.autozi.cheke.service.article.IArticleTagRelationService" ref="articleTagRelationService" />
+	<dubbo:service interface="com.autozi.cheke.service.article.IArticleLeaveWordService" ref="articleLeaveWordService" />
+	<dubbo:service interface="com.autozi.cheke.service.article.IArticleShareService" ref="articleShareService" />
+
+	<dubbo:service interface="com.autozi.cheke.service.course.ICourseService" ref="courseService" />
+	<dubbo:service interface="com.autozi.cheke.service.course.ICourseUserRelationService" ref="courseUserRelationService" />
+	<dubbo:service interface="com.autozi.cheke.service.course.ICourseCountInfoService" ref="courseCountInfoService" />
+	<dubbo:service interface="com.autozi.cheke.service.course.ICourseShareService" ref="courseShareService" />
+
+	<!-- 留言、私信、点赞 -->
+	<dubbo:service interface="com.autozi.cheke.service.message.ILeaveWordService" ref="leaveWordService" />
+	<dubbo:service interface="com.autozi.cheke.service.article.IArticleClickService" ref="articleClickService" />
+	<dubbo:service interface="com.autozi.cheke.service.party.IChekeLetterService" ref="chekeLetterService" />
+
+
+	<!--账户 支付相关-->
+	<dubbo:service interface="com.autozi.cheke.service.settle.IAccountService" ref="accountService"/>
+	<bean id="accountService" class="com.autozi.cheke.service.settle.AccountService"/>
+	<dubbo:service interface="com.autozi.cheke.service.settle.IAccountOrderService" ref="accountOrderService"/>
+	<bean id="accountOrderService" class="com.autozi.cheke.service.settle.AccountOrderService"/>
+	<dubbo:service interface="com.autozi.cheke.service.settle.IInvoiceService" ref="invoiceService"/>
+	<bean id="invoiceService" class="com.autozi.cheke.service.settle.InvoiceService"/>
+	<dubbo:service interface="com.autozi.cheke.service.settle.IDrawCashOrderService" ref="drawCashOrderService"/>
+	<bean id="drawCashOrderService" class="com.autozi.cheke.service.settle.DrawCashOrderService"/>
+	<dubbo:service interface="com.autozi.cheke.service.settle.IChanpayOrderService" ref="chanpayOrderService"/>
+	<bean id="chanpayOrderService" class="com.autozi.cheke.service.settle.ChanpayOrderService"/>
+	<dubbo:service interface="com.autozi.cheke.service.settle.IChanpayService" ref="chanpayService"/>
+	<bean id="chanpayService" class="com.autozi.cheke.service.settle.ChanpayService"/>
+	<!--账户 支付相关-->
+
+	<!--ES服务-->
+	<dubbo:service interface="com.autozi.cheke.service.search.IArticleSearchService" ref="articleSearchService" />
+</beans>

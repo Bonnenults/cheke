@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.autozi.cheke.course.mapper.CourseMapper">
+    <cache eviction="LRU" type="org.mybatis.caches.memcached.MemcachedCache"/>
+    <resultMap id="CourseMap" type="Course">
+        <result column="ID" jdbcType="DECIMAL" property="id"/>
+        <result column="VERSION" jdbcType="DECIMAL" property="version"/>
+        <result column="COURSE_NAME" jdbcType="VARCHAR" property="courseName"/>
+        <result column="SOURCE" jdbcType="VARCHAR" property="source"/>
+        <result column="IMAGE" jdbcType="VARCHAR" property="image"/>
+        <result column="INTRO" jdbcType="VARCHAR" property="intro"/>
+        <result column="STATUS" jdbcType="DECIMAL" property="status"/>
+        <result column="CREATE_USER_ID" jdbcType="DECIMAL" property="createUserId"/>
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="PUBLISH_TIME" jdbcType="TIMESTAMP" property="publishTime"/>
+        <result column="OFFLINE_TIME" jdbcType="TIMESTAMP" property="offlineTime"/>
+        <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="BEGIN_TIME" jdbcType="TIMESTAMP" property="beginTime"/>
+        <result column="END_TIME" jdbcType="TIMESTAMP" property="endTime"/>
+        <result column="TYPE" jdbcType="DECIMAL" property="type"/>
+        <result column="CHAPTER_NUM" jdbcType="DECIMAL" property="chapterNum"/>
+        <result column="TAG" jdbcType="VARCHAR" property="tag"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        ID,VERSION,COURSE_NAME,SOURCE,IMAGE,INTRO,STATUS,CREATE_USER_ID,CREATE_TIME,PUBLISH_TIME,OFFLINE_TIME,UPDATE_TIME,BEGIN_TIME,END_TIME,TYPE,CHAPTER_NUM,TAG
+    </sql>
+    <sql id="co_Base_Column_List">
+        co.ID,co.VERSION,co.COURSE_NAME,co.SOURCE,co.IMAGE,co.INTRO,co.STATUS,co.CREATE_USER_ID,co.CREATE_TIME,co.PUBLISH_TIME,co.OFFLINE_TIME,co.UPDATE_TIME,co.BEGIN_TIME,co.END_TIME,co.TYPE,co.CHAPTER_NUM,co.TAG
+    </sql>
+    <select id="get" parameterType="long" resultMap="CourseMap">
+        select
+        <include refid="Base_Column_List"/>
+        from course_info co
+        where ID = #{id,jdbcType=DECIMAL}
+    </select>
+    <delete id="delete" parameterType="long">
+        delete
+        from course_info
+        where ID = #{id,jdbcType=DECIMAL}
+    </delete>
+    <insert id="insert" parameterType="Course">
+        insert into course_info(
+        <include refid="Base_Column_List"/>
+        ) values (
+        #{id,jdbcType=DECIMAL},
+        #{version,jdbcType=DECIMAL},
+        #{courseName,jdbcType=VARCHAR},
+        #{source,jdbcType=VARCHAR},
+        #{image,jdbcType=VARCHAR},
+        #{intro,jdbcType=VARCHAR},
+        #{status,jdbcType=DECIMAL},
+        #{createUserId,jdbcType=DECIMAL},
+        #{createTime,jdbcType=TIMESTAMP},
+        #{publishTime,jdbcType=TIMESTAMP},
+        #{offlineTime,jdbcType=TIMESTAMP},
+        #{updateTime,jdbcType=TIMESTAMP},
+        #{beginTime,jdbcType=TIMESTAMP},
+        #{endTime,jdbcType=TIMESTAMP},
+        #{type,jdbcType=DECIMAL},
+        #{chapterNum,jdbcType=DECIMAL},
+        #{tag,jdbcType=VARCHAR}
+        )
+    </insert>
+    <update id="update" parameterType="Course">
+        update course_info co
+        <set>
+            VERSION = VERSION + 1
+            <if test="courseName != null">
+                ,COURSE_NAME = #{courseName,jdbcType=VARCHAR}
+            </if>
+            <if test="source != null">
+                ,SOURCE = #{source,jdbcType=VARCHAR}
+            </if>
+            <if test="image != null">
+                ,IMAGE = #{image,jdbcType=VARCHAR}
+            </if>
+            <if test="intro != null">
+                ,INTRO = #{intro,jdbcType=VARCHAR}
+            </if>
+            <if test="type != null">
+                ,TYPE = #{type,jdbcType=DECIMAL}
+            </if>
+            <if test="status != null">
+                ,STATUS = #{status,jdbcType=DECIMAL}
+            </if>
+            <if test="createTime != null">
+                ,CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="publishTime != null">
+                ,PUBLISH_TIME = #{publishTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="offlineTime != null">
+                ,OFFLINE_TIME = #{offlineTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null">
+                ,UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="type != null">
+                ,TYPE = #{type,jdbcType=DECIMAL}
+            </if>
+            <if test="chapterNum != null">
+                ,CHAPTER_NUM = #{chapterNum,jdbcType=DECIMAL}
+            </if>
+            <if test="tag != null">
+                ,TAG = #{tag,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where ID = #{id,jdbcType=DECIMAL}
+    </update>
+    <select id="findListForExample" parameterType="Course" resultMap="CourseMap">
+        select
+        <include refid="co_Base_Column_List"/>
+        from course_info co
+        <include refid="common_query_condition"/>
+    </select>
+    <select id="findListForMap" parameterType="map" resultMap="CourseMap">
+        select
+        <include refid="co_Base_Column_List"/>
+        from course_info co
+        <include refid="common_query_condition"/>
+        <if test=" orderBy != null ">
+            ORDER BY ${orderBy}
+        </if>
+    </select>
+    <sql id="common_query_condition">
+        <where>
+            <if test="id != null">
+                co.id = #{id,jdbcType=DECIMAL}
+            </if>
+            <if test="courseName != null">
+                AND co.course_name = #{courseName,jdbcType=VARCHAR}
+            </if>
+            <if test="source != null">
+                AND co.source = #{source,jdbcType=VARCHAR}
+            </if>
+            <if test="createUserId != null">
+                AND co.create_user_id = #{createUserId,jdbcType=DECIMAL}
+            </if>
+            <if test="type != null">
+                AND co.type = #{type,jdbcType=DECIMAL}
+            </if>
+            <if test="status != null">
+                AND co.status = #{status,jdbcType=DECIMAL}
+            </if>
+            <if test="waitAndRefuseStatus != null">
+                AND co.status IN (0,-1)
+            </if>
+            <if test="beginTimeStart != null">
+                AND co.BEGIN_TIME &gt;= #{beginTimeStart,jdbcType=TIMESTAMP}
+            </if>
+
+            <if test="beginTimeEnd != null">
+                and co.BEGIN_TIME &lt;= #{beginTimeEnd,jdbcType=TIMESTAMP}
+            </if>
+
+            <if test="endTimeStart != null">
+                AND co.end_time &gt;= #{endTimeStart,jdbcType=TIMESTAMP}
+            </if>
+
+            <if test="endTimeEnd != null">
+                and co.end_time &lt;= #{endTimeEnd,jdbcType=TIMESTAMP}
+            </if>
+
+        </where>
+    </sql>
+</mapper>

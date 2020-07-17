@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.autozi.cheke.article.mapper.ArticleLeaveWordMapper">
+<cache eviction="LRU" type="org.mybatis.caches.memcached.MemcachedCache"/>
+<resultMap id="ArticleLeaveWordMap" type="ArticleLeaveWord">
+	<result column="ID" jdbcType="DECIMAL" property="id"/>
+	<result column="VERSION" jdbcType="DECIMAL" property="version"/>
+	<result column="ARTICLE_ID" jdbcType="DECIMAL" property="articleId"/>
+	<result column="LEAVE_TITLE" jdbcType="VARCHAR" property="leaveTitle"/>
+	<result column="LEAVE_NAME" jdbcType="VARCHAR" property="leaveName"/>
+	<result column="LEAVE_PHONE" jdbcType="VARCHAR" property="leavePhone"/>
+	<result column="LEAVE_MESSAGE" jdbcType="VARCHAR" property="leaveMessage"/>
+	<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+	<result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+	<result column="CREATE_USER_ID" jdbcType="DECIMAL" property="createUserId"/>
+	<result column="CREATE_USER_NAME" jdbcType="VARCHAR" property="createUserName"/>
+	<result column="CREATE_USER_PHONE" jdbcType="VARCHAR" property="createUserPhone"/>
+	<result column="CHANNEL_TYPE" jdbcType="DECIMAL" property="channelType"/>
+	<result column="CHEKE_USER_ID" jdbcType="DECIMAL" property="chekeUserId"/>
+	<result column="CHEKE_PARTY_ID" jdbcType="DECIMAL" property="chekePartyId"/>
+</resultMap>
+<sql id="Base_Column_List">
+	ID,VERSION,ARTICLE_ID,LEAVE_TITLE,LEAVE_NAME,LEAVE_PHONE,LEAVE_MESSAGE,CREATE_TIME,UPDATE_TIME,CREATE_USER_ID,CREATE_USER_NAME,CREATE_USER_PHONE,CHANNEL_TYPE,CHEKE_USER_ID,CHEKE_PARTY_ID
+</sql>
+<sql id="alw_Base_Column_List">
+	alw.ID,alw.VERSION,alw.ARTICLE_ID,alw.LEAVE_TITLE,alw.LEAVE_NAME,alw.LEAVE_PHONE,alw.LEAVE_MESSAGE,alw.CREATE_TIME,alw.UPDATE_TIME,alw.CREATE_USER_ID,alw.CREATE_USER_NAME,alw.CREATE_USER_PHONE,alw.CHANNEL_TYPE,alw.CHEKE_USER_ID,alw.CHEKE_PARTY_ID
+</sql>
+<select id="get" parameterType="long" resultMap="ArticleLeaveWordMap">
+	select
+		<include refid="Base_Column_List"/>
+	from article_leave_word alw
+	where ID = #{id,jdbcType=DECIMAL}
+</select>
+<delete id="delete" parameterType="long">
+	delete
+	from article_leave_word
+	where ID = #{id,jdbcType=DECIMAL}
+</delete>
+<insert id="insert" parameterType="ArticleLeaveWord">
+	insert into article_leave_word(
+		<include refid="Base_Column_List"/>
+	) values (
+	#{id,jdbcType=DECIMAL},
+	#{version,jdbcType=DECIMAL},
+	#{articleId,jdbcType=DECIMAL},
+	#{leaveTitle,jdbcType=VARCHAR},
+	#{leaveName,jdbcType=VARCHAR},
+	#{leavePhone,jdbcType=VARCHAR},
+	#{leaveMessage,jdbcType=VARCHAR},
+	#{createTime,jdbcType=TIMESTAMP},
+	#{updateTime,jdbcType=TIMESTAMP},
+	#{createUserId,jdbcType=DECIMAL},
+	#{createUserName,jdbcType=VARCHAR},
+	#{createUserPhone,jdbcType=VARCHAR},
+	#{channelType,jdbcType=DECIMAL},
+	#{chekeUserId,jdbcType=DECIMAL},
+	#{chekePartyId,jdbcType=DECIMAL}
+	)
+</insert>
+<update id="update" parameterType="ArticleLeaveWord">
+	update article_leave_word alw
+	<set>
+		VERSION = VERSION + 1
+		<if test="articleId != null">
+		,ARTICLE_ID = #{articleId,jdbcType=DECIMAL}
+		</if>
+		<if test="leaveTitle != null">
+		,LEAVE_TITLE = #{leaveTitle,jdbcType=VARCHAR}
+		</if>
+		<if test="leaveName != null">
+		,LEAVE_NAME = #{leaveName,jdbcType=VARCHAR}
+		</if>
+		<if test="leavePhone != null">
+		,LEAVE_PHONE = #{leavePhone,jdbcType=VARCHAR}
+		</if>
+		<if test="leaveMessage != null">
+		,LEAVE_MESSAGE = #{leaveMessage,jdbcType=VARCHAR}
+		</if>
+		<if test="createTime != null">
+		,CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="updateTime != null">
+		,UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="createUserId != null">
+		,CREATE_USER_ID = #{createUserId,jdbcType=DECIMAL}
+		</if>
+		<if test="createUserName != null">
+		,CREATE_USER_NAME = #{createUserName,jdbcType=VARCHAR}
+		</if>
+		<if test="createUserPhone != null">
+		,CREATE_USER_PHONE = #{createUserPhone,jdbcType=VARCHAR}
+		</if>
+		<if test="channelType != null">
+		,CHANNEL_TYPE = #{channelType,jdbcType=DECIMAL}
+		</if>
+		<if test="chekeUserId != null">
+			,CHEKE_USER_ID = #{chekeUserId,jdbcType=DECIMAL}
+		</if>
+		<if test="chekePartyId != null">
+			,CHEKE_PARTY_ID = #{chekePartyId,jdbcType=DECIMAL}
+		</if>
+	</set>
+	where ID = #{id,jdbcType=DECIMAL} and version = #{version,jdbcType=DECIMAL}
+</update>
+<select id="findListForExample" parameterType="ArticleLeaveWord" resultMap="ArticleLeaveWordMap">
+	select
+	<include refid="alw_Base_Column_List"/>
+	from article_leave_word alw
+	<include refid="common_query_condition"/>
+</select>
+<select id="findListForMap" parameterType="map" resultMap="ArticleLeaveWordMap">
+	select
+	<include refid="alw_Base_Column_List"/>
+	from article_leave_word alw
+	<include refid="common_query_condition"/>
+	order by create_time desc
+</select>
+<sql id="common_query_condition">
+	<where>
+		<if test="id != null">
+			alw.id = #{id,jdbcType=DECIMAL}
+		</if>
+		<if test="createUserName != null">
+			AND alw.create_user_name = #{createUserName,jdbcType=VARCHAR}
+		</if>
+		<if test="createUserPhone != null">
+			AND alw.create_user_phone = #{createUserPhone,jdbcType=VARCHAR}
+		</if>
+		<if test="createTimeStart != null">
+			AND alw.create_time &gt;= #{createTimeStart,jdbcType=TIMESTAMP}
+		</if>
+		<if test="createTimeEnd != null">
+			AND alw.create_time &lt;= #{createTimeEnd,jdbcType=TIMESTAMP}
+		</if>
+		<if test="channelType != null">
+			AND alw.channel_type = #{channelType,jdbcType=DECIMAL}
+		</if>
+		<if test="leavePhone != null">
+			AND alw.leave_phone = #{leavePhone,jdbcType=VARCHAR}
+		</if>
+		<if test="chekePartyId != null">
+			AND alw.cheke_party_id = #{chekePartyId,jdbcType=DECIMAL}
+		</if>
+		<if test="articleId != null">
+			AND alw.article_id = #{articleId,jdbcType=DECIMAL}
+		</if>
+	</where>
+</sql>
+</mapper>

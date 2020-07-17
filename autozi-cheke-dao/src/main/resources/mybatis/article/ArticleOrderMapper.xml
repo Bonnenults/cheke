@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.autozi.cheke.article.mapper.ArticleOrderMapper">
+<cache eviction="LRU" type="org.mybatis.caches.memcached.MemcachedCache"/>
+<resultMap id="ArticleOrderMap" type="ArticleOrder">
+	<result column="ID" jdbcType="DECIMAL" property="id"/>
+	<result column="VERSION" jdbcType="DECIMAL" property="version"/>
+	<result column="ARTICLE_ID" jdbcType="DECIMAL" property="articleId"/>
+	<result column="USER_ID" jdbcType="DECIMAL" property="userId"/>
+	<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+	<result column="CLICK_NUM" jdbcType="DECIMAL" property="clickNum"/>
+	<result column="MAX_CLICK_NUM" jdbcType="DECIMAL" property="maxClickNum"/>
+	<result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+	<result column="STATUS" jdbcType="DECIMAL" property="status"/>
+	<result column="TX_STATUS" jdbcType="DECIMAL" property="txStatus"/>
+	<result column="MYSELF_MONEY" jdbcType="DECIMAL" property="myselfMoney"/>
+	<result column="OUT_MONEY" jdbcType="DECIMAL" property="outMoney"/>
+	<result column="TYPE" jdbcType="DECIMAL" property="type"/>
+	<result column="HAS_PARENT_TWR" jdbcType="DECIMAL" property="hasParentTwr"/>
+	<result column="SYNC_MYSELF_MONEY" jdbcType="DECIMAL" property="syncMyselfMoney"/>
+	<result column="SYNC_OUT_MONEY" jdbcType="DECIMAL" property="syncOutMoney"/>
+	<result column="TOP_TUIKE_ID" jdbcType="DECIMAL" property="topTuikeId"/>
+</resultMap>
+<sql id="Base_Column_List">
+	ID,VERSION,ARTICLE_ID,USER_ID,CREATE_TIME,CLICK_NUM,MAX_CLICK_NUM,UPDATE_TIME,STATUS,TX_STATUS,MYSELF_MONEY,OUT_MONEY,TYPE,HAS_PARENT_TWR,SYNC_MYSELF_MONEY,SYNC_OUT_MONEY,TOP_TUIKE_ID
+</sql>
+<sql id="ao_Base_Column_List">
+	ao.ID,ao.VERSION,ao.ARTICLE_ID,ao.USER_ID,ao.CREATE_TIME,ao.CLICK_NUM,ao.MAX_CLICK_NUM,ao.UPDATE_TIME,ao.STATUS,ao.TX_STATUS,ao.MYSELF_MONEY,ao.OUT_MONEY,ao.TYPE,ao.HAS_PARENT_TWR,ao.SYNC_MYSELF_MONEY,ao.SYNC_OUT_MONEY,ao.TOP_TUIKE_ID
+</sql>
+<select id="get" parameterType="long" resultMap="ArticleOrderMap">
+	select
+		<include refid="Base_Column_List"/>
+	from article_order ao
+	where ID = #{id,jdbcType=DECIMAL}
+</select>
+<delete id="delete" parameterType="long">
+	delete
+	from article_order
+	where ID = #{id,jdbcType=DECIMAL}
+</delete>
+<insert id="insert" parameterType="ArticleOrder">
+	insert into article_order(
+		<include refid="Base_Column_List"/>
+	) values (
+	#{id,jdbcType=DECIMAL},
+	#{version,jdbcType=DECIMAL},
+	#{articleId,jdbcType=DECIMAL},
+	#{userId,jdbcType=DECIMAL},
+	#{createTime,jdbcType=TIMESTAMP},
+	#{clickNum,jdbcType=DECIMAL},
+	#{maxClickNum,jdbcType=DECIMAL},
+	#{updateTime,jdbcType=TIMESTAMP},
+	#{status,jdbcType=DECIMAL},
+	#{txStatus,jdbcType=DECIMAL},
+	#{myselfMoney,jdbcType=DECIMAL},
+	#{outMoney,jdbcType=DECIMAL},
+	#{type,jdbcType=DECIMAL},
+	#{hasParentTwr,jdbcType=DECIMAL},
+	#{syncMyselfMoney,jdbcType=DECIMAL},
+	#{syncOutMoney,jdbcType=DECIMAL},
+	#{topTuikeId,jdbcType=DECIMAL}
+	)
+</insert>
+<update id="update" parameterType="ArticleOrder">
+	update article_order ao
+	<set>
+		VERSION = VERSION + 1
+		<if test="articleId != null">
+		,ARTICLE_ID = #{articleId,jdbcType=DECIMAL}
+		</if>
+		<if test="userId != null">
+		,USER_ID = #{userId,jdbcType=DECIMAL}
+		</if>
+		<if test="createTime != null">
+		,CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="clickNum != null">
+		,CLICK_NUM = #{clickNum,jdbcType=DECIMAL}
+		</if>
+		<if test="maxClickNum != null">
+		,MAX_CLICK_NUM = #{maxClickNum,jdbcType=DECIMAL}
+		</if>
+		<if test="updateTime != null">
+		,UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="status != null">
+		,STATUS = #{status,jdbcType=DECIMAL}
+		</if>
+		<if test="txStatus != null">
+		,TX_STATUS = #{txStatus,jdbcType=DECIMAL}
+		</if>
+		<if test="myselfMoney != null">
+		,MYSELF_MONEY = #{myselfMoney,jdbcType=DECIMAL}
+		</if>
+		<if test="outMoney != null">
+		,OUT_MONEY = #{outMoney,jdbcType=DECIMAL}
+		</if>
+		<if test="type != null">
+		,type = #{type,jdbcType=DECIMAL}
+		</if>
+		<if test="hasParentTwr != null">
+		,has_parent_twr = #{hasParentTwr,jdbcType=DECIMAL}
+		</if>
+		<if test="syncMyselfMoney != null">
+			,SYNC_MYSELF_MONEY = #{syncMyselfMoney,jdbcType=DECIMAL}
+		</if>
+		<if test="syncOutMoney != null">
+			,SYNC_OUT_MONEY = #{syncOutMoney,jdbcType=DECIMAL}
+		</if>
+		<if test="topTuikeId != null">
+			,TOP_TUIKE_ID = #{topTuikeId,jdbcType=DECIMAL}
+		</if>
+	</set>
+	where ID = #{id,jdbcType=DECIMAL}
+</update>
+<select id="findListForExample" parameterType="ArticleOrder" resultMap="ArticleOrderMap">
+	select
+	<include refid="ao_Base_Column_List"/>
+	from article_order ao
+	<include refid="common_query_condition"/>
+</select>
+<select id="findListForMap" parameterType="map" resultMap="ArticleOrderMap">
+	select
+	<include refid="ao_Base_Column_List"/>
+	from article_order ao
+	<include refid="common_query_condition"/>
+	ORDER BY ao.create_time DESC
+</select>
+<select id="countAllClickNum" parameterType="java.lang.Long" resultType="java.lang.Integer">
+	SELECT IFNULL(SUM(click_num),0) FROM article_order WHERE article_id = #{articleId,jdbcType=DECIMAL}
+</select>
+<select id="getTaskCount" parameterType="java.lang.Long" resultType="java.lang.Integer">
+	SELECT IFNULL(count(1),0) FROM article_order WHERE article_id = #{articleId,jdbcType=DECIMAL}
+</select>
+<sql id="common_query_condition">
+	<where>
+		<if test="id != null">
+			ao.id = #{id,jdbcType=DECIMAL}
+		</if>
+		<if test="articleId != null">
+			AND ao.article_id = #{articleId,jdbcType=DECIMAL}
+		</if>
+		<if test="userId != null">
+			AND ao.user_id = #{userId,jdbcType=DECIMAL}
+		</if>
+		<if test="status != null">
+			AND ao.status = #{status,jdbcType=DECIMAL}
+		</if>
+	</where>
+</sql>
+</mapper>

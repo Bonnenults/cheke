@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+   <#include "taglibs.html"/>
+   <@title/>
+   <@loadSystemSrc />
+   <@loadOwnSrc />
+   <#include "context.html">
+</head>
+<@pageOnloadJs />
+<@body />
+</html>
+<#macro loadSystemSrc>
+<link type="text/css" rel="stylesheet" href="${b2bStylePath}/jquery/themes/default/easyui.css?version=${jsVersion}"/>
+<link type="text/css" rel="stylesheet" href="${b2bStylePath}/styles/smoothness/jquery-ui-1.8.13.custom.css"/>
+<link type="text/css" rel="stylesheet" href="${b2bStylePath}/jquery/themes/icon.css?version=${jsVersion}"/>
+<link type="text/css" rel="stylesheet" href="${b2bStylePath}/styles/theme.css?version=${jsVersion}"/>
+<!--[if IE 8]>
+<link rel="stylesheet" type="text/css" href="${b2bStylePath}/styles/ie8.css">
+<![endif]-->
+<!--[if IE 7]>
+<link rel="stylesheet" type="text/css" href="${b2bStylePath}/styles/ie7.css">
+<![endif]-->
+<!--[if IE 6]>
+<link rel="stylesheet" type="text/css" href="${b2bStylePath}/styles/ie6.css">
+<![endif]-->
+<script type="text/javascript" src="${b2bStylePath}/b2bjs/scripts/jquery-1.5.1.min.js"></script>
+<script type="text/javascript" src="${b2bStylePath}/b2bjs/jquery/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="${b2bStylePath}/b2bjs/scripts/jquery-ui-1.8.13.min.js"></script>
+<script type="text/javascript" src='${b2bStylePath}/b2bjs/scripts/clover_validator_3.0.js'></script>
+<script type="text/javascript" src='${b2bStylePath}/b2bjs/scripts/clover_validator_3.0.autoload.js'></script>
+<script type="text/javascript" src="${b2bStylePath}/b2bjs/json2.js"></script>
+<script type="text/javascript" src="${b2bStylePath}/b2bjs/util.js"></script>
+<script type="text/javascript" src="${b2bStylePath}/b2bjs/app.js"></script>
+<script type="text/javascript" src="${b2bStylePath}/b2bjs/scripts/global.js"></script>
+<script type="text/javascript" src="${b2bStylePath}/jquery/My97DatePicker/WdatePicker.js"></script>
+<link rel="stylesheet" type="text/css" href="${b2bStylePath}/css/combobox.css" />
+<script type="text/javascript" language="javascript" src='${b2bStylePath}/b2bjs/jquery/jqueryui/jquery-ui-combobox.js'></script>
+</#macro>
+<#macro pageOnloadJs>
+<script>
+   $(function(){
+	    <@systemInit />
+	    <@customInit />
+    })
+</script>
+</#macro>
+<#macro systemInit>
+   App.UI.init();
+</#macro>

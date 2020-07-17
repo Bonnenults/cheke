@@ -1,0 +1,53 @@
+<div class="qy_center_table" id="data_table_list">
+    <table>
+        <tbody>
+        <tr>
+            <th style="width:30px;">#</th>
+            <th>车客名称</th>
+            <th style="width:130px;">车客属性</th>
+            <th style="width:130px;">开票金额</th>
+            <th style="width:130px;">申请时间</th>
+        <#if status??&&status=="2">
+            <th style="width:130px;">开票时间</th>
+        </#if>
+            <th class="no_border" style="width:230px;">操作</th>
+        </tr>
+        <#if (page??)&&(page.result??)&&(page.result?size>0)>
+            <#list page.result as view>
+            <tr>
+                <td>${page.firstElementIndex + view_index }</td>
+                <td><#if view.partyName??>${view.partyName?html}</#if></td>
+                <td>
+                    <#if view.partyClass??&&view.partyClass==1>
+                        企业单位
+                    <#elseif view.partyClass??&&view.partyClass==2>
+                        政府机构
+                    <#elseif view.partyClass??&&view.partyClass==3>
+                        新闻媒介
+                    <#elseif view.partyClass??&&view.partyClass==4>
+                        个人
+                    </#if>
+                </td>
+                <td><#if view.money??>${view.money?string("0.00")}</#if></td>
+                <td><#if view.createTime??>${view.createTime?string("yyyy-MM-dd HH:mm")}</#if></td>
+                <#if status??&&status=="2">
+                    <td><#if view.updateTime??>${view.updateTime?string("yyyy-MM-dd HH:mm")}</#if></td>
+                </#if>
+                <td class="no_border">
+                    <a class="qy_alink" href="${contextpath}/invoice/admin/list/listInvoiceOrder.action?invoiceId=${view.id}">查看明细</a>
+                    <#if status??&&status=="1">
+                        <a class="qy_alink" href="javascript:Invoice.viewInvoice(${view.id})">确认已开票</a>
+                    </#if>
+                </td>
+            </tr>
+            </#list>
+        <#else>
+        <tr>
+            <td colspan='10'>没有符合条件的记录</td>
+        </tr>
+        </#if>
+        </tbody>
+    </table>
+</div>
+$JXC
+<#include "../../../common/paging_common.html">
