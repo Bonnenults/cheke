@@ -26,7 +26,7 @@
 		<atzcommon.version>1.0.0-SNAPSHOT</atzcommon.version>
 		<!-- lihaifeng spring升级到4.X 20170803-->
 <!-- 		<spring.version>3.2.5.RELEASE</spring.version> -->
-		<spring.version>4.2.8.RELEASE</spring.version>
+		<spring.version>5.3.18</spring.version>
 		<!-- lihaifeng springsecurity升级到4.X 20170803-->
 <!-- 		<springsecurity.version>3.0.5.RELEASE</springsecurity.version> -->
 		<springsecurity.version>4.2.2.RELEASE</springsecurity.version>
