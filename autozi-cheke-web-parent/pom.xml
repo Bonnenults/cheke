@@ -17,7 +17,7 @@
 	<properties>
 		<cheke.version>1.0.0-SNAPSHOT</cheke.version>
 		<atzcommon.version>1.0.0-SNAPSHOT</atzcommon.version>
-		<spring.version>4.2.8.RELEASE</spring.version>
+		<spring.version>5.2.22.RELEASE</spring.version>
 		<springsecurity.version>4.2.2.RELEASE</springsecurity.version>
 		<junit.version>4.8.1</junit.version>
 	</properties>
